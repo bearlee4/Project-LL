@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     {
         rigid = gameObject.GetComponent<Rigidbody2D>();
         Inventory = Manager.GetComponent<InventorySystem>();
-        Debug.Log("테스트");
 
     }
 
