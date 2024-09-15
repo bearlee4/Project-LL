@@ -18,6 +18,8 @@ public class InventorySystem : MonoBehaviour
     //이미지 슬롯
     public List<GameObject> ImageSlot = new List<GameObject>();
 
+    public List<Text> NumberList = new List<Text>();
+
     //인벤토리 아이템 이름 저장 리스트
     public List<string> InventoryList = new List<string>();
     
@@ -32,6 +34,15 @@ public class InventorySystem : MonoBehaviour
 
         //인벤토리 UI 숨김
         Inventory.SetActive(false);
+
+        //인벤토리가 비었을때 갯수 텍스트 감추기
+        for (int i = 0; i < SetSize; i++)
+        {
+            if (InventoryList.Any() == false)
+            {
+                NumberList[i].gameObject.SetActive(false);
+            }
+        }
 
     }
 
@@ -102,6 +113,8 @@ public class InventorySystem : MonoBehaviour
             {
                 Debug.Log("open");
                 Inventory.SetActive(true);
+
+                //인벤토리 사이즈에 맞게 인벤토리 슬롯 생성
                 for (int num = SetSize; Slot.Count > num; num++ )
                 {
                     Slot[num].SetActive(false);
@@ -127,14 +140,28 @@ public class InventorySystem : MonoBehaviour
             //임의로 지정한 획득한 아이템갯수(나중에 수정예정)
             GetCount = Random.Range(1, 3);
 
+            //인벤토리에 같은 종류의 아이템이 없을때
             if (!InventoryList.Contains(Strname))
             {
                 InventoryList.Add(Strname);
                 CountList.Add(GetCount);
                 Debug.Log("Add Item");
+
+                for (int n = 0; n < InventoryList.Count; n++)
+                {
+                    //갯수 텍스트 키기
+                    if (NumberList[n].gameObject.activeSelf == false)
+                    {
+                        NumberList[n].gameObject.SetActive(true);
+                        NumberList[n].text = CountList[n].ToString();
+                        break;
+                    }
+                }
+
                 break;
             }
 
+            //인벤토리에 같은 종류의 아이템이 있을때
             else if (InventoryList.Contains(Strname))
             {
 
@@ -145,12 +172,15 @@ public class InventorySystem : MonoBehaviour
                         CountList[n] += GetCount;
                         Debug.Log(CountList[n]);
                         Debug.Log("같은 아이템을 가지고 있습니다.");
+                        NumberList[n].text = CountList[n].ToString();
+
                         break;
                     }
                 }
                 break;
             }
 
+            //인벤토리 공간이 부족할때
             else if (i > SetSize)
             {
                 Debug.Log("인벤토리 공간이 부족합니다.");
@@ -167,6 +197,7 @@ public class InventorySystem : MonoBehaviour
                 Debug.Log("여기까진 작동중");
                 Image.sprite = Resources.Load<Sprite>("Image/" + Strname);
                 Image.enabled = true;
+                break;
             }
         }
 

@@ -326,16 +326,16 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Debug Reset
+    m_Name: Interaction
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: left alt
+    positiveButton: f
     altNegativeButton: 
-    altPositiveButton: joystick button 1
-    gravity: 0
-    dead: 0
-    sensitivity: 0
+    altPositiveButton: 
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
     snap: 0
     invert: 0
     type: 0
@@ -406,11 +406,11 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Debug Multiplier
+    m_Name: Test1
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: left shift
+    positiveButton: 1
     altNegativeButton: 
     altPositiveButton: joystick button 3
     gravity: 0
@@ -422,11 +422,11 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Debug Horizontal
+    m_Name: Test2
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: left
-    positiveButton: right
+    negativeButton: 
+    positiveButton: 2
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -438,11 +438,11 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Debug Vertical
+    m_Name: Test3
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: down
-    positiveButton: up
+    negativeButton: 
+    positiveButton: 3
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -454,11 +454,11 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Debug Vertical
+    m_Name: Test4
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: down
-    positiveButton: up
+    negativeButton: 
+    positiveButton: 4
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -466,15 +466,15 @@ InputManager:
     sensitivity: 1000
     snap: 0
     invert: 0
-    type: 2
+    type: 0
     axis: 6
     joyNum: 0
   - serializedVersion: 3
-    m_Name: Debug Horizontal
+    m_Name: Test5
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: left
-    positiveButton: right
+    negativeButton: 
+    positiveButton: 5
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -482,7 +482,7 @@ InputManager:
     sensitivity: 1000
     snap: 0
     invert: 0
-    type: 2
+    type: 0
     axis: 5
     joyNum: 0
   - serializedVersion: 3
