@@ -7,14 +7,16 @@ public class GatheringSystem : MonoBehaviour
 {
     public GameObject Manager;
     InventorySystem InventorySystem;
+    private bool ObjectToken;
+
 
     public List<Dictionary<string, object>> ItemDB;
-
-    private List<GameObject> TriggerList = new List<GameObject>();
+    private List<string> TriggerList = new List<string>();
 
     // Start is called before the first frame update
     void Start()
     {
+        ObjectToken = false;
         InventorySystem = Manager.GetComponent<InventorySystem>();
         ItemDB = CSVReader.Read("ItemDB");
     }
@@ -34,40 +36,59 @@ public class GatheringSystem : MonoBehaviour
         if (col.gameObject.tag == "Forage")
         {
             Debug.Log("채집물");
-            TriggerList.Add(col.gameObject);           
+            TriggerList.Add(col.gameObject.name);
+            ObjectToken = true;
 
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Forage")
+        {
+            ObjectToken = true ;
         }
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Forage")
+        if (col.gameObject.tag == "Forage" && ObjectToken == false)
         {
+            Debug.Log("리스트 클리어 작동 했음");
             TriggerList.Clear();
         }
     }
 
-    //미완성 한꺼번에 먹게할지 따로따로 먹게할지에 따라서 다르게 할 예정
+    //아이템 추가
     public void AddItem()
     {
+        int listcount;
+
+        listcount = TriggerList.Count;
+
         if (TriggerList.Any() == true)
         {
-            Debug.Log(TriggerList.Count + "2@작동중");
 
-            for (int TL = 0; TL < TriggerList.Count; TL++)
+            for (int IDB = 0; IDB < ItemDB.Count; IDB++)
             {
-                Debug.Log("브레이크 후 또 뜸?");
-                for (int IDB = 0; IDB < ItemDB.Count; IDB++)
+                if (TriggerList[0] == ItemDB[IDB]["ImgName"].ToString())
                 {
-                    Debug.Log("d여기까지 작동중");
-                    if (TriggerList[TL].name.ToString() == ItemDB[IDB]["ImgName"].ToString())
-                    {
-                        InventorySystem.AddInventory(ItemDB[IDB]["ImgName"]);
-                        TriggerList[TL].SetActive(false);
-                        break;
-                    }
+                    InventorySystem.AddInventory(ItemDB[IDB]["ImgName"]);
+                    break;
                 }
+
             }
+
+            if (InventorySystem.FullInventory == false)
+            {
+                GameObject.Find(TriggerList[0]).SetActive(false);
+                TriggerList.Remove(TriggerList[0]);
+            }    
+        }
+
+        else if (!TriggerList.Any() == false)
+        {
+            ObjectToken = false;
         }
 
     }

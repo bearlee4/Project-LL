@@ -12,6 +12,10 @@ public class InventorySystem : MonoBehaviour
     public Text Content;
     private GameObject ChooseItem;
 
+
+    public bool FullInventory;
+
+    private int count;
     private int SetSize;
     private int GetCount;
 
@@ -39,6 +43,8 @@ public class InventorySystem : MonoBehaviour
         ChooseItem = GameObject.Find("ChooseItem");
         Inventory_Select.SetActive(false);
         Content.text = null;
+        FullInventory = false;
+        count = 0;
 
         ItemDB = CSVReader.Read("ItemDB");
 
@@ -71,7 +77,18 @@ public class InventorySystem : MonoBehaviour
     void Update()
     {
         CheckButton();
-        
+
+        //슬롯 선택 이미지 표기
+        if (InventoryList.Any() == false)
+        {
+            Inventory_Select.SetActive(false);
+        }
+
+        else
+        {
+            Inventory_Select.SetActive(true);
+        }
+
     }
 
     //인벤토리 사이즈 변화
@@ -104,17 +121,6 @@ public class InventorySystem : MonoBehaviour
                 {
                     Slot[num].SetActive(false);
                 }
-
-                //슬롯 선택 이미지 표기
-                if(InventoryList.Any() == false)
-                {
-                    Inventory_Select.SetActive(false);
-                }
-
-                else
-                {
-                    Inventory_Select.SetActive(true);
-                }
             }
 
             else
@@ -129,6 +135,17 @@ public class InventorySystem : MonoBehaviour
         {
             Select_Inventory();
         }
+
+        //z버튼
+        if (Input.GetButtonDown("Confirm"))
+        {
+            if (Inventory.activeSelf == true && Inventory_Select.activeSelf == true)
+            {
+                UseItem(count);
+            }
+        }
+
+
     }
 
     //인벤토리에 아이템 추가
@@ -142,7 +159,7 @@ public class InventorySystem : MonoBehaviour
             GetCount = Random.Range(1, 3);
 
             //인벤토리에 같은 종류의 아이템이 없을때
-            if (!InventoryList.Contains(Strname))
+            if (!InventoryList.Contains(Strname) && CountList.Count < SetSize)
             {
                 InventoryList.Add(Strname);
                 CountList.Add(GetCount);
@@ -154,6 +171,7 @@ public class InventorySystem : MonoBehaviour
                     if (NumberList[n].gameObject.activeSelf == false)
                     {
                         NumberList[n].gameObject.SetActive(true);
+                        Debug.Log(CountList[n].ToString() + "갯수 표시");
                         NumberList[n].text = CountList[n].ToString();
                         break;
                     }
@@ -182,8 +200,9 @@ public class InventorySystem : MonoBehaviour
             }
 
             //인벤토리 공간이 부족할때
-            else if (i > SetSize)
+            else if (CountList.Count == SetSize)
             {
+                FullInventory = true;
                 Debug.Log("인벤토리 공간이 부족합니다.");
                 break;
             }
@@ -222,10 +241,10 @@ public class InventorySystem : MonoBehaviour
 
     }
 
+    //인벤토리 창 선택 했을 때의 상호작용들
     public void Select_Inventory()
     {
         Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
-        int count = 0;
 
         for (int i = 0; i < Slot_Position.Count; i++)
         {
@@ -233,22 +252,35 @@ public class InventorySystem : MonoBehaviour
             if (Inventory_Select.transform.position == Slot_Position[i])
             {
                 count = i;
-                Image Image = ImageSlot[i].GetComponent<Image>();
 
                 if (ChooseImage.enabled == false)
                 {
                     ChooseImage.enabled = true;
                 }
 
-                ChooseImage.sprite = Image.sprite;
+                ChooseImage.sprite = ImageSlot[i].GetComponent<Image>().sprite;
 
-                for (int j = 0; j < ItemDB.Count; j++)
+                if (ChooseImage.sprite == null)
                 {
-                    if (ChooseImage.sprite.name.ToString() == ItemDB[j]["ImgName"].ToString())
+                    ChooseImage.enabled = false;
+                    Content.text = null;
+                    if (i <= 0)
                     {
-                        Content.text = ItemDB[j]["Content"].ToString();
+                        Inventory_Select.transform.position = Slot_Position[i - 1];
+                    }
+                    
+                }
+                
+                else
+                {
+                    for (int j = 0; j < ItemDB.Count; j++)
+                    {
+                        if (ChooseImage.sprite.name.ToString() == ItemDB[j]["ImgName"].ToString())
+                        {
+                            Content.text = ItemDB[j]["Content"].ToString();
 
-                        break;
+                            break;
+                        }
                     }
                 }
 
@@ -292,7 +324,7 @@ public class InventorySystem : MonoBehaviour
 
             else if (Input.GetButtonDown("Down"))
             {
-                if ((count + 3) <= SetSize)
+                if ((count + 3) <= SetSize && ImageSlot[count + 3].GetComponent<Image>().enabled == true)
                 {
                     count += 3;
                     Inventory_Select.transform.position = Slot_Position[count];
@@ -301,5 +333,86 @@ public class InventorySystem : MonoBehaviour
 
         }
 
+        
+
+    }
+
+    //아이템 사용
+    public void UseItem(int number)
+    {
+        for (int i = 0; i <= ItemDB.Count; i++)
+        {
+            if (InventoryList[number] == ItemDB[i]["ImgName"].ToString())
+            {
+                if (ItemDB[i]["UseItem"].ToString() == "O")
+                {
+                    CountList[number] -= 1;
+                    NumberList[number].text = CountList[number].ToString();
+                    Debug.Log("아이템을 사용하였습니다.");
+
+                    if (CountList[number] == 0)
+                    {
+                        DeleteItem(InventoryList[number]);
+                    }
+                    break;
+                }
+
+                else
+                {
+                    Debug.Log("사용 가능한 아이템이 아닙니다.");
+                    break;
+                }
+            }
+            
+        }
+    }
+
+    public void DeleteItem(string name)
+    {
+        for(int i = 0; i < InventoryList.Count; i++)
+        {
+            if (InventoryList[i] == name)
+            {
+                //인벤토리 마지막 아이템까지 다 사용했을 떄
+                if (InventoryList.Count == 1)
+                {
+                    NumberList[i].text = null;
+                    NumberList[i].gameObject.SetActive(false);
+                    ImageSlot[i].GetComponent<Image>().sprite = null;
+                    ImageSlot[i].GetComponent<Image>().enabled = false;
+                    Content.text = null;
+                    ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().sprite = null;
+                    ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().enabled = false;
+                }
+
+                else
+                {
+                    for (int j = i; j < InventoryList.Count; j++)
+                    {
+                        if ((j + 1) < InventoryList.Count)
+                        {
+                            NumberList[j].text = NumberList[j + 1].text;
+                            ImageSlot[j].GetComponent<Image>().sprite = ImageSlot[j + 1].GetComponent<Image>().sprite;
+                        }
+
+                        else if ((j + 1) == InventoryList.Count)
+                        {
+                            NumberList[j].gameObject.SetActive(false);
+                            NumberList[j].text = null;
+                            ImageSlot[j].GetComponent<Image>().enabled = false;
+                        }
+
+                        
+                    }
+                }
+                InventoryList.RemoveAt(i);
+                CountList.RemoveAt(i);
+
+                if (InventoryList.Count < SetSize)
+                {
+                    FullInventory = false;
+                }
+            }
+        }
     }
 }
