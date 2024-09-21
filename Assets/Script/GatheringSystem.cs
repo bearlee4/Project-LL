@@ -6,7 +6,7 @@ using UnityEngine;
 public class GatheringSystem : MonoBehaviour
 {
     public GameObject Manager;
-    InventorySystem Inventory;
+    InventorySystem InventorySystem;
 
     public List<Dictionary<string, object>> ItemDB;
 
@@ -15,7 +15,7 @@ public class GatheringSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Inventory = Manager.GetComponent<InventorySystem>();
+        InventorySystem = Manager.GetComponent<InventorySystem>();
         ItemDB = CSVReader.Read("ItemDB");
     }
 
@@ -23,7 +23,7 @@ public class GatheringSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Interaction"))
+        if (Input.GetButtonDown("Interaction") && InventorySystem.Inventory.activeSelf == false)
         {
             AddItem();
         }
@@ -62,7 +62,7 @@ public class GatheringSystem : MonoBehaviour
                     Debug.Log("d여기까지 작동중");
                     if (TriggerList[TL].name.ToString() == ItemDB[IDB]["ImgName"].ToString())
                     {
-                        Inventory.AddInventory(ItemDB[IDB]["ImgName"]);
+                        InventorySystem.AddInventory(ItemDB[IDB]["ImgName"]);
                         TriggerList[TL].SetActive(false);
                         break;
                     }

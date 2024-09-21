@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public GameObject Manager;
     Rigidbody2D rigid;
 
-    InventorySystem Inventory;
+    InventorySystem InventorySystem;
 
     public List<Dictionary<string, object>> ItemDB;
 
@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rigid = gameObject.GetComponent<Rigidbody2D>();
-        Inventory = Manager.GetComponent<InventorySystem>();
+        InventorySystem = Manager.GetComponent<InventorySystem>();
         ItemDB = CSVReader.Read("ItemDB");
 
     }
@@ -24,7 +24,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
+        if(InventorySystem.Inventory.activeSelf == false)
+        {
+            Move();
+        }
+        
         
     }
 

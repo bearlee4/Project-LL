@@ -8,12 +8,19 @@ using UnityEngine.SceneManagement;
 public class InventorySystem : MonoBehaviour
 {
     public GameObject Inventory;
+    public GameObject Inventory_Select;
+    public Text Content;
+    private GameObject ChooseItem;
 
     private int SetSize;
     private int GetCount;
 
+    public List<Dictionary<string, object>> ItemDB;
+
     //인벤토리 슬롯
     public List<GameObject> Slot = new List<GameObject> ();
+    
+    private List<Vector3> Slot_Position = new List<Vector3> ();
 
     //이미지 슬롯
     public List<GameObject> ImageSlot = new List<GameObject>();
@@ -29,8 +36,22 @@ public class InventorySystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ChooseItem = GameObject.Find("ChooseItem");
+        Inventory_Select.SetActive(false);
+        Content.text = null;
+
+        ItemDB = CSVReader.Read("ItemDB");
+
         //기본 사이즈 지정
         ChangeSize(1);
+
+        //선택 이미지 초기 위치 지정
+        Inventory_Select.transform.position = Slot[0].transform.position;
+
+        for (int i = 0; i < Slot.Count; i++)
+        {
+            Slot_Position.Add(Slot[i].transform.position);
+        }
 
         //인벤토리 UI 숨김
         Inventory.SetActive(false);
@@ -49,44 +70,8 @@ public class InventorySystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        List<Dictionary<string, object>> ItemDB = CSVReader.Read("ItemDB");
-
-        //코드 0번 아이템 추가 테스트
-        if (Input.GetButtonDown("Test1"))
-        {
-            Debug.Log(ItemDB[0]["ImgName"]);
-            AddInventory(ItemDB[0]["ImgName"]);
-        }
-
-        //코드 1번 아이템 추가 테스트
-        else if (Input.GetButtonDown("Test2"))
-        {
-            Debug.Log(ItemDB[1]["ImgName"]);
-            AddInventory(ItemDB[1]["ImgName"]);
-        }
-
-        //코드 2번 아이템 추가 테스트
-        else if (Input.GetButtonDown("Test3"))
-        {
-            Debug.Log(ItemDB[2]["ImgName"]);
-            AddInventory(ItemDB[2]["ImgName"]);
-        }
-
-        //코드 3번 아이템 추가 테스트
-        else if (Input.GetButtonDown("Test4"))
-        {
-            Debug.Log(ItemDB[3]["ImgName"]);
-            AddInventory(ItemDB[3]["ImgName"]);
-        }
-
-        //코드 4번 아이템 추가 테스트
-        else if (Input.GetButtonDown("Test5"))
-        {
-            Debug.Log(ItemDB[4]["ImgName"]);
-            AddInventory(ItemDB[4]["ImgName"]);
-        }
-
         CheckButton();
+        
     }
 
     //인벤토리 사이즈 변화
@@ -119,6 +104,17 @@ public class InventorySystem : MonoBehaviour
                 {
                     Slot[num].SetActive(false);
                 }
+
+                //슬롯 선택 이미지 표기
+                if(InventoryList.Any() == false)
+                {
+                    Inventory_Select.SetActive(false);
+                }
+
+                else
+                {
+                    Inventory_Select.SetActive(true);
+                }
             }
 
             else
@@ -127,6 +123,11 @@ public class InventorySystem : MonoBehaviour
                 Inventory.SetActive(false);
             }
 
+        }
+
+        if (Inventory_Select.activeSelf == true)
+        {
+            Select_Inventory();
         }
     }
 
@@ -201,21 +202,104 @@ public class InventorySystem : MonoBehaviour
             }
         }
 
+      
+
         //Debug.Log("인벤토리의 길이는" + (InventoryList.Count));
 
 
 
-            //for (int num = 0; num < (InventoryList.Count); num++)
-            //{
-            //    Debug.Log("테스트" + ((int)InventoryList[num]));
-            //    Image Image = ImageSlot[(((int)InventoryList[num]) -1)].GetComponent<Image>();
-            //    Image.enabled = true;
-            //    Image.sprite = ItemImage[(((int)InventoryList[num]) -1)];
-            //}
-            //Debug.Log("인벤토리의 길이는" + (InventoryList.Count));
+        //for (int num = 0; num < (InventoryList.Count); num++)
+        //{
+        //    Debug.Log("테스트" + ((int)InventoryList[num]));
+        //    Image Image = ImageSlot[(((int)InventoryList[num]) -1)].GetComponent<Image>();
+        //    Image.enabled = true;
+        //    Image.sprite = ItemImage[(((int)InventoryList[num]) -1)];
+        //}
+        //Debug.Log("인벤토리의 길이는" + (InventoryList.Count));
 
 
 
+
+    }
+
+    public void Select_Inventory()
+    {
+        Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
+        int count = 0;
+
+        for (int i = 0; i < Slot_Position.Count; i++)
+        {
+
+            if (Inventory_Select.transform.position == Slot_Position[i])
+            {
+                count = i;
+                Image Image = ImageSlot[i].GetComponent<Image>();
+
+                if (ChooseImage.enabled == false)
+                {
+                    ChooseImage.enabled = true;
+                }
+
+                ChooseImage.sprite = Image.sprite;
+
+                for (int j = 0; j < ItemDB.Count; j++)
+                {
+                    if (ChooseImage.sprite.name.ToString() == ItemDB[j]["ImgName"].ToString())
+                    {
+                        Content.text = ItemDB[j]["Content"].ToString();
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+        }
+
+        if(Inventory.activeSelf == true)
+        {
+            if(Input.GetButtonDown("Jump"))
+            {
+                Debug.Log(count);
+            }
+
+            if(Input.GetButtonDown("Left"))
+            {
+                if(count != 0)
+                {
+                    count--;
+                    Inventory_Select.transform.position = Slot_Position[count];
+                }
+            }
+
+            else if (Input.GetButtonDown("Right"))
+            {
+                if(count < SetSize && ImageSlot[count+1].GetComponent<Image>().enabled == true)
+                {
+                    count++;
+                    Inventory_Select.transform.position = Slot_Position[count];
+                }            
+            }
+
+            else if (Input.GetButtonDown("Up"))
+            {
+                if ((count - 3) >= 0)
+                {
+                    count -= 3;
+                    Inventory_Select.transform.position = Slot_Position[count];
+                }
+            }
+
+            else if (Input.GetButtonDown("Down"))
+            {
+                if ((count + 3) <= SetSize)
+                {
+                    count += 3;
+                    Inventory_Select.transform.position = Slot_Position[count];
+                }
+            }
+
+        }
 
     }
 }
