@@ -14,28 +14,25 @@ public class InventorySystem : MonoBehaviour
 
 
     public bool FullInventory;
+    private int maxcount;
 
-    private int count;
+    //인벤토리 선택 위치
+    private int Positioncount;
+
     private int SetSize;
     private int GetCount;
 
     public List<Dictionary<string, object>> ItemDB;
 
-    //인벤토리 슬롯
-    public List<GameObject> Slot = new List<GameObject> ();
-    
-    private List<Vector3> Slot_Position = new List<Vector3> ();
-
-    //이미지 슬롯
-    public List<GameObject> ImageSlot = new List<GameObject>();
-
-    public List<Text> NumberList = new List<Text>();
-
-    //인벤토리 아이템 이름 저장 리스트
+    //인벤토리 아이템 관련
     public List<string> InventoryList = new List<string>();
-    
-    //갯수 저장 리스트
     private List<int> CountList = new List<int>();
+
+    //인벤토리 UI 관련
+    public List<GameObject> Slot = new List<GameObject> ();
+    public List<GameObject> ImageSlot = new List<GameObject>();
+    public List<Text> NumberList = new List<Text>();
+    private List<Vector3> Slot_Position = new List<Vector3> ();
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +41,8 @@ public class InventorySystem : MonoBehaviour
         Inventory_Select.SetActive(false);
         Content.text = null;
         FullInventory = false;
-        count = 0;
+        maxcount = 99;
+        Positioncount = 0;
 
         ItemDB = CSVReader.Read("ItemDB");
 
@@ -141,7 +139,7 @@ public class InventorySystem : MonoBehaviour
         {
             if (Inventory.activeSelf == true && Inventory_Select.activeSelf == true)
             {
-                UseItem(count);
+                UseItem(Positioncount);
             }
         }
 
@@ -152,61 +150,75 @@ public class InventorySystem : MonoBehaviour
     public void AddInventory(object name)
     {
         string Strname = name.ToString();
+        //임의로 지정한 획득한 아이템갯수(나중에 수정예정)
+        GetCount = 99;
 
-        for (int i = 0; i < SetSize; i++)
+        //인벤토리가 비었을때 아이템 추가
+        if (InventoryList.Any() == false)
         {
-            //임의로 지정한 획득한 아이템갯수(나중에 수정예정)
-            GetCount = Random.Range(1, 3);
+            AddItem(Strname, GetCount);
+        }
 
-            //인벤토리에 같은 종류의 아이템이 없을때
-            if (!InventoryList.Contains(Strname) && CountList.Count < SetSize)
+        else
+        {
+            for (int i = 0; i < InventoryList.Count; i++)
             {
-                InventoryList.Add(Strname);
-                CountList.Add(GetCount);
-                Debug.Log("Add Item");
-
-                for (int n = 0; n < InventoryList.Count; n++)
+                //인벤토리에 같은 종류의 아이템이 없을때
+                if (!InventoryList.Contains(Strname) && CountList.Count < SetSize)
                 {
-                    //갯수 텍스트 키기
-                    if (NumberList[n].gameObject.activeSelf == false)
-                    {
-                        NumberList[n].gameObject.SetActive(true);
-                        Debug.Log(CountList[n].ToString() + "갯수 표시");
-                        NumberList[n].text = CountList[n].ToString();
-                        break;
-                    }
+                    AddItem(Strname, GetCount);
+                    break;
                 }
 
-                break;
-            }
-
-            //인벤토리에 같은 종류의 아이템이 있을때
-            else if (InventoryList.Contains(Strname))
-            {
-
-                for (int n = 0; n < SetSize; n++)
+                //인벤토리에 같은 종류의 아이템이 있을때
+                else if (InventoryList.Contains(Strname))
                 {
-                    if (InventoryList[n] == Strname)
+                    if (InventoryList[i] == Strname)
                     {
-                        CountList[n] += GetCount;
-                        Debug.Log(CountList[n]);
-                        Debug.Log("같은 아이템을 가지고 있습니다.");
-                        NumberList[n].text = CountList[n].ToString();
+                        Debug.Log("이거 작동중임?");
+
+                        // 아이템 습득 후 갯수가 99이하일때
+                        if ((CountList[i] + GetCount) < maxcount)
+                        {
+                            CountList[i] += GetCount;
+                            Debug.Log(CountList[i]);
+                            Debug.Log("같은 아이템을 가지고 있습니다.");
+                        }
+
+                        //// 아이템 습득 후 갯수가 99이상일 때
+                        else if ((CountList[i] + GetCount) >= maxcount)
+                        {
+                            if ((InventoryList.Count + 1) > SetSize)
+                            {
+                                FullInventory = true;
+                                Debug.Log("인벤토리 공간이 부족합니다.");
+                                break;
+                            }
+
+                            CountList[i] += GetCount;
+                            int nextcount = CountList[i] - maxcount;
+                            CountList[i] = maxcount;
+                            AddItem(Strname, nextcount);
+                        }
+                        NumberList[i].text = CountList[i].ToString();
 
                         break;
-                    }
-                }
-                break;
-            }
 
-            //인벤토리 공간이 부족할때
-            else if (CountList.Count == SetSize)
-            {
-                FullInventory = true;
-                Debug.Log("인벤토리 공간이 부족합니다.");
-                break;
+                    }
+
+                }
+
+                //인벤토리 공간이 부족할때
+                else if (CountList.Count == SetSize)
+                {
+                    FullInventory = true;
+                    Debug.Log("인벤토리 공간이 부족합니다.");
+                    break;
+                }
+
             }
         }
+
 
         // 이미지 생성
         for (int num = 0; num < (InventoryList.Count); num++)
@@ -220,25 +232,6 @@ public class InventorySystem : MonoBehaviour
                 break;
             }
         }
-
-      
-
-        //Debug.Log("인벤토리의 길이는" + (InventoryList.Count));
-
-
-
-        //for (int num = 0; num < (InventoryList.Count); num++)
-        //{
-        //    Debug.Log("테스트" + ((int)InventoryList[num]));
-        //    Image Image = ImageSlot[(((int)InventoryList[num]) -1)].GetComponent<Image>();
-        //    Image.enabled = true;
-        //    Image.sprite = ItemImage[(((int)InventoryList[num]) -1)];
-        //}
-        //Debug.Log("인벤토리의 길이는" + (InventoryList.Count));
-
-
-
-
     }
 
     //인벤토리 창 선택 했을 때의 상호작용들
@@ -251,7 +244,7 @@ public class InventorySystem : MonoBehaviour
 
             if (Inventory_Select.transform.position == Slot_Position[i])
             {
-                count = i;
+                Positioncount = i;
 
                 if (ChooseImage.enabled == false)
                 {
@@ -292,42 +285,42 @@ public class InventorySystem : MonoBehaviour
         {
             if(Input.GetButtonDown("Jump"))
             {
-                Debug.Log(count);
+                Debug.Log(Positioncount);
             }
 
             if(Input.GetButtonDown("Left"))
             {
-                if(count != 0)
+                if(Positioncount != 0)
                 {
-                    count--;
-                    Inventory_Select.transform.position = Slot_Position[count];
+                    Positioncount--;
+                    Inventory_Select.transform.position = Slot_Position[Positioncount];
                 }
             }
 
             else if (Input.GetButtonDown("Right"))
             {
-                if(count < SetSize && ImageSlot[count+1].GetComponent<Image>().enabled == true)
+                if(Positioncount < SetSize && ImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true)
                 {
-                    count++;
-                    Inventory_Select.transform.position = Slot_Position[count];
+                    Positioncount++;
+                    Inventory_Select.transform.position = Slot_Position[Positioncount];
                 }            
             }
 
             else if (Input.GetButtonDown("Up"))
             {
-                if ((count - 3) >= 0)
+                if ((Positioncount - 3) >= 0)
                 {
-                    count -= 3;
-                    Inventory_Select.transform.position = Slot_Position[count];
+                    Positioncount -= 3;
+                    Inventory_Select.transform.position = Slot_Position[Positioncount];
                 }
             }
 
             else if (Input.GetButtonDown("Down"))
             {
-                if ((count + 3) <= SetSize && ImageSlot[count + 3].GetComponent<Image>().enabled == true)
+                if ((Positioncount + 3) <= SetSize && ImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true)
                 {
-                    count += 3;
-                    Inventory_Select.transform.position = Slot_Position[count];
+                    Positioncount += 3;
+                    Inventory_Select.transform.position = Slot_Position[Positioncount];
                 }
             }
 
@@ -335,6 +328,26 @@ public class InventorySystem : MonoBehaviour
 
         
 
+    }
+
+    //아이템 추가
+    public void AddItem(string name, int count)
+    {
+        InventoryList.Add(name);
+        CountList.Add(count);
+        Debug.Log("Add Item");
+
+        //갯수 텍스트 키기
+        for (int n = 0; n < InventoryList.Count; n++)
+        {
+            if (NumberList[n].gameObject.activeSelf == false)
+            {
+                NumberList[n].gameObject.SetActive(true);
+                Debug.Log(CountList[n].ToString() + "갯수 표시");
+                NumberList[n].text = CountList[n].ToString();
+                break;
+            }
+        }
     }
 
     //아이템 사용
@@ -367,6 +380,7 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
+    //아이템 삭제
     public void DeleteItem(string name)
     {
         for(int i = 0; i < InventoryList.Count; i++)

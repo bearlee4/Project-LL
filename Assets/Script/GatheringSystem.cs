@@ -9,7 +9,6 @@ public class GatheringSystem : MonoBehaviour
     InventorySystem InventorySystem;
     private bool ObjectToken;
 
-
     public List<Dictionary<string, object>> ItemDB;
     private List<string> TriggerList = new List<string>();
 
@@ -27,7 +26,7 @@ public class GatheringSystem : MonoBehaviour
     {
         if (Input.GetButtonDown("Interaction") && InventorySystem.Inventory.activeSelf == false)
         {
-            AddItem();
+            AddDropItem();
         }
     }
 
@@ -52,7 +51,7 @@ public class GatheringSystem : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Forage" && ObjectToken == false)
+        if (col.gameObject.tag == "Forage")
         {
             Debug.Log("리스트 클리어 작동 했음");
             TriggerList.Clear();
@@ -60,7 +59,7 @@ public class GatheringSystem : MonoBehaviour
     }
 
     //아이템 추가
-    public void AddItem()
+    public void AddDropItem()
     {
         int listcount;
 
@@ -82,7 +81,7 @@ public class GatheringSystem : MonoBehaviour
             if (InventorySystem.FullInventory == false)
             {
                 GameObject.Find(TriggerList[0]).SetActive(false);
-                TriggerList.Remove(TriggerList[0]);
+                //TriggerList.Remove(TriggerList[0]);
             }    
         }
 
