@@ -17,9 +17,9 @@ public class InventorySystem : MonoBehaviour
     private int maxcount;
 
     //인벤토리 선택 위치
-    private int Positioncount;
+    public int Positioncount;
 
-    private int SetSize;
+    public int SetSize;
     private int GetCount;
 
     public List<Dictionary<string, object>> ItemDB;
@@ -74,18 +74,11 @@ public class InventorySystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckButton();
-
-        //슬롯 선택 이미지 표기
-        if (InventoryList.Any() == false)
+        if (Inventory_Select.activeSelf == true)
         {
-            Inventory_Select.SetActive(false);
+            Select_Move();
         }
 
-        else
-        {
-            Inventory_Select.SetActive(true);
-        }
 
     }
 
@@ -103,47 +96,36 @@ public class InventorySystem : MonoBehaviour
 
     }
 
-    //버튼 체크
-    public void CheckButton()
+    //인벤토리 열기
+    public void OpenInventory()
     {
-        //I버튼
-        if (Input.GetButtonDown("Inventory"))
+        Debug.Log("Inventoryopen");
+        Inventory.SetActive(true);
+
+        //인벤토리 사이즈에 맞게 인벤토리 슬롯 생성
+        for (int num = SetSize; Slot.Count > num; num++)
         {
-            if (Inventory.activeSelf == false)
-            {
-                Debug.Log("open");
-                Inventory.SetActive(true);
-
-                //인벤토리 사이즈에 맞게 인벤토리 슬롯 생성
-                for (int num = SetSize; Slot.Count > num; num++ )
-                {
-                    Slot[num].SetActive(false);
-                }
-            }
-
-            else
-            {
-                Debug.Log("close");
-                Inventory.SetActive(false);
-            }
-
+            Slot[num].SetActive(false);
         }
 
-        if (Inventory_Select.activeSelf == true)
+        //슬롯 선택 이미지 표기
+        if (InventoryList.Any() == false)
         {
-            Select_Inventory();
+            Inventory_Select.SetActive(false);
         }
 
-        //z버튼
-        if (Input.GetButtonDown("Confirm"))
+        else
         {
-            if (Inventory.activeSelf == true && Inventory_Select.activeSelf == true)
-            {
-                UseItem(Positioncount);
-            }
+            Inventory_Select.SetActive(true);
+            Load_Information();
         }
+    }
 
-
+    //인벤토리 닫기
+    public void CloseInventory()
+    {
+        Debug.Log("Inventoryclose");
+        Inventory.SetActive(false);
     }
 
     //인벤토리에 아이템 추가
@@ -151,7 +133,7 @@ public class InventorySystem : MonoBehaviour
     {
         string Strname = name.ToString();
         //임의로 지정한 획득한 아이템갯수(나중에 수정예정)
-        GetCount = 99;
+        GetCount = 1;
 
         //인벤토리가 비었을때 아이템 추가
         if (InventoryList.Any() == false)
@@ -221,7 +203,7 @@ public class InventorySystem : MonoBehaviour
 
 
         // 이미지 생성
-        for (int num = 0; num < (InventoryList.Count); num++)
+        for (int num = 0; num < InventoryList.Count; num++)
         {
             Image Image = ImageSlot[num].GetComponent<Image>();
             if (Image.enabled == false)
@@ -234,8 +216,57 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    //인벤토리 창 선택 했을 때의 상호작용들
-    public void Select_Inventory()
+    //슬롯 선택 오브젝트 움직이기
+    public void Select_Move()
+    {
+        if (Inventory.activeSelf == true)
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                Debug.Log(Positioncount);
+            }
+
+            if (Input.GetButtonDown("Left"))
+            {
+                if (Positioncount != 0)
+                {
+                    Positioncount--;
+                    Inventory_Select.transform.position = Slot_Position[Positioncount];
+                }
+            }
+
+            else if (Input.GetButtonDown("Right"))
+            {
+                if (Positioncount < SetSize && ImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true)
+                {
+                    Positioncount++;
+                    Inventory_Select.transform.position = Slot_Position[Positioncount];
+                }
+            }
+
+            else if (Input.GetButtonDown("Up"))
+            {
+                if ((Positioncount - 3) >= 0)
+                {
+                    Positioncount -= 3;
+                    Inventory_Select.transform.position = Slot_Position[Positioncount];
+                }
+            }
+
+            else if (Input.GetButtonDown("Down"))
+            {
+                if ((Positioncount + 3) <= SetSize && ImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true)
+                {
+                    Positioncount += 3;
+                    Inventory_Select.transform.position = Slot_Position[Positioncount];
+                }
+            }
+
+            Load_Information();
+        }
+    }
+
+    public void Load_Information()
     {
         Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
 
@@ -261,9 +292,9 @@ public class InventorySystem : MonoBehaviour
                     {
                         Inventory_Select.transform.position = Slot_Position[i - 1];
                     }
-                    
+
                 }
-                
+
                 else
                 {
                     for (int j = 0; j < ItemDB.Count; j++)
@@ -280,54 +311,6 @@ public class InventorySystem : MonoBehaviour
                 break;
             }
         }
-
-        if(Inventory.activeSelf == true)
-        {
-            if(Input.GetButtonDown("Jump"))
-            {
-                Debug.Log(Positioncount);
-            }
-
-            if(Input.GetButtonDown("Left"))
-            {
-                if(Positioncount != 0)
-                {
-                    Positioncount--;
-                    Inventory_Select.transform.position = Slot_Position[Positioncount];
-                }
-            }
-
-            else if (Input.GetButtonDown("Right"))
-            {
-                if(Positioncount < SetSize && ImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true)
-                {
-                    Positioncount++;
-                    Inventory_Select.transform.position = Slot_Position[Positioncount];
-                }            
-            }
-
-            else if (Input.GetButtonDown("Up"))
-            {
-                if ((Positioncount - 3) >= 0)
-                {
-                    Positioncount -= 3;
-                    Inventory_Select.transform.position = Slot_Position[Positioncount];
-                }
-            }
-
-            else if (Input.GetButtonDown("Down"))
-            {
-                if ((Positioncount + 3) <= SetSize && ImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true)
-                {
-                    Positioncount += 3;
-                    Inventory_Select.transform.position = Slot_Position[Positioncount];
-                }
-            }
-
-        }
-
-        
-
     }
 
     //아이템 추가
@@ -387,11 +370,12 @@ public class InventorySystem : MonoBehaviour
         {
             if (InventoryList[i] == name)
             {
-                //인벤토리 마지막 아이템까지 다 사용했을 떄
+                //아이템 사용으로 인벤토리에 아무것도 안남을때
                 if (InventoryList.Count == 1)
                 {
                     NumberList[i].text = null;
                     NumberList[i].gameObject.SetActive(false);
+                    Inventory_Select.SetActive(false);
                     ImageSlot[i].GetComponent<Image>().sprite = null;
                     ImageSlot[i].GetComponent<Image>().enabled = false;
                     Content.text = null;
