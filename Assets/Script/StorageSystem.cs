@@ -26,6 +26,12 @@ public class StorageSystem : MonoBehaviour
     public List<GameObject> StorageImageSlot = new List<GameObject>();
     public List<Text> StorageNumberList = new List<Text>();
 
+    //창고 아이템 관련
+    public List<string> StorageList = new List<string>();
+    private List<int> StorageCountList = new List<int>();
+
+    private int maxcount;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +40,17 @@ public class StorageSystem : MonoBehaviour
         ChooseItem = GameObject.Find("StorageChooseItem");
         storageUI.SetActive(false);
         InventorySystem = this.GetComponent<InventorySystem>();
+
+        maxcount = 99;
+
+        //창고가 비었을때 갯수 텍스트 감추기
+        for (int i = 0; i < StorageNumberList.Count; i++)
+        {
+            if (StorageList.Any() == false)
+            {
+                StorageNumberList[i].gameObject.SetActive(false);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -58,6 +75,7 @@ public class StorageSystem : MonoBehaviour
         if (InventorySystem.InventoryList.Any() == false)
         {
             Slot_Select.SetActive(false);
+            Reset_Information();
         }
 
         else
@@ -168,6 +186,8 @@ public class StorageSystem : MonoBehaviour
     {
         Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
 
+        
+
         for (int i = 0; i < InventorySlot.Count; i++)
         {
 
@@ -181,30 +201,110 @@ public class StorageSystem : MonoBehaviour
 
                 ChooseImage.sprite = InventoryImageSlot[i].GetComponent<Image>().sprite;
 
-                if (ChooseImage.sprite == null)
+                for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
                 {
-                    ChooseImage.enabled = false;
-                    Content.text = null;
-                    if (i <= 0)
+                    if (ChooseImage.sprite.name.ToString() == InventorySystem.ItemDB[j]["ImgName"].ToString())
                     {
-                        Slot_Select.transform.position = InventorySlot[i - 1].transform.position;
-                    }
+                        Content.text = InventorySystem.ItemDB[j]["Content"].ToString();
 
+                        break;
+                    }
                 }
 
-                else
+                break;
+            }
+        }
+    }
+
+    public void Reset_Information()
+    {
+        Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
+        ChooseImage.enabled = false;
+        Content.text = null;
+    }
+
+    public void Back_Home()
+    {
+
+        for (int i = 0; i < InventorySystem.InventoryList.Count; i++)
+        {
+            //인벤토리에 같은 종류의 아이템이 없을때
+            if (!StorageList.Contains(InventorySystem.InventoryList[i]))
+            {
+                AddStorage(InventorySystem.InventoryList[i], InventorySystem.CountList[i]);
+            }
+
+            //인벤토리에 같은 종류의 아이템이 있을때
+            else if (StorageList.Contains(InventorySystem.InventoryList[i]))
+            {
+                Debug.Log("아이템 발견");
+                for (int n = 0; n < StorageList.Count; n++)
                 {
-                    for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
+                    if (StorageList[n] == InventorySystem.InventoryList[i])
                     {
-                        if (ChooseImage.sprite.name.ToString() == InventorySystem.ItemDB[j]["ImgName"].ToString())
+                        // 아이템 습득 후 갯수가 99이하일때
+                        if ((StorageCountList[n] + InventorySystem.CountList[i]) < maxcount)
                         {
-                            Content.text = InventorySystem.ItemDB[j]["Content"].ToString();
-
-                            break;
+                            StorageCountList[n] += InventorySystem.CountList[i];
+                            Debug.Log(StorageCountList[n]);
+                            Debug.Log("같은 아이템을 가지고 있습니다.");
                         }
+
+                        //// 아이템 습득 후 갯수가 99이상일 때
+                        else if ((StorageCountList[n] + InventorySystem.CountList[i]) >= maxcount)
+                        {
+                            Debug.Log("99개가 넘는다!!");
+                            StorageCountList[n] += InventorySystem.CountList[i];
+                            int nextcount = StorageCountList[n] - maxcount;
+                            StorageCountList[n] = maxcount;
+                            AddStorage(StorageList[n], nextcount);
+                        }
+                        StorageNumberList[n].text = StorageCountList[n].ToString();
+
+                        break;
                     }
                 }
 
+            }
+        }
+
+        // 이미지 생성
+        for (int num = 0; num < StorageList.Count; num++)
+        {
+            //이미지 연동
+            Image Image = StorageImageSlot[num].GetComponent<Image>();
+            if (Image.enabled == false)
+            {
+                Image.sprite = Resources.Load<Sprite>("Image/" + StorageList[num]);
+                Image.enabled = true;
+            }
+
+        }
+
+        int InventoryCount = InventorySystem.InventoryList.Count;
+
+        for (int i = 0 ; i < InventoryCount ; i++)
+        {
+            InventorySystem.DeleteItem(InventorySystem.InventoryList[0]);
+        }
+
+        Debug.Log("모든 아이템이 창고로 옮겨졌습니다.");
+    }
+
+    //아이템 추가
+    public void AddStorage(string name, int count)
+    {
+        StorageList.Add(name);
+        StorageCountList.Add(count);
+        Debug.Log("Add Storage");
+
+        //갯수 텍스트 키기
+        for (int n = 0; n < StorageList.Count; n++)
+        {
+            if (StorageNumberList[n].gameObject.activeSelf == false)
+            {
+                StorageNumberList[n].gameObject.SetActive(true);
+                StorageNumberList[n].text = StorageCountList[n].ToString();
                 break;
             }
         }

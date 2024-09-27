@@ -13,6 +13,9 @@ public class InteractionSystem : MonoBehaviour
     private bool forageincounter;
     private bool storageincounter;
 
+    //테스트용
+    private bool backhomeincounter;
+
     public List<Dictionary<string, object>> ItemDB;
     private List<string> TriggerList = new List<string>();
 
@@ -25,6 +28,8 @@ public class InteractionSystem : MonoBehaviour
         InventorySystem = Manager.GetComponent<InventorySystem>();
         StorageSystem = Manager.GetComponent<StorageSystem>();
         ItemDB = CSVReader.Read("ItemDB");
+
+        backhomeincounter = false;
     }
 
 
@@ -49,6 +54,12 @@ public class InteractionSystem : MonoBehaviour
             Debug.Log("창고 접촉");
             storageincounter = true;
         }
+
+        if(col.gameObject.name == "Back_Home")
+        {
+            Debug.Log("일과 끝내기 접촉");
+            backhomeincounter = true;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D col)
@@ -69,28 +80,44 @@ public class InteractionSystem : MonoBehaviour
         {
             storageincounter = false;
         }
+
+        if (col.gameObject.name == "Back_Home")
+        {
+            backhomeincounter = false;
+        }
     }
 
     public void CheckButton()
     {
         //F버튼
-        if (Input.GetButtonDown("Interaction") && InventorySystem.Inventory.activeSelf == false && forageincounter == true)
+        if (Input.GetButtonDown("Interaction"))
         {
-            AddDropItem();
-        }
-
-        if (Input.GetButtonDown("Interaction") && storageincounter == true)
-        {
-            if (StorageSystem.storageUI.activeSelf == false && UItoken == false)
+            //채집물 획득
+            if (InventorySystem.Inventory.activeSelf == false && forageincounter == true)
             {
-                StorageSystem.OpenStorage();
-                UItoken = true;
+                AddDropItem();
             }
-            
-            else if (StorageSystem.storageUI.activeSelf == true && UItoken == true)
+
+            //창고 여닫기
+            if (storageincounter == true)
             {
-                StorageSystem.CloseStorage();
-                UItoken = false;
+                if (StorageSystem.storageUI.activeSelf == false && UItoken == false)
+                {
+                    StorageSystem.OpenStorage();
+                    UItoken = true;
+                }
+
+                else if (StorageSystem.storageUI.activeSelf == true && UItoken == true)
+                {
+                    StorageSystem.CloseStorage();
+                    UItoken = false;
+                }
+            }
+
+            //하루 일과 끝내기
+            if (backhomeincounter == true)
+            {
+                StorageSystem.Back_Home();
             }
         }
 

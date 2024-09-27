@@ -26,7 +26,7 @@ public class InventorySystem : MonoBehaviour
 
     //인벤토리 아이템 관련
     public List<string> InventoryList = new List<string>();
-    private List<int> CountList = new List<int>();
+    public List<int> CountList = new List<int>();
 
     //인벤토리 UI 관련
     public List<GameObject> Slot = new List<GameObject> ();
@@ -133,7 +133,7 @@ public class InventorySystem : MonoBehaviour
     {
         string Strname = name.ToString();
         //임의로 지정한 획득한 아이템갯수(나중에 수정예정)
-        GetCount = 1;
+        GetCount = 99;
 
         //인벤토리가 비었을때 아이템 추가
         if (InventoryList.Any() == false)
