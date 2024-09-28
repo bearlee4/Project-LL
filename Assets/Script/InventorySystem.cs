@@ -20,7 +20,7 @@ public class InventorySystem : MonoBehaviour
     public int Positioncount;
 
     public int SetSize;
-    private int GetCount;
+    public int GetCount;
 
     public List<Dictionary<string, object>> ItemDB;
 
@@ -45,6 +45,9 @@ public class InventorySystem : MonoBehaviour
         Positioncount = 0;
 
         ItemDB = CSVReader.Read("ItemDB");
+
+        //임의로 지정한 획득한 아이템갯수(나중에 수정예정)
+        GetCount = 1;
 
         //기본 사이즈 지정
         ChangeSize(1);
@@ -101,6 +104,7 @@ public class InventorySystem : MonoBehaviour
     {
         Debug.Log("Inventoryopen");
         Inventory.SetActive(true);
+        Positioncount = 0;
 
         //인벤토리 사이즈에 맞게 인벤토리 슬롯 생성
         for (int num = SetSize; Slot.Count > num; num++)
@@ -129,16 +133,14 @@ public class InventorySystem : MonoBehaviour
     }
 
     //인벤토리에 아이템 추가
-    public void AddInventory(object name)
+    public void AddInventory(object name, int number)
     {
         string Strname = name.ToString();
-        //임의로 지정한 획득한 아이템갯수(나중에 수정예정)
-        GetCount = 99;
 
         //인벤토리가 비었을때 아이템 추가
         if (InventoryList.Any() == false)
         {
-            AddItem(Strname, GetCount);
+            AddItem(Strname, number);
         }
 
         else
@@ -148,7 +150,7 @@ public class InventorySystem : MonoBehaviour
                 //인벤토리에 같은 종류의 아이템이 없을때
                 if (!InventoryList.Contains(Strname) && CountList.Count < SetSize)
                 {
-                    AddItem(Strname, GetCount);
+                    AddItem(Strname, number);
                     break;
                 }
 
@@ -160,15 +162,15 @@ public class InventorySystem : MonoBehaviour
                         Debug.Log("이거 작동중임?");
 
                         // 아이템 습득 후 갯수가 99이하일때
-                        if ((CountList[i] + GetCount) < maxcount)
+                        if ((CountList[i] + number) < maxcount)
                         {
-                            CountList[i] += GetCount;
+                            CountList[i] += number;
                             Debug.Log(CountList[i]);
                             Debug.Log("같은 아이템을 가지고 있습니다.");
                         }
 
                         //// 아이템 습득 후 갯수가 99이상일 때
-                        else if ((CountList[i] + GetCount) >= maxcount)
+                        else if ((CountList[i] + number) >= maxcount)
                         {
                             if ((InventoryList.Count + 1) > SetSize)
                             {
@@ -177,7 +179,7 @@ public class InventorySystem : MonoBehaviour
                                 break;
                             }
 
-                            CountList[i] += GetCount;
+                            CountList[i] += number;
                             int nextcount = CountList[i] - maxcount;
                             CountList[i] = maxcount;
                             AddItem(Strname, nextcount);
@@ -410,7 +412,14 @@ public class InventorySystem : MonoBehaviour
                 {
                     FullInventory = false;
                 }
+
+                if (ImageSlot[i].GetComponent<Image>().enabled == false && i != 0)
+                {
+                    Inventory_Select.transform.position = Slot[i - 1].transform.position;
+                }
             }
         }
     }
+
+
 }

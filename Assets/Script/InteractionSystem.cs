@@ -145,6 +145,12 @@ public class InteractionSystem : MonoBehaviour
             {
                 InventorySystem.UseItem(InventorySystem.Positioncount);
             }
+
+            if (StorageSystem.storageUI.activeSelf == true && StorageSystem.Slot_Select.activeSelf == true)
+            {
+                Debug.Log("전송 버튼 작동중");
+                StorageSystem.TransItem();
+            }
         }
     }
 
@@ -162,7 +168,7 @@ public class InteractionSystem : MonoBehaviour
             {
                 if (TriggerList[0] == ItemDB[IDB]["ImgName"].ToString())
                 {
-                    InventorySystem.AddInventory(ItemDB[IDB]["ImgName"]);
+                    InventorySystem.AddInventory(ItemDB[IDB]["ImgName"], InventorySystem.GetCount);
                     break;
                 }
 

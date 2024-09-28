@@ -3,41 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
-public class UISystem : MonoBehaviour
+public class UISystem : MonoBehaviour, IPointerClickHandler
 {
-
-    public GameObject Inventory;
+    public GameObject Manager;
+    InventorySystem InventorySystem;
+    StorageSystem StorageSystem;
 
     // Start is called before the first frame update
     void Start()
     {
-        Inventory.SetActive(false);
+        InventorySystem = Manager.GetComponent<InventorySystem>();
+        StorageSystem = Manager.GetComponent<StorageSystem>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        CheckButton();
+        
     }
 
-    public void CheckButton()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        //Iπˆ∆∞
-        if (Input.GetButtonDown("Inventory"))
+        GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
+
+        //ÏïÑÏù¥ÌÖú Ï∞Ω ÌÅ¥Î¶≠
+        if (clickedObject.tag == "ItemImage")
         {
-            if (Inventory.activeSelf == false)
+            if(InventorySystem.Inventory_Select.activeSelf == true && InventorySystem.Inventory.activeSelf == true)
             {
-                Debug.Log("ø≠∏≤");
-                Inventory.SetActive(true);
+                InventorySystem.Inventory_Select.transform.position = clickedObject.transform.position;
+                InventorySystem.Load_Information();
+                Debug.Log(clickedObject.name);
             }
 
-            else
+            else if (StorageSystem.Slot_Select.activeSelf == true && StorageSystem.storageUI.activeSelf == true)
             {
-                Debug.Log("¥›»˚");
-                Inventory.SetActive(false);
+                StorageSystem.Slot_Select.transform.position = clickedObject.transform.position;
+                StorageSystem.Load_Information();
             }
-
+            
         }
     }
 }
