@@ -229,7 +229,7 @@ public class StorageSystem : MonoBehaviour
 
             else if (Input.GetButtonDown("Down"))
             {
-                if ((Positioncount + 3) <= InventorySystem.SetSize && InventoryImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true && storageside == false)
+                if ((Positioncount + 3) < InventorySystem.SetSize && InventoryImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true && storageside == false)
                 {
                     Positioncount += 3;
                     Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;

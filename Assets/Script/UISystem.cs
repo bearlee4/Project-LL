@@ -8,14 +8,19 @@ using UnityEngine.EventSystems;
 public class UISystem : MonoBehaviour, IPointerClickHandler
 {
     public GameObject Manager;
+    private GameObject Player;
     InventorySystem InventorySystem;
     StorageSystem StorageSystem;
+    InteractionSystem InteractionSystem;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        Player = GameObject.Find("Player");
         InventorySystem = Manager.GetComponent<InventorySystem>();
         StorageSystem = Manager.GetComponent<StorageSystem>();
+        InteractionSystem = Player.GetComponent<InteractionSystem>();
     }
 
     // Update is called once per frame
@@ -44,6 +49,21 @@ public class UISystem : MonoBehaviour, IPointerClickHandler
                 StorageSystem.Load_Information();
             }
             
+        }
+
+        if (clickedObject.name == "Bag")
+        {
+            if(InventorySystem.Inventory.activeSelf == false && InteractionSystem.UItoken == false)
+            {
+                InventorySystem.OpenInventory();
+                InteractionSystem.UItoken = true;
+            }
+            
+            else if (InventorySystem.Inventory.activeSelf == true && InteractionSystem.UItoken == true)
+            {
+                InventorySystem.CloseInventory();
+                InteractionSystem.UItoken = false;
+            }
         }
     }
 }
