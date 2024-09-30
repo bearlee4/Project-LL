@@ -9,8 +9,8 @@ public class InventorySystem : MonoBehaviour
 {
     public GameObject Inventory;
     public GameObject Inventory_Select;
-    public Text Content;
-    private GameObject ChooseItem;
+    //public Text Content;
+    //private GameObject ChooseItem;
 
 
     public bool FullInventory;
@@ -37,9 +37,9 @@ public class InventorySystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ChooseItem = GameObject.Find("ChooseItem");
+        //ChooseItem = GameObject.Find("ChooseItem");
         Inventory_Select.SetActive(false);
-        Content.text = null;
+        //Content.text = null;
         FullInventory = false;
         maxcount = 99;
         Positioncount = 0;
@@ -270,7 +270,7 @@ public class InventorySystem : MonoBehaviour
 
     public void Load_Information()
     {
-        Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
+        //Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
 
         for (int i = 0; i < Slot_Position.Count; i++)
         {
@@ -279,36 +279,36 @@ public class InventorySystem : MonoBehaviour
             {
                 Positioncount = i;
 
-                if (ChooseImage.enabled == false)
-                {
-                    ChooseImage.enabled = true;
-                }
+                //if (ChooseImage.enabled == false)
+                //{
+                //    ChooseImage.enabled = true;
+                //}
 
-                ChooseImage.sprite = ImageSlot[i].GetComponent<Image>().sprite;
+                //ChooseImage.sprite = ImageSlot[i].GetComponent<Image>().sprite;
 
-                if (ChooseImage.sprite == null)
-                {
-                    ChooseImage.enabled = false;
-                    Content.text = null;
-                    if (i <= 0)
-                    {
-                        Inventory_Select.transform.position = Slot_Position[i - 1];
-                    }
+                //if (ChooseImage.sprite == null)
+                //{
+                //    ChooseImage.enabled = false;
+                //    Content.text = null;
+                //    if (i <= 0)
+                //    {
+                //        Inventory_Select.transform.position = Slot_Position[i - 1];
+                //    }
 
-                }
+                //}
 
-                else
-                {
-                    for (int j = 0; j < ItemDB.Count; j++)
-                    {
-                        if (ChooseImage.sprite.name.ToString() == ItemDB[j]["ImgName"].ToString())
-                        {
-                            Content.text = ItemDB[j]["Content"].ToString();
+                //else
+                //{
+                //    for (int j = 0; j < ItemDB.Count; j++)
+                //    {
+                //        if (ChooseImage.sprite.name.ToString() == ItemDB[j]["ImgName"].ToString())
+                //        {
+                //            Content.text = ItemDB[j]["Content"].ToString();
 
-                            break;
-                        }
-                    }
-                }
+                //            break;
+                //        }
+                //    }
+                //}
 
                 break;
             }
@@ -380,9 +380,9 @@ public class InventorySystem : MonoBehaviour
                     Inventory_Select.SetActive(false);
                     ImageSlot[i].GetComponent<Image>().sprite = null;
                     ImageSlot[i].GetComponent<Image>().enabled = false;
-                    Content.text = null;
-                    ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().sprite = null;
-                    ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().enabled = false;
+                    //Content.text = null;
+                    //ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().sprite = null;
+                    //ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().enabled = false;
                 }
 
                 else
