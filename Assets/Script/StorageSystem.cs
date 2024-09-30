@@ -10,8 +10,8 @@ public class StorageSystem : MonoBehaviour
 
     public GameObject storageUI;
     public GameObject Slot_Select;
-    private GameObject ChooseItem;
-    public Text Content;
+    //private GameObject ChooseItem;
+    //public Text Content;
     private int Positioncount;
 
     InventorySystem InventorySystem;
@@ -33,16 +33,20 @@ public class StorageSystem : MonoBehaviour
     private int maxcount;
     private bool storageside;
 
+    private int storagearray;
+
     // Start is called before the first frame update
     void Start()
     {
         Slot_Select.SetActive(false);
         Positioncount = 0;
-        ChooseItem = GameObject.Find("StorageChooseItem");
+        //ChooseItem = GameObject.Find("StorageChooseItem");
         storageUI.SetActive(false);
         InventorySystem = this.GetComponent<InventorySystem>();
 
         maxcount = 99;
+
+        storagearray = 4;
 
         storageside = false;
 
@@ -79,7 +83,7 @@ public class StorageSystem : MonoBehaviour
         {
             Slot_Select.SetActive(false);
             storageside = false;
-            Reset_Information();
+            //Reset_Information();
         }
 
         else
@@ -220,24 +224,24 @@ public class StorageSystem : MonoBehaviour
 
             else if (Input.GetButtonDown("Up"))
             {
-                if ((Positioncount - 3) >= 0)
+                if ((Positioncount - storagearray) >= 0)
                 {
-                    Positioncount -= 3;
+                    Positioncount -= storagearray;
                     SetPosition();
                 }
             }
 
             else if (Input.GetButtonDown("Down"))
             {
-                if ((Positioncount + 3) < InventorySystem.SetSize && InventoryImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true && storageside == false)
+                if ((Positioncount + storagearray) < InventorySystem.SetSize && InventoryImageSlot[Positioncount + storagearray].GetComponent<Image>().enabled == true && storageside == false)
                 {
-                    Positioncount += 3;
+                    Positioncount += storagearray;
                     Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
                 }
 
-                else if ((Positioncount + 3) < StorageSlot.Count && StorageImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true & storageside == true)
+                else if ((Positioncount + storagearray) < StorageSlot.Count && StorageImageSlot[Positioncount + storagearray].GetComponent<Image>().enabled == true & storageside == true)
                 {
-                    Positioncount += 3;
+                    Positioncount += storagearray;
                     Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
                 }
             }
@@ -248,8 +252,7 @@ public class StorageSystem : MonoBehaviour
 
     public void Load_Information()
     {
-        Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
-
+        //Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
         
 
         for (int i = 0; i < InventorySlot.Count; i++)
@@ -259,42 +262,42 @@ public class StorageSystem : MonoBehaviour
             {
                 Positioncount = i;
 
-                if (ChooseImage.enabled == false)
-                {
-                    ChooseImage.enabled = true;
-                }
+                //if (ChooseImage.enabled == false)
+                //{
+                //    ChooseImage.enabled = true;
+                //}
 
-                if (Slot_Select.transform.position == InventorySlot[i].transform.position)
-                {
-                    ChooseImage.sprite = InventoryImageSlot[i].GetComponent<Image>().sprite;
-                }
-                else if (Slot_Select.transform.position == StorageSlot[i].transform.position)
-                {
-                    ChooseImage.sprite = StorageImageSlot[i].GetComponent<Image>().sprite;
-                }
+                //if (Slot_Select.transform.position == InventorySlot[i].transform.position)
+                //{
+                //    ChooseImage.sprite = InventoryImageSlot[i].GetComponent<Image>().sprite;
+                //}
+                //else if (Slot_Select.transform.position == StorageSlot[i].transform.position)
+                //{
+                //    ChooseImage.sprite = StorageImageSlot[i].GetComponent<Image>().sprite;
+                //}
 
-                for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
-                {
-                    if (ChooseImage.sprite.name.ToString() == InventorySystem.ItemDB[j]["ImgName"].ToString())
-                    {
-                        Content.text = InventorySystem.ItemDB[j]["Content"].ToString();
+                //for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
+                //{
+                //    if (ChooseImage.sprite.name.ToString() == InventorySystem.ItemDB[j]["ImgName"].ToString())
+                //    {
+                //        Content.text = InventorySystem.ItemDB[j]["Content"].ToString();
 
-                        break;
-                    }
-                }
+                //        break;
+                //    }
+                //}
 
                 break;
             }
         }
     }
 
-    public void Reset_Information()
-    {
-        Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
-        ChooseImage.enabled = false;
-        ChooseImage.sprite = null;
-        Content.text = null;
-    }
+    //public void Reset_Information()
+    //{
+    //    Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
+    //    ChooseImage.enabled = false;
+    //    ChooseImage.sprite = null;
+    //    Content.text = null;
+    //}
 
     public void Back_Home()
     {
@@ -309,7 +312,7 @@ public class StorageSystem : MonoBehaviour
         Debug.Log("모든 아이템이 창고로 옮겨졌습니다.");
 
         storageside = true;
-        ResetPosition();
+        //ResetPosition();
     }
 
     //아이템 추가
@@ -485,7 +488,7 @@ public class StorageSystem : MonoBehaviour
                     StorageImageSlot[i].GetComponent<Image>().enabled = false;
 
                     ResetPosition();
-                    Reset_Information();
+                    //Reset_Information();
                 }
 
                 else
