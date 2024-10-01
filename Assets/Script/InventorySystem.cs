@@ -8,9 +8,14 @@ using UnityEngine.SceneManagement;
 public class InventorySystem : MonoBehaviour
 {
     public GameObject Inventory;
-    public GameObject Inventory_Select;
+    //public GameObject Inventory_Select;
     //public Text Content;
     //private GameObject ChooseItem;
+
+    private GameObject canvas;
+    UISystem UISystem;
+
+    ItemInformation ItemInformation;
 
 
     public bool FullInventory;
@@ -29,16 +34,20 @@ public class InventorySystem : MonoBehaviour
     public List<int> CountList = new List<int>();
 
     //인벤토리 UI 관련
-    public List<GameObject> Slot = new List<GameObject> ();
+    public List<GameObject> Slot = new List<GameObject>();
     public List<GameObject> ImageSlot = new List<GameObject>();
     public List<Text> NumberList = new List<Text>();
-    private List<Vector3> Slot_Position = new List<Vector3> ();
+    private List<Vector3> Slot_Position = new List<Vector3>();
 
     // Start is called before the first frame update
     void Start()
     {
+        canvas = GameObject.Find("Canvas");
+        UISystem = canvas.GetComponent<UISystem>();
+        ItemInformation = this.GetComponent<ItemInformation>();
+
         //ChooseItem = GameObject.Find("ChooseItem");
-        Inventory_Select.SetActive(false);
+        // Inventory_Select.SetActive(false);
         //Content.text = null;
         FullInventory = false;
         maxcount = 99;
@@ -53,7 +62,7 @@ public class InventorySystem : MonoBehaviour
         ChangeSize(1);
 
         //선택 이미지 초기 위치 지정
-        Inventory_Select.transform.position = Slot[0].transform.position;
+        //Inventory_Select.transform.position = Slot[0].transform.position;
 
         for (int i = 0; i < Slot.Count; i++)
         {
@@ -77,10 +86,10 @@ public class InventorySystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Inventory_Select.activeSelf == true)
-        {
-            Select_Move();
-        }
+        //if (Inventory_Select.activeSelf == true)
+        //{
+        //    Select_Move();
+        //}
 
 
     }
@@ -112,17 +121,17 @@ public class InventorySystem : MonoBehaviour
             Slot[num].SetActive(false);
         }
 
-        //슬롯 선택 이미지 표기
-        if (InventoryList.Any() == false)
-        {
-            Inventory_Select.SetActive(false);
-        }
+        ////슬롯 선택 이미지 표기
+        //if (InventoryList.Any() == false)
+        //{
+        //    Inventory_Select.SetActive(false);
+        //}
 
-        else
-        {
-            Inventory_Select.SetActive(true);
-            Load_Information();
-        }
+        //else
+        //{
+        //    Inventory_Select.SetActive(true);
+        //    Load_Information();
+        //}
     }
 
     //인벤토리 닫기
@@ -208,6 +217,11 @@ public class InventorySystem : MonoBehaviour
         for (int num = 0; num < InventoryList.Count; num++)
         {
             Image Image = ImageSlot[num].GetComponent<Image>();
+            if (ImageSlot[num].activeSelf == false)
+            {
+                ImageSlot[num].SetActive(true);
+            }
+
             if (Image.enabled == false)
             {
                 Debug.Log("여기까진 작동중");
@@ -218,55 +232,55 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    //슬롯 선택 오브젝트 움직이기
-    public void Select_Move()
-    {
-        if (Inventory.activeSelf == true)
-        {
-            if (Input.GetButtonDown("Jump"))
-            {
-                Debug.Log(Positioncount);
-            }
+    ////슬롯 선택 오브젝트 움직이기
+    //public void Select_Move()
+    //{
+    //    if (Inventory.activeSelf == true)
+    //    {
+    //        if (Input.GetButtonDown("Jump"))
+    //        {
+    //            Debug.Log(Positioncount);
+    //        }
 
-            if (Input.GetButtonDown("Left"))
-            {
-                if (Positioncount != 0)
-                {
-                    Positioncount--;
-                    Inventory_Select.transform.position = Slot_Position[Positioncount];
-                }
-            }
+    //        if (Input.GetButtonDown("Left"))
+    //        {
+    //            if (Positioncount != 0)
+    //            {
+    //                Positioncount--;
+    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
+    //            }
+    //        }
 
-            else if (Input.GetButtonDown("Right"))
-            {
-                if (Positioncount < SetSize && ImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true)
-                {
-                    Positioncount++;
-                    Inventory_Select.transform.position = Slot_Position[Positioncount];
-                }
-            }
+    //        else if (Input.GetButtonDown("Right"))
+    //        {
+    //            if (Positioncount < SetSize && ImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true)
+    //            {
+    //                Positioncount++;
+    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
+    //            }
+    //        }
 
-            else if (Input.GetButtonDown("Up"))
-            {
-                if ((Positioncount - 3) >= 0)
-                {
-                    Positioncount -= 3;
-                    Inventory_Select.transform.position = Slot_Position[Positioncount];
-                }
-            }
+    //        else if (Input.GetButtonDown("Up"))
+    //        {
+    //            if ((Positioncount - 3) >= 0)
+    //            {
+    //                Positioncount -= 3;
+    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
+    //            }
+    //        }
 
-            else if (Input.GetButtonDown("Down"))
-            {
-                if ((Positioncount + 3) <= SetSize && ImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true)
-                {
-                    Positioncount += 3;
-                    Inventory_Select.transform.position = Slot_Position[Positioncount];
-                }
-            }
+    //        else if (Input.GetButtonDown("Down"))
+    //        {
+    //            if ((Positioncount + 3) <= SetSize && ImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true)
+    //            {
+    //                Positioncount += 3;
+    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
+    //            }
+    //        }
 
-            Load_Information();
-        }
-    }
+    //        Load_Information();
+    //    }
+    //}
 
     public void Load_Information()
     {
@@ -275,8 +289,9 @@ public class InventorySystem : MonoBehaviour
         for (int i = 0; i < Slot_Position.Count; i++)
         {
 
-            if (Inventory_Select.transform.position == Slot_Position[i])
+            if (ItemInformation.slot_Select.transform.position == Slot_Position[i])
             {
+                Debug.Log(i + "번째 칸에 있음");
                 Positioncount = i;
 
                 //if (ChooseImage.enabled == false)
@@ -361,14 +376,14 @@ public class InventorySystem : MonoBehaviour
                     break;
                 }
             }
-            
+
         }
     }
 
     //아이템 삭제
     public void DeleteItem(string name)
     {
-        for(int i = 0; i < InventoryList.Count; i++)
+        for (int i = 0; i < InventoryList.Count; i++)
         {
             if (InventoryList[i] == name)
             {
@@ -377,9 +392,10 @@ public class InventorySystem : MonoBehaviour
                 {
                     NumberList[i].text = null;
                     NumberList[i].gameObject.SetActive(false);
-                    Inventory_Select.SetActive(false);
+                    //Inventory_Select.SetActive(false);
                     ImageSlot[i].GetComponent<Image>().sprite = null;
                     ImageSlot[i].GetComponent<Image>().enabled = false;
+                    ImageSlot[i].SetActive(false);
                     //Content.text = null;
                     //ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().sprite = null;
                     //ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().enabled = false;
@@ -389,20 +405,24 @@ public class InventorySystem : MonoBehaviour
                 {
                     for (int j = i; j < InventoryList.Count; j++)
                     {
+                        //인벤토리 마지막 칸이 아닐때 다음 슬롯 정보 당겨오기
                         if ((j + 1) < InventoryList.Count)
                         {
                             NumberList[j].text = NumberList[j + 1].text;
                             ImageSlot[j].GetComponent<Image>().sprite = ImageSlot[j + 1].GetComponent<Image>().sprite;
+                            ItemInformation.Load_Information(UISystem.overObject);
                         }
 
+                        //인벤토리 마지막칸일때
                         else if ((j + 1) == InventoryList.Count)
                         {
                             NumberList[j].gameObject.SetActive(false);
                             NumberList[j].text = null;
                             ImageSlot[j].GetComponent<Image>().enabled = false;
+                            ImageSlot[j].SetActive(false);
                         }
 
-                        
+
                     }
                 }
                 InventoryList.RemoveAt(i);
@@ -413,9 +433,10 @@ public class InventorySystem : MonoBehaviour
                     FullInventory = false;
                 }
 
-                if (ImageSlot[i].GetComponent<Image>().enabled == false && i != 0)
+                if (ImageSlot[i].activeSelf == false)
                 {
-                    Inventory_Select.transform.position = Slot[i - 1].transform.position;
+                    ItemInformation.slot_Select.SetActive(false);
+                    UISystem.clicktoggle = false;
                 }
             }
         }

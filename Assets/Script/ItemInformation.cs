@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class ItemInformation : MonoBehaviour
 {
+
     public GameObject InformationWindow;
     public GameObject ChooseItem;
     public GameObject slot_Select;
@@ -13,28 +14,37 @@ public class ItemInformation : MonoBehaviour
 
     InventorySystem InventorySystem;
 
+    private GameObject canvas;
+    UISystem UISystem;
+
     // Start is called before the first frame update
     void Start()
     {
+        canvas = GameObject.Find("Canvas");
+        UISystem = canvas.GetComponent<UISystem>();
         InformationWindow = GameObject.Find("ItemInformation");
         InventorySystem = this.GetComponent<InventorySystem>();
-        slot_Select = InformationWindow.transform.Find("Slot_Select").gameObject;
+
+        //slot_Select = InformationWindow.transform.Find("Slot_Select").gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Load_Information(GameObject overObject)
     {
-        if(slot_Select.activeSelf == false)
+        if (slot_Select.activeSelf == false)
         {
             slot_Select.SetActive(true);
         }
 
-        slot_Select.transform.position = overObject.transform.position;
+        if (UISystem.clicktoggle == false)
+        {
+            slot_Select.transform.position = overObject.transform.position;
+        }
 
         Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
 

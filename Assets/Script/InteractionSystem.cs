@@ -8,6 +8,10 @@ public class InteractionSystem : MonoBehaviour
     public GameObject Manager;
     InventorySystem InventorySystem;
     StorageSystem StorageSystem;
+    ItemInformation ItemInformation;
+
+    private GameObject canvas;
+    UISystem UISystem;
 
     public bool UItoken;
     private bool forageincounter;
@@ -22,11 +26,15 @@ public class InteractionSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canvas = GameObject.Find("Canvas");
+        UISystem = canvas.GetComponent<UISystem>();
+
         UItoken = false;
         forageincounter = false;
         storageincounter = false;
         InventorySystem = Manager.GetComponent<InventorySystem>();
         StorageSystem = Manager.GetComponent<StorageSystem>();
+        ItemInformation = Manager.GetComponent<ItemInformation>();
         ItemDB = CSVReader.Read("ItemDB");
 
         backhomeincounter = false;
@@ -44,7 +52,7 @@ public class InteractionSystem : MonoBehaviour
         if (col.gameObject.tag == "Forage")
         {
             Debug.Log("채집물");
-            forageincounter=true;
+            forageincounter = true;
             TriggerList.Add(col.gameObject.name);
 
         }
@@ -55,7 +63,7 @@ public class InteractionSystem : MonoBehaviour
             storageincounter = true;
         }
 
-        if(col.gameObject.name == "Back_Home")
+        if (col.gameObject.name == "Back_Home")
         {
             Debug.Log("일과 끝내기 접촉");
             backhomeincounter = true;
@@ -72,7 +80,7 @@ public class InteractionSystem : MonoBehaviour
         if (col.gameObject.tag == "Forage")
         {
             Debug.Log("리스트 클리어 작동 했음");
-            forageincounter=true;
+            forageincounter = true;
             TriggerList.Clear();
         }
 
@@ -110,6 +118,11 @@ public class InteractionSystem : MonoBehaviour
                 else if (StorageSystem.storageUI.activeSelf == true && UItoken == true)
                 {
                     StorageSystem.CloseStorage();
+                    UISystem.clicktoggle = false;
+                    if(ItemInformation.slot_Select.activeSelf == true)
+                    {
+                        ItemInformation.slot_Select.SetActive(false);
+                    }
                     UItoken = false;
                 }
             }
@@ -133,6 +146,11 @@ public class InteractionSystem : MonoBehaviour
             else if (InventorySystem.Inventory.activeSelf == true && UItoken == true)
             {
                 InventorySystem.CloseInventory();
+                UISystem.clicktoggle = false;
+                if (ItemInformation.slot_Select.activeSelf == true)
+                {
+                    ItemInformation.slot_Select.SetActive(false);
+                }
                 UItoken = false;
             }
 
@@ -141,15 +159,41 @@ public class InteractionSystem : MonoBehaviour
         //Z버튼
         if (Input.GetButtonDown("Confirm"))
         {
-            if (InventorySystem.Inventory.activeSelf == true && InventorySystem.Inventory_Select.activeSelf == true)
+            if (InventorySystem.Inventory.activeSelf == true && ItemInformation.slot_Select.activeSelf == true)
             {
                 InventorySystem.UseItem(InventorySystem.Positioncount);
             }
 
-            if (StorageSystem.storageUI.activeSelf == true && StorageSystem.Slot_Select.activeSelf == true)
+            if (StorageSystem.storageUI.activeSelf == true && ItemInformation.slot_Select.activeSelf == true && UISystem.clicktoggle == true)
             {
                 Debug.Log("전송 버튼 작동중");
                 StorageSystem.TransItem();
+            }
+        }
+
+        //esc버튼
+        if (Input.GetButtonDown("Cancel"))
+        {
+            if (StorageSystem.storageUI.activeSelf == true && UItoken == true)
+            {
+                StorageSystem.CloseStorage();
+                UISystem.clicktoggle = false;
+                if (ItemInformation.slot_Select.activeSelf == true)
+                {
+                    ItemInformation.slot_Select.SetActive(false);
+                }
+                UItoken = false;
+            }
+
+            else if (InventorySystem.Inventory.activeSelf == true && UItoken == true)
+            {
+                InventorySystem.CloseInventory();
+                UISystem.clicktoggle = false;
+                if (ItemInformation.slot_Select.activeSelf == true)
+                {
+                    ItemInformation.slot_Select.SetActive(false);
+                }
+                UItoken = false;
             }
         }
     }
@@ -178,7 +222,7 @@ public class InteractionSystem : MonoBehaviour
             {
                 GameObject.Find(TriggerList[0]).SetActive(false);
                 //TriggerList.Remove(TriggerList[0]);
-            }    
+            }
         }
 
         else if (!TriggerList.Any() == false)

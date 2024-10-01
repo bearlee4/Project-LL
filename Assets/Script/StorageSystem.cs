@@ -9,12 +9,16 @@ public class StorageSystem : MonoBehaviour
 {
 
     public GameObject storageUI;
-    public GameObject Slot_Select;
+    //public GameObject Slot_Select;
     //private GameObject ChooseItem;
     //public Text Content;
     private int Positioncount;
 
     InventorySystem InventorySystem;
+    ItemInformation ItemInformation;
+
+    private GameObject canvas;
+    UISystem UISystem;
 
     //인벤토리측 슬롯
     public List<GameObject> InventorySlot = new List<GameObject>();
@@ -33,20 +37,24 @@ public class StorageSystem : MonoBehaviour
     private int maxcount;
     private bool storageside;
 
-    private int storagearray;
+    //private int storagearray;
 
     // Start is called before the first frame update
     void Start()
     {
-        Slot_Select.SetActive(false);
+
+        canvas = GameObject.Find("Canvas");
+        UISystem = canvas.GetComponent<UISystem>();
+
+        //Slot_Select.SetActive(false);
         Positioncount = 0;
         //ChooseItem = GameObject.Find("StorageChooseItem");
-        storageUI.SetActive(false);
         InventorySystem = this.GetComponent<InventorySystem>();
+        ItemInformation = this.GetComponent<ItemInformation>();
 
         maxcount = 99;
 
-        storagearray = 4;
+        //storagearray = 4;
 
         storageside = false;
 
@@ -63,10 +71,10 @@ public class StorageSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Slot_Select.activeSelf == true)
-        {
-            Select_Move();
-        }
+        //if (Slot_Select.activeSelf == true)
+        //{
+        //    Select_Move();
+        //}
     }
 
     //창고 UI 열기
@@ -76,31 +84,31 @@ public class StorageSystem : MonoBehaviour
         LinkInventory();
         storageUI.SetActive(true);
         Positioncount = 0;
-        Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
+        //Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
 
         //슬롯 선택 이미지 표기
         if (InventorySystem.InventoryList.Any() == false && StorageList.Any() == false)
         {
-            Slot_Select.SetActive(false);
+            //Slot_Select.SetActive(false);
             storageside = false;
             //Reset_Information();
         }
 
         else
         {
-            Slot_Select.SetActive(true);
+            //Slot_Select.SetActive(true);
 
-            if (InventorySystem.InventoryList.Any() == true)
-            {
-                Slot_Select.transform.position = InventorySlot[0].transform.position;
-                Positioncount = 0;
-            }
+            //if (InventorySystem.InventoryList.Any() == true)
+            //{
+            //    Slot_Select.transform.position = InventorySlot[0].transform.position;
+            //    Positioncount = 0;
+            //}
 
-            else if (InventorySystem.InventoryList.Any() == false && StorageList.Any() == true)
-            {
-                Slot_Select.transform.position = StorageSlot[0].transform.position;
-                Positioncount = 0;
-            }
+            //else if (InventorySystem.InventoryList.Any() == false && StorageList.Any() == true)
+            //{
+            //    Slot_Select.transform.position = StorageSlot[0].transform.position;
+            //    Positioncount = 0;
+            //}
 
             Load_Information();
         }
@@ -118,25 +126,25 @@ public class StorageSystem : MonoBehaviour
         storageUI.SetActive(false);
     }
 
-    public void ResetPosition()
-    {
-        Positioncount = 0;
-        SetPosition();
-    }
+    //public void ResetPosition()
+    //{
+    //    Positioncount = 0;
+    //    //SetPosition();
+    //}
 
-    public void SetPosition()
-    {
-        if (storageside == false)
-        {
-            Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
-        }
+    //public void SetPosition()
+    //{
+    //    if (storageside == false)
+    //    {
+    //        Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
+    //    }
 
-        else
-        {
-            Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
-            
-        }
-    }
+    //    else
+    //    {
+    //        Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
+
+    //    }
+    //}
 
     public void LinkInventory()
     {
@@ -148,6 +156,11 @@ public class StorageSystem : MonoBehaviour
                 //이미지 연동
                 Image Image = InventoryImageSlot[i].GetComponent<Image>();
                 Image InventoryImage = InventorySystem.ImageSlot[i].GetComponent<Image>();
+                if (InventoryImageSlot[i].activeSelf == false)
+                {
+                    InventoryImageSlot[i].SetActive(true);
+                }
+
                 if (Image.enabled == false)
                 {
                     Image.sprite = InventoryImage.sprite;
@@ -174,120 +187,134 @@ public class StorageSystem : MonoBehaviour
     }
 
     //슬롯 선택 오브젝트 움직이기
-    public void Select_Move()
-    {
-        for (int i = 0; i < StorageSlot.Count; i++)
-        {
-            if (Slot_Select.transform.position == InventorySlot[i].transform.position)
-            {
-                storageside = false;
-                break;
-            }
+    //public void Select_Move()
+    //{
+    //    for (int i = 0; i < StorageSlot.Count; i++)
+    //    {
+    //        if (Slot_Select.transform.position == InventorySlot[i].transform.position)
+    //        {
+    //            storageside = false;
+    //            break;
+    //        }
 
-            else if (Slot_Select.transform.position == StorageSlot[i].transform.position)
-            {
-                storageside = true;
-                break;
-            }
-        }
+    //        else if (Slot_Select.transform.position == StorageSlot[i].transform.position)
+    //        {
+    //            storageside = true;
+    //            break;
+    //        }
+    //    }
 
-        if (storageUI.activeSelf == true)
-        {
-            if (Input.GetButtonDown("Jump"))
-            {
-                Debug.Log(Positioncount);
-            }
+    //    if (storageUI.activeSelf == true)
+    //    {
+    //        if (Input.GetButtonDown("Jump"))
+    //        {
+    //            Debug.Log(Positioncount);
+    //        }
 
-            if (Input.GetButtonDown("Left"))
-            {
-                if (Positioncount != 0)
-                {
-                    Positioncount--;
-                    SetPosition();
-                }
-            }
+    //        if (Input.GetButtonDown("Left"))
+    //        {
+    //            if (Positioncount != 0)
+    //            {
+    //                Positioncount--;
+    //                SetPosition();
+    //            }
+    //        }
 
-            else if (Input.GetButtonDown("Right"))
-            {
-                if (Positioncount < InventorySystem.SetSize && InventoryImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true && storageside == false)
-                {
-                    Positioncount++;
-                    Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
-                }
+    //        else if (Input.GetButtonDown("Right"))
+    //        {
+    //            if (Positioncount < InventorySystem.SetSize && InventoryImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true && storageside == false)
+    //            {
+    //                Positioncount++;
+    //                Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
+    //            }
 
-                else if (StorageImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true && storageside == true)
-                {
-                    Positioncount++;
-                    Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
-                }
-            }
+    //            else if (StorageImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true && storageside == true)
+    //            {
+    //                Positioncount++;
+    //                Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
+    //            }
+    //        }
 
-            else if (Input.GetButtonDown("Up"))
-            {
-                if ((Positioncount - storagearray) >= 0)
-                {
-                    Positioncount -= storagearray;
-                    SetPosition();
-                }
-            }
+    //        else if (Input.GetButtonDown("Up"))
+    //        {
+    //            if ((Positioncount - storagearray) >= 0)
+    //            {
+    //                Positioncount -= storagearray;
+    //                SetPosition();
+    //            }
+    //        }
 
-            else if (Input.GetButtonDown("Down"))
-            {
-                if ((Positioncount + storagearray) < InventorySystem.SetSize && InventoryImageSlot[Positioncount + storagearray].GetComponent<Image>().enabled == true && storageside == false)
-                {
-                    Positioncount += storagearray;
-                    Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
-                }
+    //        else if (Input.GetButtonDown("Down"))
+    //        {
+    //            if ((Positioncount + storagearray) < InventorySystem.SetSize && InventoryImageSlot[Positioncount + storagearray].GetComponent<Image>().enabled == true && storageside == false)
+    //            {
+    //                Positioncount += storagearray;
+    //                Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
+    //            }
 
-                else if ((Positioncount + storagearray) < StorageSlot.Count && StorageImageSlot[Positioncount + storagearray].GetComponent<Image>().enabled == true & storageside == true)
-                {
-                    Positioncount += storagearray;
-                    Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
-                }
-            }
+    //            else if ((Positioncount + storagearray) < StorageSlot.Count && StorageImageSlot[Positioncount + storagearray].GetComponent<Image>().enabled == true & storageside == true)
+    //            {
+    //                Positioncount += storagearray;
+    //                Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
+    //            }
+    //        }
 
-            Load_Information();
-        }
-    }
+    //        Load_Information();
+    //    }
+    //}
 
     public void Load_Information()
     {
         //Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
-        
+
 
         for (int i = 0; i < InventorySlot.Count; i++)
         {
-
-            if (Slot_Select.transform.position == InventorySlot[i].transform.position || Slot_Select.transform.position == StorageSlot[i].transform.position)
+            if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position)
             {
                 Positioncount = i;
-
-                //if (ChooseImage.enabled == false)
-                //{
-                //    ChooseImage.enabled = true;
-                //}
-
-                //if (Slot_Select.transform.position == InventorySlot[i].transform.position)
-                //{
-                //    ChooseImage.sprite = InventoryImageSlot[i].GetComponent<Image>().sprite;
-                //}
-                //else if (Slot_Select.transform.position == StorageSlot[i].transform.position)
-                //{
-                //    ChooseImage.sprite = StorageImageSlot[i].GetComponent<Image>().sprite;
-                //}
-
-                //for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
-                //{
-                //    if (ChooseImage.sprite.name.ToString() == InventorySystem.ItemDB[j]["ImgName"].ToString())
-                //    {
-                //        Content.text = InventorySystem.ItemDB[j]["Content"].ToString();
-
-                //        break;
-                //    }
-                //}
-
-                break;
+                storageside = false;
+                Debug.Log((i + 1) + "번쨰 인벤토리쪽");
             }
+
+            else if (ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
+            {
+                Positioncount = i;
+                storageside = true;
+                Debug.Log((i + 1) + "번쨰 창고쪽");
+            }
+
+            //if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position || ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
+            //{
+            //    Positioncount = i;
+
+            //    if (ChooseImage.enabled == false)
+            //    {
+            //        ChooseImage.enabled = true;
+            //    }
+
+            //    if (Slot_Select.transform.position == InventorySlot[i].transform.position)
+            //    {
+            //        ChooseImage.sprite = InventoryImageSlot[i].GetComponent<Image>().sprite;
+            //    }
+            //    else if (Slot_Select.transform.position == StorageSlot[i].transform.position)
+            //    {
+            //        ChooseImage.sprite = StorageImageSlot[i].GetComponent<Image>().sprite;
+            //    }
+
+            //    for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
+            //    {
+            //        if (ChooseImage.sprite.name.ToString() == InventorySystem.ItemDB[j]["ImgName"].ToString())
+            //        {
+            //            Content.text = InventorySystem.ItemDB[j]["Content"].ToString();
+
+            //            break;
+            //        }
+            //    }
+
+            //    break;
+            //}
+
         }
     }
 
@@ -303,7 +330,7 @@ public class StorageSystem : MonoBehaviour
     {
         int InventoryCount = InventorySystem.InventoryList.Count;
 
-        for (int i = 0 ; i < InventoryCount ; i++)
+        for (int i = 0; i < InventoryCount; i++)
         {
             AddStorage(InventorySystem.InventoryList[0], InventorySystem.CountList[0]);
             InventorySystem.DeleteItem(InventorySystem.InventoryList[0]);
@@ -348,7 +375,7 @@ public class StorageSystem : MonoBehaviour
                         StorageCountList[n] += count;
                         int nextcount = StorageCountList[n] - maxcount;
                         StorageCountList[n] = maxcount;
-                        
+
                         StorageList.Add(name);
                         StorageCountList.Add(nextcount);
                     }
@@ -378,6 +405,12 @@ public class StorageSystem : MonoBehaviour
         {
             //이미지 연동
             Image Image = StorageImageSlot[num].GetComponent<Image>();
+
+            if (StorageImageSlot[num].activeSelf == false)
+            {
+                StorageImageSlot[num].SetActive(true);
+            }
+
             if (Image.enabled == false)
             {
                 Image.sprite = Resources.Load<Sprite>("Image/" + StorageList[num]);
@@ -396,7 +429,7 @@ public class StorageSystem : MonoBehaviour
             //인벤토리 to 창고
             if (storageside == false)
             {
-                if (Slot_Select.transform.position == InventorySlot[i].transform.position)
+                if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position)
                 {
                     AddStorage(InventorySystem.InventoryList[i], transnumber);
                     InventoryUse(i, transnumber);
@@ -408,9 +441,9 @@ public class StorageSystem : MonoBehaviour
             //창고 to 인벤토리
             else
             {
-                if (Slot_Select.transform.position == StorageSlot[i].transform.position)
+                if (ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
                 {
-                    for (int j  = 0; j < InventorySystem.ItemDB.Count; j++)
+                    for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
                     {
                         if (StorageList[i] == InventorySystem.ItemDB[j]["ImgName"].ToString())
                         {
@@ -418,8 +451,8 @@ public class StorageSystem : MonoBehaviour
                             break;
                         }
                     }
-                    
-                    if(InventorySystem.FullInventory == false)
+
+                    if (InventorySystem.FullInventory == false)
                     {
                         StorageUse(i, transnumber);
                     }
@@ -434,13 +467,13 @@ public class StorageSystem : MonoBehaviour
         if (StorageList.Any() == false)
         {
             storageside = false;
-            ResetPosition();
+            //ResetPosition();
         }
 
         else if (InventorySystem.InventoryList.Any() == false)
         {
             storageside = true;
-            ResetPosition();
+            //ResetPosition();
         }
     }
 
@@ -451,26 +484,34 @@ public class StorageSystem : MonoBehaviour
         if (InventorySystem.CountList[number] == 0)
         {
             InventorySystem.DeleteItem(InventorySystem.InventoryList[number]);
+            InventoryImageSlot[number].SetActive(false);
+
         }
 
         LinkInventory();
 
-        if (InventoryImageSlot[number].GetComponent<Image>().enabled == false && number != 0)
+        if (InventoryImageSlot[number].activeSelf == true)
         {
-            Slot_Select.transform.position = InventorySlot[number - 1].transform.position;
+            ItemInformation.Load_Information(UISystem.overObject);
         }
+
+        //if (InventoryImageSlot[number].GetComponent<Image>().enabled == false && number != 0)
+        //{
+        //    Slot_Select.transform.position = InventorySlot[number - 1].transform.position;
+        //}
     }
 
     public void StorageUse(int number, int transnumber)
     {
         StorageCountList[number] -= transnumber;
         StorageNumberList[number].text = StorageCountList[number].ToString();
-        if(StorageCountList[number] == 0)
+        if (StorageCountList[number] == 0)
         {
             Delete_Storage_Item(StorageList[number]);
         }
 
         LinkInventory();
+
     }
 
     public void Delete_Storage_Item(string name)
@@ -486,26 +527,38 @@ public class StorageSystem : MonoBehaviour
                     StorageNumberList[i].gameObject.SetActive(false);
                     StorageImageSlot[i].GetComponent<Image>().sprite = null;
                     StorageImageSlot[i].GetComponent<Image>().enabled = false;
+                    StorageImageSlot[i].SetActive(false);
+                    UISystem.clicktoggle = false;
 
-                    ResetPosition();
+                    //ResetPosition();
                     //Reset_Information();
                 }
 
                 else
                 {
+
                     for (int j = i; j < StorageList.Count; j++)
                     {
+                        //마지막 칸이 아닐 때 다음 슬롯 정보 땡겨오기
                         if ((j + 1) < StorageList.Count)
                         {
+                            if (StorageImageSlot[j].activeSelf == false)
+                            {
+                                StorageImageSlot[j].SetActive(true);
+                            }
+
                             StorageNumberList[j].text = StorageNumberList[j + 1].text;
                             StorageImageSlot[j].GetComponent<Image>().sprite = StorageImageSlot[j + 1].GetComponent<Image>().sprite;
+                            ItemInformation.Load_Information(UISystem.overObject);
                         }
 
+                        //삭제되는게 마지막 칸일때
                         else if ((j + 1) == StorageList.Count)
                         {
                             StorageNumberList[j].gameObject.SetActive(false);
                             StorageNumberList[j].text = null;
                             StorageImageSlot[j].GetComponent<Image>().enabled = false;
+                            StorageImageSlot[j].SetActive(false);
                         }
 
 
@@ -515,9 +568,10 @@ public class StorageSystem : MonoBehaviour
                 StorageList.RemoveAt(i);
                 StorageCountList.RemoveAt(i);
 
-                if (StorageImageSlot[i].GetComponent<Image>().enabled == false && i != 0)
+                if (StorageImageSlot[i].activeSelf == false)
                 {
-                    Slot_Select.transform.position = StorageSlot[i - 1].transform.position;
+                    ItemInformation.slot_Select.SetActive(false);
+                    UISystem.clicktoggle = false;
                 }
             }
         }

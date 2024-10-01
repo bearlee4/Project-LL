@@ -9,7 +9,9 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
 {
     public GameObject Manager;
     private GameObject Player;
-    private GameObject overObject;
+    public GameObject overObject;
+
+    public bool clicktoggle;
 
     InventorySystem InventorySystem;
     StorageSystem StorageSystem;
@@ -30,7 +32,7 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -40,29 +42,31 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         //아이템 창 클릭
         if (clickedObject.tag == "ItemImage")
         {
-            if(InventorySystem.Inventory_Select.activeSelf == true && InventorySystem.Inventory.activeSelf == true)
+            if (InventorySystem.Inventory.activeSelf == true)
             {
-                InventorySystem.Inventory_Select.transform.position = clickedObject.transform.position;
+                ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
                 Debug.Log(clickedObject.name);
-                ItemInformation.slot_Select.SetActive(false);
+                clicktoggle = true;
+                InventorySystem.Load_Information();
             }
 
-            else if (StorageSystem.Slot_Select.activeSelf == true && StorageSystem.storageUI.activeSelf == true)
+            else if (StorageSystem.storageUI.activeSelf == true)
             {
-                StorageSystem.Slot_Select.transform.position = clickedObject.transform.position;
+                ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
                 StorageSystem.Load_Information();
+                clicktoggle = true;
             }
-            
+
         }
 
         if (clickedObject.name == "Bag")
         {
-            if(InventorySystem.Inventory.activeSelf == false && InteractionSystem.UItoken == false)
+            if (InventorySystem.Inventory.activeSelf == false && InteractionSystem.UItoken == false)
             {
                 InventorySystem.OpenInventory();
                 InteractionSystem.UItoken = true;
             }
-            
+
             else if (InventorySystem.Inventory.activeSelf == true && InteractionSystem.UItoken == true)
             {
                 InventorySystem.CloseInventory();
@@ -77,16 +81,17 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         if (overObject.tag == "ItemImage")
         {
             Debug.Log(overObject.tag);
-            if(ItemInformation.InformationWindow.activeSelf == false)
+            if (ItemInformation.InformationWindow.activeSelf == false)
             {
                 ItemInformation.InformationWindow.SetActive(true);
             }
 
             //인벤토리가 켜졌을 때
-            if(InventorySystem.Inventory.activeSelf == true)
+            if (InventorySystem.Inventory.activeSelf == true)
             {
-                ItemInformation.InformationWindow.transform.position = InventorySystem.Inventory.transform.position;
-                ItemInformation.InformationWindow.transform.position += new Vector3(380, 0, 0);
+                //ItemInformation.InformationWindow.transform.position = InventorySystem.Inventory.transform.position;
+                ItemInformation.InformationWindow.transform.position = overObject.transform.position;
+                ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
                 ItemInformation.Load_Information(overObject);
             }
 
@@ -94,23 +99,37 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             else
             {
                 ItemInformation.InformationWindow.transform.position = overObject.transform.position;
-                ItemInformation.InformationWindow.transform.position += new Vector3(220, 0, 0);
+                ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
                 ItemInformation.Load_Information(overObject);
-            }        
+            }
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
 
-        Debug.Log(overObject.tag);
+        Debug.Log(overObject.tag + "나감");
         if (overObject.tag == "ItemImage")
         {
-            if (ItemInformation.InformationWindow.activeSelf == true)
+            ToggleStorageUI(ItemInformation.InformationWindow);
+            if (clicktoggle == false && ItemInformation.slot_Select.activeSelf == true)
             {
-                Debug.Log("이건 작동중?");
-                ItemInformation.InformationWindow.SetActive(false);
+                ToggleStorageUI(ItemInformation.slot_Select);
             }
+            //if (ItemInformation.InformationWindow.activeSelf == true)
+            //{
+            //    Debug.Log("이건 작동중?");
+            //    ItemInformation.InformationWindow.SetActive(false);
+
+            //}
+        }
+    }
+
+    public void ToggleStorageUI(GameObject UI)
+    {
+        if (UI != null)
+        {
+            UI.SetActive(!UI.activeSelf); // UI 요소의 활성 상태를 토글
         }
     }
 
