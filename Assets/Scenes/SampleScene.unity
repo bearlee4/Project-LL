@@ -8761,6 +8761,9 @@ GameObject:
   - component: {fileID: 1931117055}
   - component: {fileID: 1931117059}
   - component: {fileID: 1931117060}
+  - component: {fileID: 1931117063}
+  - component: {fileID: 1931117062}
+  - component: {fileID: 1931117061}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -8911,6 +8914,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Manager: {fileID: 1288554462}
   UItoken: 0
+--- !u!114 &1931117061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931117054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ebb623fe2748f54b9edfc61f5ca37bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1931117062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931117054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67ec88b6d63474544bb5588e50bd1e6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skill_Q: 1
+  skill_E: 1
+  skillText_1: 
+  skillText_2: 
+  Element:
+  - Pyro
+  - Hydro
+  - Anemo
+  - Geo
+  QSkillDelay:
+  - 2
+  - 3
+  - 2
+  - 3
+  ESkillDelay:
+  - 7
+  - 8
+  - 8
+  - 7
+--- !u!114 &1931117063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931117054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31591e7c7f511f245a650d937853a03e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 0
+  CurrentHP: 0
+  maxMP: 0
+  CurrentMP: 0
+  atk: 0
+  speed: 0
+  def: 0
+  crt_R: 0
+  crt_H: 0
 --- !u!1 &1933618540
 GameObject:
   m_ObjectHideFlags: 0
@@ -9308,7 +9375,7 @@ MonoBehaviour:
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1090, y: 503}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
