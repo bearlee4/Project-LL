@@ -13,6 +13,7 @@ public class ItemInformation : MonoBehaviour
     public Text Content;
 
     InventorySystem InventorySystem;
+    InteractionSystem InteractionSystem;
 
     private GameObject canvas;
     UISystem UISystem;
@@ -24,6 +25,7 @@ public class ItemInformation : MonoBehaviour
         UISystem = canvas.GetComponent<UISystem>();
         InformationWindow = GameObject.Find("ItemInformation");
         InventorySystem = this.GetComponent<InventorySystem>();
+        InteractionSystem = this.GetComponent<InteractionSystem>();
 
         //slot_Select = InformationWindow.transform.Find("Slot_Select").gameObject;
     }

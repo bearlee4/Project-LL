@@ -17,6 +17,9 @@ public class InventorySystem : MonoBehaviour
 
     ItemInformation ItemInformation;
 
+    private GameObject Player;
+    InteractionSystem InteractionSystem;
+
 
     public bool FullInventory;
     private int maxcount;
@@ -45,6 +48,8 @@ public class InventorySystem : MonoBehaviour
         canvas = GameObject.Find("Canvas");
         UISystem = canvas.GetComponent<UISystem>();
         ItemInformation = this.GetComponent<ItemInformation>();
+        Player = GameObject.Find("Player");
+        InteractionSystem = Player.GetComponent<InteractionSystem>();
 
         //ChooseItem = GameObject.Find("ChooseItem");
         // Inventory_Select.SetActive(false);
@@ -70,7 +75,7 @@ public class InventorySystem : MonoBehaviour
         }
 
         //인벤토리 UI 숨김
-        Inventory.SetActive(false);
+        //Inventory.SetActive(false);
 
         //인벤토리가 비었을때 갯수 텍스트 감추기
         for (int i = 0; i < SetSize; i++)
@@ -90,7 +95,6 @@ public class InventorySystem : MonoBehaviour
         //{
         //    Select_Move();
         //}
-
 
     }
 
@@ -395,7 +399,10 @@ public class InventorySystem : MonoBehaviour
                     //Inventory_Select.SetActive(false);
                     ImageSlot[i].GetComponent<Image>().sprite = null;
                     ImageSlot[i].GetComponent<Image>().enabled = false;
-                    ImageSlot[i].SetActive(false);
+                    if (ImageSlot[i].activeSelf == true)
+                    {
+                        ImageSlot[i].SetActive(false);
+                    }
                     //Content.text = null;
                     //ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().sprite = null;
                     //ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().enabled = false;
@@ -403,14 +410,23 @@ public class InventorySystem : MonoBehaviour
 
                 else
                 {
+
                     for (int j = i; j < InventoryList.Count; j++)
                     {
                         //인벤토리 마지막 칸이 아닐때 다음 슬롯 정보 당겨오기
                         if ((j + 1) < InventoryList.Count)
                         {
+                            if (ImageSlot[j].activeSelf == false)
+                            {
+                                ImageSlot[j].SetActive(true);
+                            }
+
                             NumberList[j].text = NumberList[j + 1].text;
                             ImageSlot[j].GetComponent<Image>().sprite = ImageSlot[j + 1].GetComponent<Image>().sprite;
-                            ItemInformation.Load_Information(UISystem.overObject);
+                            if(InteractionSystem.UItoken == true)
+                            {
+                                ItemInformation.Load_Information(UISystem.overObject);
+                            }
                         }
 
                         //인벤토리 마지막칸일때
