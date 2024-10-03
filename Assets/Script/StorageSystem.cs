@@ -12,7 +12,7 @@ public class StorageSystem : MonoBehaviour
     //public GameObject Slot_Select;
     //private GameObject ChooseItem;
     //public Text Content;
-    private int Positioncount;
+    //private int Positioncount;
 
     InventorySystem InventorySystem;
     ItemInformation ItemInformation;
@@ -35,7 +35,7 @@ public class StorageSystem : MonoBehaviour
     private List<int> StorageCountList = new List<int>();
 
     private int maxcount;
-    private bool storageside;
+    public bool storageside;
 
     //private int storagearray;
 
@@ -47,7 +47,7 @@ public class StorageSystem : MonoBehaviour
         UISystem = canvas.GetComponent<UISystem>();
 
         //Slot_Select.SetActive(false);
-        Positioncount = 0;
+        //Positioncount = 0;
         //ChooseItem = GameObject.Find("StorageChooseItem");
         InventorySystem = this.GetComponent<InventorySystem>();
         ItemInformation = this.GetComponent<ItemInformation>();
@@ -83,35 +83,34 @@ public class StorageSystem : MonoBehaviour
         Debug.Log("Storage open");
         LinkInventory();
         storageUI.SetActive(true);
-        Positioncount = 0;
+        //Positioncount = 0;
         //Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
 
         //슬롯 선택 이미지 표기
-        if (InventorySystem.InventoryList.Any() == false && StorageList.Any() == false)
-        {
-            //Slot_Select.SetActive(false);
-            storageside = false;
-            //Reset_Information();
-        }
+        //if (InventorySystem.InventoryList.Any() == false && StorageList.Any() == false)
+        //{
+        //    //Slot_Select.SetActive(false);
+        //    storageside = false;
+        //    //Reset_Information();
+        //}
 
-        else
-        {
-            //Slot_Select.SetActive(true);
+        //else
+        //{
+        //    //Slot_Select.SetActive(true);
 
-            //if (InventorySystem.InventoryList.Any() == true)
-            //{
-            //    Slot_Select.transform.position = InventorySlot[0].transform.position;
-            //    Positioncount = 0;
-            //}
+        //    //if (InventorySystem.InventoryList.Any() == true)
+        //    //{
+        //    //    Slot_Select.transform.position = InventorySlot[0].transform.position;
+        //    //    Positioncount = 0;
+        //    //}
 
-            //else if (InventorySystem.InventoryList.Any() == false && StorageList.Any() == true)
-            //{
-            //    Slot_Select.transform.position = StorageSlot[0].transform.position;
-            //    Positioncount = 0;
-            //}
+        //    //else if (InventorySystem.InventoryList.Any() == false && StorageList.Any() == true)
+        //    //{
+        //    //    Slot_Select.transform.position = StorageSlot[0].transform.position;
+        //    //    Positioncount = 0;
+        //    //}
 
-            Load_Information();
-        }
+        //}
 
         //인벤토리 사이즈에 맞게 인벤토리 슬롯 생성
         for (int num = InventorySystem.SetSize; InventorySlot.Count > num; num++)
@@ -146,6 +145,18 @@ public class StorageSystem : MonoBehaviour
     //    }
     //}
 
+
+    public void Slot_Reset()
+    {
+        for (int i = 0; i < InventorySystem.SetSize; i++)
+        {
+            Image Image = InventoryImageSlot[i].GetComponent<Image>();
+            Image.sprite = null;
+            Image.enabled = false;
+            InventoryNumberList[i].text = null;
+        }
+    }
+
     public void LinkInventory()
     {
         Slot_Reset();
@@ -174,157 +185,6 @@ public class StorageSystem : MonoBehaviour
             }
         }
     }
-
-    public void Slot_Reset()
-    {
-        for (int i = 0; i < InventorySystem.SetSize; i++)
-        {
-            Image Image = InventoryImageSlot[i].GetComponent<Image>();
-            Image.sprite = null;
-            Image.enabled = false;
-            InventoryNumberList[i].text = null;
-        }
-    }
-
-    //슬롯 선택 오브젝트 움직이기
-    //public void Select_Move()
-    //{
-    //    for (int i = 0; i < StorageSlot.Count; i++)
-    //    {
-    //        if (Slot_Select.transform.position == InventorySlot[i].transform.position)
-    //        {
-    //            storageside = false;
-    //            break;
-    //        }
-
-    //        else if (Slot_Select.transform.position == StorageSlot[i].transform.position)
-    //        {
-    //            storageside = true;
-    //            break;
-    //        }
-    //    }
-
-    //    if (storageUI.activeSelf == true)
-    //    {
-    //        if (Input.GetButtonDown("Jump"))
-    //        {
-    //            Debug.Log(Positioncount);
-    //        }
-
-    //        if (Input.GetButtonDown("Left"))
-    //        {
-    //            if (Positioncount != 0)
-    //            {
-    //                Positioncount--;
-    //                SetPosition();
-    //            }
-    //        }
-
-    //        else if (Input.GetButtonDown("Right"))
-    //        {
-    //            if (Positioncount < InventorySystem.SetSize && InventoryImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true && storageside == false)
-    //            {
-    //                Positioncount++;
-    //                Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
-    //            }
-
-    //            else if (StorageImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true && storageside == true)
-    //            {
-    //                Positioncount++;
-    //                Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
-    //            }
-    //        }
-
-    //        else if (Input.GetButtonDown("Up"))
-    //        {
-    //            if ((Positioncount - storagearray) >= 0)
-    //            {
-    //                Positioncount -= storagearray;
-    //                SetPosition();
-    //            }
-    //        }
-
-    //        else if (Input.GetButtonDown("Down"))
-    //        {
-    //            if ((Positioncount + storagearray) < InventorySystem.SetSize && InventoryImageSlot[Positioncount + storagearray].GetComponent<Image>().enabled == true && storageside == false)
-    //            {
-    //                Positioncount += storagearray;
-    //                Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
-    //            }
-
-    //            else if ((Positioncount + storagearray) < StorageSlot.Count && StorageImageSlot[Positioncount + storagearray].GetComponent<Image>().enabled == true & storageside == true)
-    //            {
-    //                Positioncount += storagearray;
-    //                Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
-    //            }
-    //        }
-
-    //        Load_Information();
-    //    }
-    //}
-
-    public void Load_Information()
-    {
-        //Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
-
-
-        for (int i = 0; i < InventorySlot.Count; i++)
-        {
-            if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position)
-            {
-                Positioncount = i;
-                storageside = false;
-                Debug.Log((i + 1) + "번쨰 인벤토리쪽");
-            }
-
-            else if (ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
-            {
-                Positioncount = i;
-                storageside = true;
-                Debug.Log((i + 1) + "번쨰 창고쪽");
-            }
-
-            //if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position || ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
-            //{
-            //    Positioncount = i;
-
-            //    if (ChooseImage.enabled == false)
-            //    {
-            //        ChooseImage.enabled = true;
-            //    }
-
-            //    if (Slot_Select.transform.position == InventorySlot[i].transform.position)
-            //    {
-            //        ChooseImage.sprite = InventoryImageSlot[i].GetComponent<Image>().sprite;
-            //    }
-            //    else if (Slot_Select.transform.position == StorageSlot[i].transform.position)
-            //    {
-            //        ChooseImage.sprite = StorageImageSlot[i].GetComponent<Image>().sprite;
-            //    }
-
-            //    for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
-            //    {
-            //        if (ChooseImage.sprite.name.ToString() == InventorySystem.ItemDB[j]["ImgName"].ToString())
-            //        {
-            //            Content.text = InventorySystem.ItemDB[j]["Content"].ToString();
-
-            //            break;
-            //        }
-            //    }
-
-            //    break;
-            //}
-
-        }
-    }
-
-    //public void Reset_Information()
-    //{
-    //    Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
-    //    ChooseImage.enabled = false;
-    //    ChooseImage.sprite = null;
-    //    Content.text = null;
-    //}
 
     public void Back_Home()
     {
@@ -413,9 +273,10 @@ public class StorageSystem : MonoBehaviour
 
             if (Image.enabled == false)
             {
-                Image.sprite = Resources.Load<Sprite>("Image/" + StorageList[num]);
                 Image.enabled = true;
             }
+
+            Image.sprite = Resources.Load<Sprite>("Image/" + StorageList[num]);
 
         }
     }
@@ -424,25 +285,18 @@ public class StorageSystem : MonoBehaviour
     {
         int transnumber = 1;
 
-        for (int i = 0; i < InventorySlot.Count; i++)
+        storageside = ItemInformation.sidetoken;
+        Debug.Log("현재 스토리지 사이드" + storageside);
+
+        //창고 to 인벤토리
+        if (storageside == true)
         {
-            //인벤토리 to 창고
-            if (storageside == false)
+            for(int i = 0; i < StorageList.Count; i++)
             {
-                if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position)
-                {
-                    AddStorage(InventorySystem.InventoryList[i], transnumber);
-                    InventoryUse(i, transnumber);
-
-                    break;
-                }
-            }
-
-            //창고 to 인벤토리
-            else
-            {
+                Debug.Log("스토리지 쪽 작동중");
                 if (ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
                 {
+
                     for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
                     {
                         if (StorageList[i] == InventorySystem.ItemDB[j]["ImgName"].ToString())
@@ -462,19 +316,33 @@ public class StorageSystem : MonoBehaviour
             }
         }
 
+        else
+        {
+            for (int i = 0; i < InventorySlot.Count; i++)
+            {
+                //인벤토리 to 창고
+                if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position)
+                {
+                    AddStorage(InventorySystem.InventoryList[i], transnumber);
+                    InventoryUse(i, transnumber);
 
+                    break;
+                }
+
+            }
+        }
         //토큰 설정밎 포지션 리셋
-        if (StorageList.Any() == false)
-        {
-            storageside = false;
-            //ResetPosition();
-        }
+        //if (StorageList.Any() == false)
+        //{
+        //    storageside = false;
+        //    //ResetPosition();
+        //}
 
-        else if (InventorySystem.InventoryList.Any() == false)
-        {
-            storageside = true;
-            //ResetPosition();
-        }
+        //else if (InventorySystem.InventoryList.Any() == false)
+        //{
+        //    storageside = true;
+        //    //ResetPosition();
+        //}
     }
 
     public void InventoryUse(int number, int transnumber)
@@ -549,20 +417,23 @@ public class StorageSystem : MonoBehaviour
 
                             StorageNumberList[j].text = StorageNumberList[j + 1].text;
                             StorageImageSlot[j].GetComponent<Image>().sprite = StorageImageSlot[j + 1].GetComponent<Image>().sprite;
-                            ItemInformation.Load_Information(UISystem.overObject);
                         }
 
                         //삭제되는게 마지막 칸일때
                         else if ((j + 1) == StorageList.Count)
                         {
-                            StorageNumberList[j].gameObject.SetActive(false);
                             StorageNumberList[j].text = null;
+                            StorageNumberList[j].gameObject.SetActive(false);
                             StorageImageSlot[j].GetComponent<Image>().enabled = false;
                             StorageImageSlot[j].SetActive(false);
+                            break;
                         }
 
-
+                        
                     }
+
+                    Debug.Log("이거 작동 왜 안하냐 ㅅㅂ");
+                    ItemInformation.Load_Information(UISystem.overObject);
                 }
 
                 StorageList.RemoveAt(i);
@@ -576,4 +447,173 @@ public class StorageSystem : MonoBehaviour
             }
         }
     }
+
+    //폐기된 시스템 혹시 몰라 백업해놈
+
+    //public void Load_Information()
+    //{
+    //    //Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
+
+
+    //    for (int i = 0; i < InventorySlot.Count; i++)
+    //    {
+    //        if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position)
+    //        {
+    //            Positioncount = i;
+    //            storageside = false;
+    //            Debug.Log((i + 1) + "번쨰 인벤토리쪽");
+    //        }
+
+    //        else if (ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
+    //        {
+    //            Positioncount = i;
+    //            storageside = true;
+    //            Debug.Log((i + 1) + "번쨰 창고쪽");
+    //        }
+
+    //        if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position || ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
+    //        {
+    //            Positioncount = i;
+
+    //            if (ChooseImage.enabled == false)
+    //            {
+    //                ChooseImage.enabled = true;
+    //            }
+
+    //            if (Slot_Select.transform.position == InventorySlot[i].transform.position)
+    //            {
+    //                ChooseImage.sprite = InventoryImageSlot[i].GetComponent<Image>().sprite;
+    //            }
+    //            else if (Slot_Select.transform.position == StorageSlot[i].transform.position)
+    //            {
+    //                ChooseImage.sprite = StorageImageSlot[i].GetComponent<Image>().sprite;
+    //            }
+
+    //            for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
+    //            {
+    //                if (ChooseImage.sprite.name.ToString() == InventorySystem.ItemDB[j]["ImgName"].ToString())
+    //                {
+    //                    Content.text = InventorySystem.ItemDB[j]["Content"].ToString();
+
+    //                    break;
+    //                }
+    //            }
+
+    //            break;
+    //        }
+
+    //    }
+    //}
+
+    //슬롯 선택 오브젝트 움직이기
+    //public void Select_Move()
+    //{
+    //    for (int i = 0; i < StorageSlot.Count; i++)
+    //    {
+    //        if (Slot_Select.transform.position == InventorySlot[i].transform.position)
+    //        {
+    //            storageside = false;
+    //            break;
+    //        }
+
+    //        else if (Slot_Select.transform.position == StorageSlot[i].transform.position)
+    //        {
+    //            storageside = true;
+    //            break;
+    //        }
+    //    }
+
+    //    if (storageUI.activeSelf == true)
+    //    {
+    //        if (Input.GetButtonDown("Jump"))
+    //        {
+    //            Debug.Log(Positioncount);
+    //        }
+
+    //        if (Input.GetButtonDown("Left"))
+    //        {
+    //            if (Positioncount != 0)
+    //            {
+    //                Positioncount--;
+    //                SetPosition();
+    //            }
+    //        }
+
+    //        else if (Input.GetButtonDown("Right"))
+    //        {
+    //            if (Positioncount < InventorySystem.SetSize && InventoryImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true && storageside == false)
+    //            {
+    //                Positioncount++;
+    //                Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
+    //            }
+
+    //            else if (StorageImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true && storageside == true)
+    //            {
+    //                Positioncount++;
+    //                Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
+    //            }
+    //        }
+
+    //        else if (Input.GetButtonDown("Up"))
+    //        {
+    //            if ((Positioncount - storagearray) >= 0)
+    //            {
+    //                Positioncount -= storagearray;
+    //                SetPosition();
+    //            }
+    //        }
+
+    //        else if (Input.GetButtonDown("Down"))
+    //        {
+    //            if ((Positioncount + storagearray) < InventorySystem.SetSize && InventoryImageSlot[Positioncount + storagearray].GetComponent<Image>().enabled == true && storageside == false)
+    //            {
+    //                Positioncount += storagearray;
+    //                Slot_Select.transform.position = InventorySlot[Positioncount].transform.position;
+    //            }
+
+    //            else if ((Positioncount + storagearray) < StorageSlot.Count && StorageImageSlot[Positioncount + storagearray].GetComponent<Image>().enabled == true & storageside == true)
+    //            {
+    //                Positioncount += storagearray;
+    //                Slot_Select.transform.position = StorageSlot[Positioncount].transform.position;
+    //            }
+    //        }
+
+    //        Load_Information();
+    //    }
+    //}
+
+    //public void Load_Information()
+    //{
+
+    //    for (int i = 0; i < InventorySlot.Count; i++)
+    //    {
+    //        if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position)
+    //        {
+    //            Positioncount = i;
+    //            storageside = false;
+    //            Debug.Log((i + 1) + "번쨰 인벤토리쪽");
+    //            break;
+    //        }
+    //    }
+
+
+    //    for (int i = 0; i < StorageSlot.Count; i++)
+    //    {
+    //        if (ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
+    //        {
+    //            Positioncount = i;
+    //            storageside = true;
+    //            Debug.Log((i + 1) + "번쨰 창고쪽");
+    //            break;
+    //        }
+    //    }
+    //}
+
+    //public void Reset_Information()
+    //{
+    //    Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
+    //    ChooseImage.enabled = false;
+    //    ChooseImage.sprite = null;
+    //    Content.text = null;
+    //}
 }

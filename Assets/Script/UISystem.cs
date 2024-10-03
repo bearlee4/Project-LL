@@ -7,16 +7,18 @@ using UnityEngine.EventSystems;
 
 public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    InventorySystem InventorySystem;
+    StorageSystem StorageSystem;
+    InteractionSystem InteractionSystem;
+    ItemInformation ItemInformation;
+    AlchemySystem AlchemySystem;
+
     public GameObject Manager;
     private GameObject Player;
     public GameObject overObject;
 
     public bool clicktoggle;
-
-    InventorySystem InventorySystem;
-    StorageSystem StorageSystem;
-    InteractionSystem InteractionSystem;
-    ItemInformation ItemInformation;
+    private RectTransform slotSize;
 
 
     // Start is called before the first frame update
@@ -26,7 +28,10 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         InventorySystem = Manager.GetComponent<InventorySystem>();
         StorageSystem = Manager.GetComponent<StorageSystem>();
         ItemInformation = Manager.GetComponent<ItemInformation>();
+        AlchemySystem = Manager.GetComponent<AlchemySystem>();
         InteractionSystem = Player.GetComponent<InteractionSystem>();
+
+        slotSize = ItemInformation.slot_Select.GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
@@ -42,6 +47,9 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         //아이템 창 클릭
         if (clickedObject.tag == "ItemImage")
         {
+            RectTransform objectSize = clickedObject.GetComponent<RectTransform>();
+            slotSize.sizeDelta = new Vector2(objectSize.sizeDelta.x + 10, objectSize.sizeDelta.y + 10);
+
             if (InventorySystem.Inventory.activeSelf == true)
             {
                 ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
@@ -53,7 +61,15 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             else if (StorageSystem.storageUI.activeSelf == true)
             {
                 ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
-                StorageSystem.Load_Information();
+                ItemInformation.Set_Position(StorageSystem.StorageSlot, StorageSystem.InventorySlot);
+                clicktoggle = true;
+            }
+
+            else if (AlchemySystem.alchemyUI.activeSelf == true)
+            {
+                ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
+                ItemInformation.Set_Position(AlchemySystem.AlchemySlot, AlchemySystem.StorageSlot);
+                //AlchemySystem.Load_Information();
                 clicktoggle = true;
             }
 
@@ -80,7 +96,6 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         overObject = eventData.pointerCurrentRaycast.gameObject;
         if (overObject.tag == "ItemImage")
         {
-            Debug.Log(overObject.tag);
             if (ItemInformation.InformationWindow.activeSelf == false)
             {
                 ItemInformation.InformationWindow.SetActive(true);
@@ -89,7 +104,6 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             //인벤토리가 켜졌을 때
             if (InventorySystem.Inventory.activeSelf == true)
             {
-                //ItemInformation.InformationWindow.transform.position = InventorySystem.Inventory.transform.position;
                 ItemInformation.InformationWindow.transform.position = overObject.transform.position;
                 ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
                 ItemInformation.Load_Information(overObject);

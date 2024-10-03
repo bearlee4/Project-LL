@@ -9,6 +9,7 @@ public class InteractionSystem : MonoBehaviour
     InventorySystem InventorySystem;
     StorageSystem StorageSystem;
     ItemInformation ItemInformation;
+    AlchemySystem AlchemySystem;
 
     private GameObject canvas;
     UISystem UISystem;
@@ -16,6 +17,7 @@ public class InteractionSystem : MonoBehaviour
     public bool UItoken;
     private bool forageincounter;
     private bool storageincounter;
+    private bool alchemyincounter;
 
     //테스트용
     private bool backhomeincounter;
@@ -32,9 +34,11 @@ public class InteractionSystem : MonoBehaviour
         UItoken = false;
         forageincounter = false;
         storageincounter = false;
+        alchemyincounter = false;
         InventorySystem = Manager.GetComponent<InventorySystem>();
         StorageSystem = Manager.GetComponent<StorageSystem>();
         ItemInformation = Manager.GetComponent<ItemInformation>();
+        AlchemySystem = Manager.GetComponent<AlchemySystem>();
         ItemDB = CSVReader.Read("ItemDB");
 
         backhomeincounter = false;
@@ -49,6 +53,7 @@ public class InteractionSystem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        //채집물 접촉
         if (col.gameObject.tag == "Forage")
         {
             Debug.Log("채집물");
@@ -57,12 +62,24 @@ public class InteractionSystem : MonoBehaviour
 
         }
 
-        if (col.gameObject.tag == "Storage")
+        //상호작용 가능한 오브젝트 접촉
+        if (col.gameObject.tag == "InteractionObject")
         {
-            Debug.Log("창고 접촉");
-            storageincounter = true;
+            if(col.gameObject.name == "Storage")
+            {
+                Debug.Log("창고 접촉");
+                storageincounter = true;
+            }
+
+            if (col.gameObject.name == "Alchemy")
+            {
+                Debug.Log("연금솥 접촉");
+                alchemyincounter = true;
+            }
+
         }
 
+        //일과 끝내기 접촉
         if (col.gameObject.name == "Back_Home")
         {
             Debug.Log("일과 끝내기 접촉");
@@ -84,9 +101,14 @@ public class InteractionSystem : MonoBehaviour
             TriggerList.Clear();
         }
 
-        if (col.gameObject.tag == "Storage")
+        if (col.gameObject.name == "Storage")
         {
             storageincounter = false;
+        }
+
+        if (col.gameObject.name == "Alchemy")
+        {
+            alchemyincounter = false;
         }
 
         if (col.gameObject.name == "Back_Home")
@@ -120,6 +142,27 @@ public class InteractionSystem : MonoBehaviour
                     StorageSystem.CloseStorage();
                     UISystem.clicktoggle = false;
                     if(ItemInformation.slot_Select.activeSelf == true)
+                    {
+                        ItemInformation.slot_Select.SetActive(false);
+                    }
+                    UItoken = false;
+                }
+            }
+
+            //연금 여닫기
+            if (alchemyincounter == true)
+            {
+                if (AlchemySystem.alchemyUI.activeSelf == false && UItoken == false)
+                {
+                    AlchemySystem.OpenAlchemy();
+                    UItoken = true;
+                }
+
+                else if (AlchemySystem.alchemyUI.activeSelf == true && UItoken == true)
+                {
+                    AlchemySystem.alchemyUI.SetActive(false);
+                    UISystem.clicktoggle = false;
+                    if (ItemInformation.slot_Select.activeSelf == true)
                     {
                         ItemInformation.slot_Select.SetActive(false);
                     }
@@ -168,6 +211,12 @@ public class InteractionSystem : MonoBehaviour
             {
                 Debug.Log("전송 버튼 작동중");
                 StorageSystem.TransItem();
+            }
+
+            if (AlchemySystem.alchemyUI.activeSelf == true && ItemInformation.slot_Select.activeSelf == true && UISystem.clicktoggle == true)
+            {
+                Debug.Log("연금UI 전송 버튼 작동중");
+                AlchemySystem.TransItem();
             }
         }
 

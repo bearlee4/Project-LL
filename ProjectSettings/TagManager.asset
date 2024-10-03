@@ -6,8 +6,8 @@ TagManager:
   tags:
   - Forage
   - ItemSlot
-  - Storage
   - ItemImage
+  - InteractionObject
   layers:
   - Default
   - TransparentFX
