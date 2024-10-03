@@ -49,36 +49,36 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         {
             Debug.Log("좌클릭");
 
-            ////아이템 창 클릭
-            //if (clickedObject.tag == "ItemImage")
-            //{
-            //    RectTransform objectSize = clickedObject.GetComponent<RectTransform>();
-            //    slotSize.sizeDelta = new Vector2(objectSize.sizeDelta.x + 10, objectSize.sizeDelta.y + 10);
+            //아이템 창 클릭
+            if (clickedObject.tag == "ItemImage")
+            {
+                RectTransform objectSize = clickedObject.GetComponent<RectTransform>();
+                slotSize.sizeDelta = new Vector2(objectSize.sizeDelta.x + 10, objectSize.sizeDelta.y + 10);
 
-            //    if (InventorySystem.Inventory.activeSelf == true)
-            //    {
-            //        ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
-            //        Debug.Log(clickedObject.name);
-            //        clicktoggle = true;
-            //        InventorySystem.Load_Information();
-            //    }
+                if (InventorySystem.Inventory.activeSelf == true)
+                {
+                    ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
+                    Debug.Log(clickedObject.name);
+                    clicktoggle = true;
+                    InventorySystem.Load_Information();
+                }
 
-            //    else if (StorageSystem.storageUI.activeSelf == true)
-            //    {
-            //        ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
-            //        ItemInformation.Set_Position(StorageSystem.StorageSlot, StorageSystem.InventorySlot);
-            //        clicktoggle = true;
-            //    }
+                else if (StorageSystem.storageUI.activeSelf == true)
+                {
+                    ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
+                    ItemInformation.Set_Position(StorageSystem.StorageSlot, StorageSystem.InventorySlot);
+                    clicktoggle = true;
+                }
 
-            //    else if (AlchemySystem.alchemyUI.activeSelf == true)
-            //    {
-            //        ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
-            //        ItemInformation.Set_Position(AlchemySystem.AlchemySlot, AlchemySystem.StorageSlot);
-            //        //AlchemySystem.Load_Information();
-            //        clicktoggle = true;
-            //    }
+                else if (AlchemySystem.alchemyUI.activeSelf == true)
+                {
+                    ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
+                    ItemInformation.Set_Position(AlchemySystem.AlchemySlot, AlchemySystem.StorageSlot);
+                    //AlchemySystem.Load_Information();
+                    clicktoggle = true;
+                }
 
-            //}
+            }
 
             if (clickedObject.name == "Bag")
             {
@@ -101,20 +101,20 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         {
             if (StorageSystem.storageUI.activeSelf == true && ItemInformation.slot_Select.activeSelf == true)
             {
+                ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
+                ItemInformation.Set_Position(StorageSystem.StorageSlot, StorageSystem.InventorySlot);
+                clicktoggle = false;
                 Debug.Log("전송 버튼 작동중");
-                StorageSystem.TransItem();
-                ItemInformation.InformationWindow.transform.position = overObject.transform.position;
-                ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
-                ItemInformation.Load_Information(overObject);
+                StorageSystem.TransItem();  
             }
 
             if (AlchemySystem.alchemyUI.activeSelf == true && ItemInformation.slot_Select.activeSelf == true && clickedObject != AlchemySystem.resultImageSlot)
             {
+                ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
+                ItemInformation.Set_Position(AlchemySystem.AlchemySlot, AlchemySystem.StorageSlot);
+                clicktoggle = false;
                 Debug.Log("연금UI 전송 버튼 작동중");
                 AlchemySystem.TransItem();
-                ItemInformation.InformationWindow.transform.position = overObject.transform.position;
-                ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
-                ItemInformation.Load_Information(overObject);
             }
         }
     }
