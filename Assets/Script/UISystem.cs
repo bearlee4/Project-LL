@@ -44,49 +44,77 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     {
         GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
 
-        //아이템 창 클릭
-        if (clickedObject.tag == "ItemImage")
+        //좌클릭시
+        if (eventData.button.Equals(PointerEventData.InputButton.Left))
         {
-            RectTransform objectSize = clickedObject.GetComponent<RectTransform>();
-            slotSize.sizeDelta = new Vector2(objectSize.sizeDelta.x + 10, objectSize.sizeDelta.y + 10);
+            Debug.Log("좌클릭");
 
-            if (InventorySystem.Inventory.activeSelf == true)
+            ////아이템 창 클릭
+            //if (clickedObject.tag == "ItemImage")
+            //{
+            //    RectTransform objectSize = clickedObject.GetComponent<RectTransform>();
+            //    slotSize.sizeDelta = new Vector2(objectSize.sizeDelta.x + 10, objectSize.sizeDelta.y + 10);
+
+            //    if (InventorySystem.Inventory.activeSelf == true)
+            //    {
+            //        ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
+            //        Debug.Log(clickedObject.name);
+            //        clicktoggle = true;
+            //        InventorySystem.Load_Information();
+            //    }
+
+            //    else if (StorageSystem.storageUI.activeSelf == true)
+            //    {
+            //        ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
+            //        ItemInformation.Set_Position(StorageSystem.StorageSlot, StorageSystem.InventorySlot);
+            //        clicktoggle = true;
+            //    }
+
+            //    else if (AlchemySystem.alchemyUI.activeSelf == true)
+            //    {
+            //        ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
+            //        ItemInformation.Set_Position(AlchemySystem.AlchemySlot, AlchemySystem.StorageSlot);
+            //        //AlchemySystem.Load_Information();
+            //        clicktoggle = true;
+            //    }
+
+            //}
+
+            if (clickedObject.name == "Bag")
             {
-                ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
-                Debug.Log(clickedObject.name);
-                clicktoggle = true;
-                InventorySystem.Load_Information();
-            }
+                if (InventorySystem.Inventory.activeSelf == false && InteractionSystem.UItoken == false)
+                {
+                    InventorySystem.OpenInventory();
+                    InteractionSystem.UItoken = true;
+                }
 
-            else if (StorageSystem.storageUI.activeSelf == true)
-            {
-                ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
-                ItemInformation.Set_Position(StorageSystem.StorageSlot, StorageSystem.InventorySlot);
-                clicktoggle = true;
+                else if (InventorySystem.Inventory.activeSelf == true && InteractionSystem.UItoken == true)
+                {
+                    InventorySystem.CloseInventory();
+                    InteractionSystem.UItoken = false;
+                }
             }
-
-            else if (AlchemySystem.alchemyUI.activeSelf == true)
-            {
-                ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
-                ItemInformation.Set_Position(AlchemySystem.AlchemySlot, AlchemySystem.StorageSlot);
-                //AlchemySystem.Load_Information();
-                clicktoggle = true;
-            }
-
         }
 
-        if (clickedObject.name == "Bag")
+        //우클릭시
+        if (eventData.button.Equals(PointerEventData.InputButton.Right))
         {
-            if (InventorySystem.Inventory.activeSelf == false && InteractionSystem.UItoken == false)
+            if (StorageSystem.storageUI.activeSelf == true && ItemInformation.slot_Select.activeSelf == true)
             {
-                InventorySystem.OpenInventory();
-                InteractionSystem.UItoken = true;
+                Debug.Log("전송 버튼 작동중");
+                StorageSystem.TransItem();
+                ItemInformation.InformationWindow.transform.position = overObject.transform.position;
+                ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
+                ItemInformation.Load_Information(overObject);
             }
 
-            else if (InventorySystem.Inventory.activeSelf == true && InteractionSystem.UItoken == true)
+            if (AlchemySystem.alchemyUI.activeSelf == true && ItemInformation.slot_Select.activeSelf == true && clickedObject != AlchemySystem.resultImageSlot)
             {
-                InventorySystem.CloseInventory();
-                InteractionSystem.UItoken = false;
+                Debug.Log("연금UI 전송 버튼 작동중");
+                AlchemySystem.TransItem();
+                ItemInformation.InformationWindow.transform.position = overObject.transform.position;
+                ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
+                ItemInformation.Load_Information(overObject);
             }
         }
     }
@@ -101,21 +129,38 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
                 ItemInformation.InformationWindow.SetActive(true);
             }
 
-            //인벤토리가 켜졌을 때
-            if (InventorySystem.Inventory.activeSelf == true)
+            ItemInformation.InformationWindow.transform.position = overObject.transform.position;
+            ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
+            ItemInformation.Load_Information(overObject);
+
+            //창고가 켜졌을 때
+            if (StorageSystem.storageUI.activeSelf == true)
             {
-                ItemInformation.InformationWindow.transform.position = overObject.transform.position;
-                ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
-                ItemInformation.Load_Information(overObject);
+                ItemInformation.Set_Position(StorageSystem.StorageImageSlot, StorageSystem.InventoryImageSlot);
+                StorageSystem.storageside = ItemInformation.sidetoken;
             }
 
-            //아이템 슬롯 바로 옆에 생성
-            else
+            //연금UI가 켜졌을 때
+            else if (AlchemySystem.alchemyUI.activeSelf == true && overObject != AlchemySystem.resultImageSlot)
             {
-                ItemInformation.InformationWindow.transform.position = overObject.transform.position;
-                ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
-                ItemInformation.Load_Information(overObject);
+                ItemInformation.Set_Position(AlchemySystem.AlchemyImageSlot, AlchemySystem.StorageImageSlot);
+                AlchemySystem.alchemyside = ItemInformation.sidetoken;
             }
+
+            //if (InventorySystem.Inventory.activeSelf == true)
+            //{
+            //    ItemInformation.InformationWindow.transform.position = overObject.transform.position;
+            //    ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
+            //    ItemInformation.Load_Information(overObject);
+            //}
+
+            ////아이템 슬롯 바로 옆에 생성
+            //else
+            //{
+            //    ItemInformation.InformationWindow.transform.position = overObject.transform.position;
+            //    ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
+            //    ItemInformation.Load_Information(overObject);
+            //}
         }
     }
 

@@ -33,6 +33,7 @@ public class AlchemySystem : MonoBehaviour
     public GameObject alchemyUI;
     public bool alchemyside;
     public bool fullAlchemy_Slot;
+    private bool alchemySusccess;
 
     public GameObject mix_Button;
     public GameObject get_Button;
@@ -299,6 +300,9 @@ public class AlchemySystem : MonoBehaviour
 
     public void Item_Mix()
     {
+        alchemySusccess = false;
+        Mix_ItemList.Clear();
+
         if (AlchemyList.Count == 2)
         {
             Mix_ItemList.Add(AlchemyList[0] + "+" + AlchemyList[1]);
@@ -310,12 +314,17 @@ public class AlchemySystem : MonoBehaviour
 
         Delete_All();
 
+        
+
         for (int i = 0; i < Mix_ItemList.Count; i++)
         {
+            
             for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
             {
                 if (Mix_ItemList[i] == InventorySystem.ItemDB[j]["Recipe"].ToString())
                 {
+                    
+
                     //이미지 연동
                     Image Image = resultImageSlot.GetComponent<Image>();
                     if (resultImageSlot.activeSelf == false)
@@ -331,13 +340,36 @@ public class AlchemySystem : MonoBehaviour
                     Image.sprite = Resources.Load<Sprite>("Image/" + InventorySystem.ItemDB[j]["ImgName"].ToString());
 
                     Debug.Log("합성 성공");
+                    Debug.Log(InventorySystem.ItemDB[j]["ImgName"]);
+                    alchemySusccess = true;
+
                     break;
                 }
 
                 else
                 {
+                    //이미지 연동
+                    Image Image = resultImageSlot.GetComponent<Image>();
+                    if (resultImageSlot.activeSelf == false)
+                    {
+                        resultImageSlot.SetActive(true);
+                    }
+
+                    if (Image.enabled == false)
+                    {
+                        Image.enabled = true;
+                    }
+
+                    Image.sprite = Resources.Load<Sprite>("Image/Twincleglass");
                     Debug.Log("합성 실패. 맞는 레시피가 없습니다.");
+                    
                 }
+
+            }
+
+            if(alchemySusccess == true)
+            {
+                break;
             }
         }
 

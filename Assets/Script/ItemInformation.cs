@@ -66,7 +66,7 @@ public class ItemInformation : MonoBehaviour
             ChooseImage.enabled = true;
         }
 
-        if(overObject.activeSelf == true && slot_Select.activeSelf == true)
+        if(overObject.activeSelf == true && slot_Select.activeSelf == true && overObject.GetComponent<Image>().sprite != null)
         {
             ChooseImage.sprite = overObject.GetComponent<Image>().sprite;
 

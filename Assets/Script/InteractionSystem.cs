@@ -244,6 +244,17 @@ public class InteractionSystem : MonoBehaviour
                 }
                 UItoken = false;
             }
+
+            else if (AlchemySystem.alchemyUI.activeSelf == true && UItoken == true)
+            {
+                AlchemySystem.alchemyUI.SetActive(false);
+                UISystem.clicktoggle = false;
+                if (ItemInformation.slot_Select.activeSelf == true)
+                {
+                    ItemInformation.slot_Select.SetActive(false);
+                }
+                UItoken = false;
+            }
         }
     }
 
