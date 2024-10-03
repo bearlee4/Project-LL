@@ -6,7 +6,7 @@ using UnityEngine;
 public class ElementManager : MonoBehaviour
 {
     private SkillManager skillManager;
-    public Boolean skill_Q = true;
+    public Boolean skill_Q = true;      //스킬사용가능
     public Boolean skill_E = true;
 
     public string skillText_1;
@@ -14,9 +14,11 @@ public class ElementManager : MonoBehaviour
 
     // Pyro, Hydro, Anemo, Geo
     public List<String> Element = new List<String> { "Pyro", "Hydro", "Anemo", "Geo" };
-    public List<float> QSkillDelay = new List<float> { 2f, 3f, 2f, 3f };
-    public List<float> ESkillDelay = new List<float> { 7f, 8f, 8f, 7f };
-    private int currentElement = 0;
+    public List<float> QSkillDelay = new List<float> { 2, 3, 2, 3 };
+    public List<float> ESkillDelay = new List<float> { 7, 8, 8, 7 };
+
+
+    public int currentElement = 0;
 
     void Start() { skillManager = GetComponent<SkillManager>(); }
 
@@ -34,7 +36,10 @@ public class ElementManager : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Tab))    // 원소바꾸기
         {
-            ChangeElement();
+            if (skill_Q && skill_E)       // 스킬 쿨타임 중 못 바꿈
+                ChangeElement();
+            else
+                Debug.Log("스킬 쿨이 돌아가고 있어 바꾸지 못함");
         }
 
     }

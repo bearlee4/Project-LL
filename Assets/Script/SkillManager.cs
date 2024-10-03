@@ -4,74 +4,31 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
+    private ElementManager elementManager;
+    public ObjectPool objectPool;
+
+    public List<float> QSkillDamage = new List<float> { 2, 3, 2, 3 };
+    public List<float> ESkillDamage = new List<float> { 5, 5, 5, 5 };
+
+    void Start() { elementManager = GetComponent<ElementManager>(); }
+
     public void QSkill(int Element)
     {
-        switch (Element)
-        {
-            case 0:
-                PyroQSkill(); break;
-            case 1:
-                HydroQSkill(); break;
-            case 2:
-                AnemoQSkill(); break;
-            case 3:
-                GeoQSkill(); break;
-        }
+        ShootBullet();
+        Debug.Log(elementManager.Element[Element] + " Q Skill Atcivity");
     }
 
     public void ESkill(int Element)
     {
-        switch (Element)
-        {
-            case 0:
-                PyroESkill(); break;
-            case 1:
-                HydroESkill(); break;
-            case 2:
-                AnemoESkill(); break;
-            case 3:
-                GeoESkill(); break;
-        }
 
+        Debug.Log(elementManager.Element[Element] + " E Skill Atcivity");
     }
 
-    public void PyroQSkill()
+    void ShootBullet()
     {
-        Debug.Log("Pyro Q Skill Atcivity");
-    }
-
-    public void PyroESkill()
-    {
-        Debug.Log("Pyro E Skill Atcivity");
-    }
-
-    public void HydroQSkill()
-    {
-        Debug.Log("Hydro Q Skill Atcivity");
-    }
-
-    public void HydroESkill()
-    {
-        Debug.Log("Hydro E Skill Atcivity");
-    }
-
-    public void AnemoQSkill()
-    {
-        Debug.Log("Anemo Q Skill Atcivity");
-    }
-
-    public void AnemoESkill()
-    {
-        Debug.Log("Anemo E Skill Atcivity");
-    }
-
-    public void GeoQSkill()
-    {
-        Debug.Log("Geo Q Skill Atcivity");
-    }
-
-    public void GeoESkill()
-    {
-        Debug.Log("Geo E Skill Atcivity");
+        GameObject bullet = objectPool.GetBullet();
+        bullet.transform.position = transform.position;
+        bullet.transform.rotation = transform.rotation;
+        bullet.GetComponent<Bullet>().Initialize(objectPool);
     }
 }
