@@ -21,16 +21,24 @@ public class InventorySystem : MonoBehaviour
     InteractionSystem InteractionSystem;
 
 
-    public bool FullInventory;
-    private int maxcount;
+    
 
-    //인벤토리 선택 위치
+    //스크립트 내 사용되는 변수들
     public int Positioncount;
-
+    public bool FullInventory;
     public int SetSize;
     public int GetCount;
-
+    private int maxcount;
+    
+    //아이템DB 가져오기
     public List<Dictionary<string, object>> ItemDB;
+
+    //퀵슬롯 관련
+    public List<GameObject> QuickSlot = new List<GameObject>();
+    public List<GameObject> QuickSlotImage = new List<GameObject>();
+    public List<Text> QuickSlotNumberList = new List<Text>();
+    public List<string> QuickSlotList = new List<string>();
+    public List<int> QuickSlotPosition = new List<int>();
 
     //인벤토리 아이템 관련
     public List<string> InventoryList = new List<string>();
@@ -57,11 +65,13 @@ public class InventorySystem : MonoBehaviour
         FullInventory = false;
         maxcount = 99;
         Positioncount = 0;
+        QuickSlotList = new List<string>() { "null", "null", "null" };
+        QuickSlotPosition = new List<int>() { -1, -1, -1 };
 
         ItemDB = CSVReader.Read("ItemDB");
 
         //임의로 지정한 획득한 아이템갯수(나중에 수정예정)
-        GetCount = 1;
+        GetCount = 10;
 
         //기본 사이즈 지정
         ChangeSize(1);
@@ -236,66 +246,16 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    ////슬롯 선택 오브젝트 움직이기
-    //public void Select_Move()
-    //{
-    //    if (Inventory.activeSelf == true)
-    //    {
-    //        if (Input.GetButtonDown("Jump"))
-    //        {
-    //            Debug.Log(Positioncount);
-    //        }
-
-    //        if (Input.GetButtonDown("Left"))
-    //        {
-    //            if (Positioncount != 0)
-    //            {
-    //                Positioncount--;
-    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
-    //            }
-    //        }
-
-    //        else if (Input.GetButtonDown("Right"))
-    //        {
-    //            if (Positioncount < SetSize && ImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true)
-    //            {
-    //                Positioncount++;
-    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
-    //            }
-    //        }
-
-    //        else if (Input.GetButtonDown("Up"))
-    //        {
-    //            if ((Positioncount - 3) >= 0)
-    //            {
-    //                Positioncount -= 3;
-    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
-    //            }
-    //        }
-
-    //        else if (Input.GetButtonDown("Down"))
-    //        {
-    //            if ((Positioncount + 3) <= SetSize && ImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true)
-    //            {
-    //                Positioncount += 3;
-    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
-    //            }
-    //        }
-
-    //        Load_Information();
-    //    }
-    //}
-
-    public void Load_Information()
+    public void Load_Information(GameObject selectObject)
     {
         //Image ChooseImage = ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>();
 
         for (int i = 0; i < Slot_Position.Count; i++)
         {
 
-            if (ItemInformation.slot_Select.transform.position == Slot_Position[i])
+            if (selectObject.transform.position == Slot_Position[i])
             {
-                Debug.Log(i + "번째 칸에 있음");
+                Debug.Log(i+1 + "번째 칸에 있음");
                 Positioncount = i;
 
                 //if (ChooseImage.enabled == false)
@@ -367,8 +327,14 @@ public class InventorySystem : MonoBehaviour
                     NumberList[number].text = CountList[number].ToString();
                     Debug.Log("아이템을 사용하였습니다.");
 
+                    //아이템을 다 사용했을 떄
                     if (CountList[number] == 0)
                     {
+                        if(QuickSlotList.Contains(InventoryList[number]))
+                        {
+                            Quick_Reset(InventoryList[number]);
+                        }
+
                         DeleteItem(InventoryList[number]);
                     }
                     break;
@@ -458,5 +424,233 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
+    public void Set_QuickSlot()
+    {
+        bool delete_toggle;
+        delete_toggle = false;
+
+        //누른 위치 포지션 순서 값 가져오기
+        Load_Information(UISystem.overObject);
+
+        for (int i = 0; i <= ItemDB.Count; i++)
+        {
+
+            //소모품인지 알아내기
+            if (InventoryList[Positioncount].ToString() == ItemDB[i]["ImgName"].ToString())
+            {
+
+                //소모품이 맞을 경우
+                if (ItemDB[i]["UseItem"].ToString() == "O")
+                {
+                    //포지션 카운트로 퀵슬롯에 지정되어 있는지 확인
+                    for (int n = 0; n < QuickSlotPosition.Count; n++)
+                    {
+                        //지정되어 있을 경우 퀵슬롯 해제
+                        if (QuickSlotPosition[n] == Positioncount)
+                        {
+                            QuickSlotList[n] = "null";
+                            QuickSlotPosition[n] = -1;
+                            Debug.Log("퀵슬롯 해제");
+                            
+                            //퀵슬롯 해제에 사용함
+                            delete_toggle = true;
+                            break;
+
+                        }
+                    }
+
+                    //삭제 용도로 돌아간게 아닐 경우
+                    if(delete_toggle == false)
+                    {
+                        //퀵슬롯 지정
+                        for (int j = 0; j < QuickSlotList.Count; j++)
+                        {
+                            if (QuickSlotList[j] == "null")
+                            {
+                                //퀵슬롯 좌표 및 정보 저장
+                                QuickSlotList[j] = InventoryList[Positioncount];
+                                QuickSlotPosition[j] = Positioncount;
+
+                                Debug.Log(j);
+                                Debug.Log(QuickSlotList[j]);
+                                Debug.Log(QuickSlotPosition[j]);
+
+                                break;
+
+                            }
+
+                            else
+                            {
+                                Debug.Log("퀵슬롯이 꽉차있습니다.");
+                            }
+                        }
+                    }
+
+
+                    break;
+                }
+
+                //아닐 경우
+                else
+                {
+                    Debug.Log("소모품이 아닙니다.");
+                    break;
+                }
+            }
+
+        }
+
+        //퀵슬롯에 선택된 인벤토리 정보 연동
+        Quick_Load_Info();
+    }
+
+    public void Quick_Load_Info()
+    {
+
+        //연동하기 전 퀵슬롯 정보 리셋
+        for (int i = 0; i < QuickSlot.Count; i++)
+        {
+            if (QuickSlotImage[i].activeSelf == true)
+            {
+                QuickSlotImage[i].SetActive(false);
+            }
+
+            Image Image = QuickSlotImage[i].GetComponent<Image>();
+            Image.sprite = null;
+            if (Image.enabled == true)
+            {
+                Image.enabled = false;
+            }
+
+            QuickSlotNumberList[i].text = null;
+        }
+
+        
+        for (int i = 0; i < QuickSlotList.Count; i ++)
+        {
+
+            //null 아닌 값이 있을 경우
+            if (QuickSlotList[i] != "null")
+            {
+
+                //이미지 연동
+                Image QuickImage = QuickSlotImage[i].GetComponent<Image>();
+                Image InventoryImage = ImageSlot[i].GetComponent<Image>();
+
+
+
+                //인벤토리 이동이 있을때
+                for (int j = 0; j < InventoryList.Count; j++)
+                {
+                    if (QuickSlotList[i] == InventoryList[j])
+                    {
+                        InventoryImage = ImageSlot[j].GetComponent<Image>();
+                        QuickSlotPosition[i] = j;
+
+                        //텍스트 연동
+                        QuickSlotNumberList[i].text = NumberList[j].text;
+
+                        break;
+                    }
+                }
+                //폐기 예정
+                if (InventoryImage.sprite == null)
+                {
+                    Debug.Log("이거 지금 작동하면 안됨");
+                    
+                }
+
+                else
+                {
+                    
+                }
+
+
+                //퀵슬롯 이미지가 꺼져있을 경우
+                if (QuickSlotImage[i].activeSelf == false)
+                {
+                    QuickSlotImage[i].SetActive(true);
+                }
+
+                //이미지 컴포넌트가 꺼져있을 경우 키고 이미지 받아오기
+                if (QuickImage.enabled == false)
+                {
+                    QuickImage.enabled = true;
+                }
+
+                QuickImage.sprite = InventoryImage.sprite;
+                
+            }
+        }
+    }
+
+    public void Quick_Reset(string name)
+    {
+
+        for (int i = 0; i < QuickSlotList.Count; i ++)
+        {
+            if (QuickSlotList[i] == name)
+            {
+
+                //정보 리셋
+                QuickSlotList[i] = "null";
+                QuickSlotPosition[i] = -1;
+                QuickSlotImage[i].SetActive(false);
+                break;
+
+            }
+        }
+    }
+
+    //준 폐기
+    ////슬롯 선택 오브젝트 움직이기
+    //public void Select_Move()
+    //{
+    //    if (Inventory.activeSelf == true)
+    //    {
+    //        if (Input.GetButtonDown("Jump"))
+    //        {
+    //            Debug.Log(Positioncount);
+    //        }
+
+    //        if (Input.GetButtonDown("Left"))
+    //        {
+    //            if (Positioncount != 0)
+    //            {
+    //                Positioncount--;
+    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
+    //            }
+    //        }
+
+    //        else if (Input.GetButtonDown("Right"))
+    //        {
+    //            if (Positioncount < SetSize && ImageSlot[Positioncount + 1].GetComponent<Image>().enabled == true)
+    //            {
+    //                Positioncount++;
+    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
+    //            }
+    //        }
+
+    //        else if (Input.GetButtonDown("Up"))
+    //        {
+    //            if ((Positioncount - 3) >= 0)
+    //            {
+    //                Positioncount -= 3;
+    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
+    //            }
+    //        }
+
+    //        else if (Input.GetButtonDown("Down"))
+    //        {
+    //            if ((Positioncount + 3) <= SetSize && ImageSlot[Positioncount + 3].GetComponent<Image>().enabled == true)
+    //            {
+    //                Positioncount += 3;
+    //                Inventory_Select.transform.position = Slot_Position[Positioncount];
+    //            }
+    //        }
+
+    //        Load_Information();
+    //    }
+    //}
 
 }

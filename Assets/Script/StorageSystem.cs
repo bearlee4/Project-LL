@@ -20,6 +20,9 @@ public class StorageSystem : MonoBehaviour
     private GameObject canvas;
     UISystem UISystem;
 
+    private GameObject Player;
+    InteractionSystem InteractionSystem;
+
     //인벤토리측 슬롯
     public List<GameObject> InventorySlot = new List<GameObject>();
     public List<GameObject> InventoryImageSlot = new List<GameObject>();
@@ -42,6 +45,8 @@ public class StorageSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Player = GameObject.Find("Player");
+        InteractionSystem = Player.GetComponent<InteractionSystem>();
 
         canvas = GameObject.Find("Canvas");
         UISystem = canvas.GetComponent<UISystem>();
@@ -283,6 +288,7 @@ public class StorageSystem : MonoBehaviour
 
     public void TransItem()
     {
+        
         int transnumber = 1;
 
         storageside = ItemInformation.sidetoken;
@@ -301,6 +307,11 @@ public class StorageSystem : MonoBehaviour
                     {
                         if (StorageList[i] == InventorySystem.ItemDB[j]["ImgName"].ToString())
                         {
+                            if (InteractionSystem.max_Trans_toggle == true)
+                            {
+                                transnumber = StorageCountList[i];
+                            }
+
                             InventorySystem.AddInventory(InventorySystem.ItemDB[j]["ImgName"], transnumber);
                             break;
                         }
@@ -323,6 +334,11 @@ public class StorageSystem : MonoBehaviour
                 //인벤토리 to 창고
                 if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position)
                 {
+                    if (InteractionSystem.max_Trans_toggle == true)
+                    {
+                        transnumber = InventorySystem.CountList[i];
+                    }
+
                     AddStorage(InventorySystem.InventoryList[i], transnumber);
                     InventoryUse(i, transnumber);
 
