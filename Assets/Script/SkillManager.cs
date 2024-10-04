@@ -10,7 +10,13 @@ public class SkillManager : MonoBehaviour
     public List<float> QSkillDamage = new List<float> { 2, 3, 2, 3 };
     public List<float> ESkillDamage = new List<float> { 5, 5, 5, 5 };
 
-    void Start() { elementManager = GetComponent<ElementManager>(); }
+    Camera cam;
+
+    void Start() 
+    { 
+        elementManager = GetComponent<ElementManager>(); 
+        cam = Camera.main;
+    }
 
     public void QSkill(int Element)
     {
@@ -26,9 +32,15 @@ public class SkillManager : MonoBehaviour
 
     void ShootBullet()
     {
+
         GameObject bullet = objectPool.GetBullet();
         bullet.transform.position = transform.position;
         bullet.transform.rotation = transform.rotation;
-        bullet.GetComponent<Bullet>().Initialize(objectPool);
+
+        Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0;
+        Vector2 dir = (mousePos - transform.position).normalized;
+
+        bullet.GetComponent<Bullet>().Initialize(objectPool, dir);
     }
 }

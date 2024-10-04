@@ -12,21 +12,24 @@ public class Bullet : MonoBehaviour
     public ObjectPool objectPool;
     public float damage;
 
+    private Vector2 dir;
+
     void Start() 
     { 
         elementManager = GetComponent<ElementManager>();
         skillManager = GetComponent<SkillManager>(); 
     }
 
-    public void Initialize(ObjectPool Pool)
+    public void Initialize(ObjectPool Pool, Vector2 direction)
     {
         objectPool = Pool;
+        dir = direction.normalized;
         Invoke("ReturnToPool", time);
     }
 
     void Update()
     {
-        transform.Translate(Vector2.up * speed * Time.deltaTime);
+        transform.Translate(dir * speed * Time.deltaTime);
     }
 
     void ReturnToPool()
