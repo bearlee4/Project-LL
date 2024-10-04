@@ -19,6 +19,8 @@ public class InteractionSystem : MonoBehaviour
     private bool storageincounter;
     private bool alchemyincounter;
 
+    public bool max_Trans_toggle;
+
     //테스트용
     private bool backhomeincounter;
 
@@ -40,6 +42,8 @@ public class InteractionSystem : MonoBehaviour
         ItemInformation = Manager.GetComponent<ItemInformation>();
         AlchemySystem = Manager.GetComponent<AlchemySystem>();
         ItemDB = CSVReader.Read("ItemDB");
+
+        max_Trans_toggle = false;
 
         backhomeincounter = false;
     }
@@ -119,6 +123,40 @@ public class InteractionSystem : MonoBehaviour
 
     public void CheckButton()
     {
+        //UI가 꺼져 있을때만 작동
+        if (UItoken == false)
+        {
+            //1 버튼
+            //1번 퀵슬롯에 지정해둔게 있을때
+            if (Input.GetButtonDown("QuickSlot1") && InventorySystem.QuickSlotList[0] != "null")
+            {
+                //그 아이템 사용
+                InventorySystem.UseItem(InventorySystem.QuickSlotPosition[0]);
+                //정보 리로드
+                InventorySystem.Quick_Load_Info();
+            }
+
+            //2 버튼
+            //2번 퀵슬롯에 지정해둔게 있을때
+            if (Input.GetButtonDown("QuickSlot2") && InventorySystem.QuickSlotList[1] != "null")
+            {
+                //그 아이템 사용
+                InventorySystem.UseItem(InventorySystem.QuickSlotPosition[1]);
+                //정보 리로드
+                InventorySystem.Quick_Load_Info();
+            }
+
+            //3 버튼
+            //3번 퀵슬롯에 지정해둔게 있을때
+            if (Input.GetButtonDown("QuickSlot1") && InventorySystem.QuickSlotList[2] != "null")
+            {
+                //그 아이템 사용
+                InventorySystem.UseItem(InventorySystem.QuickSlotPosition[2]);
+                //정보 리로드
+                InventorySystem.Quick_Load_Info();
+            }
+        }
+
         //F버튼
         if (Input.GetButtonDown("Interaction"))
         {
@@ -255,6 +293,17 @@ public class InteractionSystem : MonoBehaviour
                 }
                 UItoken = false;
             }
+        }
+
+        //Ctrl 버튼
+        if (Input.GetButton("Ctrl"))
+        {
+            max_Trans_toggle = true;
+        }
+
+        else if (Input.GetButtonUp("Ctrl"))
+        {
+            max_Trans_toggle = false;
         }
     }
 

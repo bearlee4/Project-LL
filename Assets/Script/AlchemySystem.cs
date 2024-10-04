@@ -45,7 +45,6 @@ public class AlchemySystem : MonoBehaviour
         canvas = GameObject.Find("Canvas");
         UISystem = canvas.GetComponent<UISystem>();
 
-        alchemyUI = GameObject.Find("AlchemyUI");
         StorageSystem = this.GetComponent<StorageSystem>();
         ItemInformation = this.GetComponent<ItemInformation>();
         InventorySystem = this.GetComponent<InventorySystem>();
@@ -55,7 +54,11 @@ public class AlchemySystem : MonoBehaviour
 
         mix_Button.SetActive(false);
         get_Button.SetActive(false);
-        alchemyUI.SetActive(false);
+
+        if (alchemyUI.activeSelf == true)
+        {
+            alchemyUI.SetActive(false);
+        }
 
     }
 

@@ -50,19 +50,21 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             Debug.Log("좌클릭");
 
             //아이템 창 클릭
-            if (clickedObject.tag == "ItemImage")
+            if (clickedObject.tag == "ItemImage" && clickedObject.name != "QuickSlotImage")
             {
                 RectTransform objectSize = clickedObject.GetComponent<RectTransform>();
                 slotSize.sizeDelta = new Vector2(objectSize.sizeDelta.x + 10, objectSize.sizeDelta.y + 10);
 
+                //인벤토리 슬롯 클릭
                 if (InventorySystem.Inventory.activeSelf == true)
                 {
                     ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
                     Debug.Log(clickedObject.name);
                     clicktoggle = true;
-                    InventorySystem.Load_Information();
+                    InventorySystem.Load_Information(ItemInformation.slot_Select);
                 }
 
+                //창고 슬롯 클릭
                 else if (StorageSystem.storageUI.activeSelf == true)
                 {
                     ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
@@ -70,6 +72,7 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
                     clicktoggle = true;
                 }
 
+                //연금 슬롯 클릭
                 else if (AlchemySystem.alchemyUI.activeSelf == true)
                 {
                     ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
@@ -80,6 +83,7 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
 
             }
 
+            //가방UI 클릭시
             if (clickedObject.name == "Bag")
             {
                 if (InventorySystem.Inventory.activeSelf == false && InteractionSystem.UItoken == false)
@@ -99,6 +103,13 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         //우클릭시
         if (eventData.button.Equals(PointerEventData.InputButton.Right))
         {
+            //퀵슬롯 지정
+            if (InventorySystem.Inventory.activeSelf == true)
+            {
+                InventorySystem.Set_QuickSlot();
+            }
+
+            //창고 UI 전송시스템
             if (StorageSystem.storageUI.activeSelf == true && ItemInformation.slot_Select.activeSelf == true)
             {
                 ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
@@ -108,6 +119,7 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
                 StorageSystem.TransItem();  
             }
 
+            //연금 UI 전송시스템
             if (AlchemySystem.alchemyUI.activeSelf == true && ItemInformation.slot_Select.activeSelf == true && clickedObject != AlchemySystem.resultImageSlot)
             {
                 ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
@@ -132,6 +144,12 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             ItemInformation.InformationWindow.transform.position = overObject.transform.position;
             ItemInformation.InformationWindow.transform.position += new Vector3(150, -200, 0);
             ItemInformation.Load_Information(overObject);
+
+            //인벤토리가 켜졌을 떄
+            if (InventorySystem.Inventory.activeSelf == true)
+            {
+                InventorySystem.Load_Information(ItemInformation.slot_Select);
+            }
 
             //창고가 켜졌을 때
             if (StorageSystem.storageUI.activeSelf == true)
