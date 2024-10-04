@@ -35,7 +35,7 @@ public class SkillManager : MonoBehaviour
 
         GameObject bullet = objectPool.GetBullet();
         bullet.transform.position = transform.position;
-        bullet.transform.rotation = transform.rotation;
+        //bullet.transform.rotation = transform.rotation;
 
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
