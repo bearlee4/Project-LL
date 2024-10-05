@@ -556,7 +556,7 @@ public class InventorySystem : MonoBehaviour
 
                 //이미지 연동
                 Image QuickImage = QuickSlotImage[i].GetComponent<Image>();
-                Image InventoryImage = ImageSlot[i].GetComponent<Image>();
+                Image InventoryImage = ImageSlot[QuickSlotPosition[i]].GetComponent<Image>();
 
 
 
