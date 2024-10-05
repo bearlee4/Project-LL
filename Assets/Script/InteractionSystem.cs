@@ -198,7 +198,7 @@ public class InteractionSystem : MonoBehaviour
 
                 else if (AlchemySystem.alchemyUI.activeSelf == true && UItoken == true)
                 {
-                    AlchemySystem.alchemyUI.SetActive(false);
+                    AlchemySystem.CloseAlchemy();
                     UISystem.clicktoggle = false;
                     if (ItemInformation.slot_Select.activeSelf == true)
                     {

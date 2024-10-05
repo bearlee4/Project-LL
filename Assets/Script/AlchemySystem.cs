@@ -38,6 +38,9 @@ public class AlchemySystem : MonoBehaviour
     public GameObject mix_Button;
     public GameObject get_Button;
 
+    private int pageNumber;
+    private int pagecalcul;
+    public Text pageText;
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +63,9 @@ public class AlchemySystem : MonoBehaviour
             alchemyUI.SetActive(false);
         }
 
+        pageNumber = 1;
+        pagecalcul = 12 * (pageNumber - 1);
+
     }
 
     // Update is called once per frame
@@ -80,7 +86,35 @@ public class AlchemySystem : MonoBehaviour
         {
             AlchemySlot[num].SetActive(false);
         }
+
+        if (mix_Button.activeSelf == true && AlchemyList.Count < 2)
+        {
+            mix_Button.SetActive(false);
+        }
+
+        LinkStorage();
     }
+
+    //창고 UI 닫기
+    public void CloseAlchemy()
+    {
+        Debug.Log("Alchemy close");
+        //연금 슬롯에 넣어둔게 있을때
+        if(AlchemyList.Any())
+        {
+            for (int i = 0; i < AlchemyList.Count; i++)
+            {
+                StorageSystem.AddStorage(AlchemyList[i], 1);
+                AlchemyImageSlot[i].SetActive(false);
+            }
+
+            AlchemyList.Clear();
+            fullAlchemy_Slot = false;
+        }
+
+        alchemyUI.SetActive(false);
+    }
+
 
     public void Slot_Reset()
     {
@@ -95,29 +129,36 @@ public class AlchemySystem : MonoBehaviour
 
     public void LinkStorage()
     {
+        int count = 0;
+
         Slot_Reset();
         if (StorageSystem.StorageList.Any() == true)
         {
-            for (int i = 0; i < StorageSystem.StorageList.Count; i++)
+            for (int i = 0 + pagecalcul; i < StorageSystem.StorageList.Count; i++)
             {
                 //이미지 연동
-                Image Image = StorageImageSlot[i].GetComponent<Image>();
-                Image StorageImage = StorageSystem.StorageImageSlot[i].GetComponent<Image>();
-                if (StorageImageSlot[i].activeSelf == false)
+                Image Image = StorageImageSlot[i - pagecalcul].GetComponent<Image>();
+                //Image StorageImage = StorageSystem.StorageImageSlot[i].GetComponent<Image>();
+                if (StorageImageSlot[i - pagecalcul].activeSelf == false)
                 {
-                    StorageImageSlot[i].SetActive(true);
+                    StorageImageSlot[i - pagecalcul].SetActive(true);
                 }
 
                 if (Image.enabled == false)
                 {
-                    Image.sprite = StorageImage.sprite;
+                    Image.sprite = Resources.Load<Sprite>("Image/" + StorageSystem.StorageList[i]);
                     Image.enabled = true;
                 }
 
                 //텍스트 연동
-                StorageNumberList[i].text = StorageSystem.StorageNumberList[i].text;
+                StorageNumberList[i - pagecalcul].text = StorageSystem.StorageCountList[i].ToString();
 
+                count++;
 
+                if(count == 12)
+                {
+                    break;
+                }
             }
         }
     }
@@ -159,17 +200,20 @@ public class AlchemySystem : MonoBehaviour
         //창고 to 연금솥
         else
         {
-            for (int i = 0; i < StorageSystem.StorageList.Count; i++)
+            for (int i = 0 + pagecalcul; i < StorageSystem.StorageList.Count; i++)
             {
-                if (ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position && fullAlchemy_Slot == false)
+                if (ItemInformation.slot_Select.transform.position == StorageSlot[i - pagecalcul].transform.position && fullAlchemy_Slot == false)
                 {
 
                     AddAlchemy(StorageSystem.StorageList[i]);
                     StorageSystem.StorageUse(i, transnumber);
 
+                    Debug.Log("StorageSystem.StorageList[i] : " + StorageSystem.StorageList[i]);
+                    Debug.Log("StorageSystem.StorageCountList[i] : " + StorageSystem.StorageCountList[i]);
+
                     LinkStorage();
 
-                    if (StorageImageSlot[i].activeSelf == true && StorageImageSlot[i].GetComponent<Image>().sprite != null)
+                    if (StorageImageSlot[i - pagecalcul].activeSelf == true && StorageImageSlot[i - pagecalcul].GetComponent<Image>().sprite != null)
                     {
                         ItemInformation.Load_Information(UISystem.overObject);
                     }
@@ -393,6 +437,28 @@ public class AlchemySystem : MonoBehaviour
                 get_Button.SetActive(false);
                 LinkStorage();
             }
+        }
+    }
+
+    public void Next_Page()
+    {
+        if (StorageSystem.StorageList.Count > 12 + pagecalcul)
+        {
+            pageNumber++;
+            pagecalcul = (12 * (pageNumber - 1));
+            pageText.text = pageNumber.ToString();
+            LinkStorage();
+        }
+    }
+
+    public void Back_Page()
+    {
+        if (pageNumber != 1)
+        {
+            pageNumber--;
+            pagecalcul = (12 * (pageNumber - 1));
+            pageText.text = pageNumber.ToString();
+            LinkStorage();
         }
     }
 }

@@ -71,10 +71,10 @@ public class InventorySystem : MonoBehaviour
         ItemDB = CSVReader.Read("ItemDB");
 
         //임의로 지정한 획득한 아이템갯수(나중에 수정예정)
-        GetCount = 10;
+        GetCount = 99;
 
         //기본 사이즈 지정
-        ChangeSize(1);
+        ChangeSize(3);
 
         //선택 이미지 초기 위치 지정
         //Inventory_Select.transform.position = Slot[0].transform.position;
@@ -185,15 +185,15 @@ public class InventorySystem : MonoBehaviour
                         Debug.Log("이거 작동중임?");
 
                         // 아이템 습득 후 갯수가 99이하일때
-                        if ((CountList[i] + number) < maxcount)
+                        if ((CountList[i] + number) <= maxcount)
                         {
                             CountList[i] += number;
                             Debug.Log(CountList[i]);
                             Debug.Log("같은 아이템을 가지고 있습니다.");
                         }
 
-                        //// 아이템 습득 후 갯수가 99이상일 때
-                        else if ((CountList[i] + number) >= maxcount)
+                        //// 아이템 습득 후 갯수가 99초과일 때
+                        else if ((CountList[i] + number) > maxcount)
                         {
                             if ((InventoryList.Count + 1) > SetSize)
                             {
@@ -335,7 +335,7 @@ public class InventorySystem : MonoBehaviour
                             Quick_Reset(InventoryList[number]);
                         }
 
-                        DeleteItem(InventoryList[number]);
+                        DeleteItem(InventoryList[number], number);
                     }
                     break;
                 }
@@ -351,23 +351,23 @@ public class InventorySystem : MonoBehaviour
     }
 
     //아이템 삭제
-    public void DeleteItem(string name)
+    public void DeleteItem(string name, int position)
     {
         for (int i = 0; i < InventoryList.Count; i++)
         {
-            if (InventoryList[i] == name)
+            if (InventoryList[position] == name)
             {
                 //아이템 사용으로 인벤토리에 아무것도 안남을때
                 if (InventoryList.Count == 1)
                 {
-                    NumberList[i].text = null;
-                    NumberList[i].gameObject.SetActive(false);
+                    NumberList[position].text = null;
+                    NumberList[position].gameObject.SetActive(false);
                     //Inventory_Select.SetActive(false);
-                    ImageSlot[i].GetComponent<Image>().sprite = null;
-                    ImageSlot[i].GetComponent<Image>().enabled = false;
-                    if (ImageSlot[i].activeSelf == true)
+                    ImageSlot[position].GetComponent<Image>().sprite = null;
+                    ImageSlot[position].GetComponent<Image>().enabled = false;
+                    if (ImageSlot[position].activeSelf == true)
                     {
-                        ImageSlot[i].SetActive(false);
+                        ImageSlot[position].SetActive(false);
                     }
                     //Content.text = null;
                     //ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().sprite = null;
@@ -377,7 +377,7 @@ public class InventorySystem : MonoBehaviour
                 else
                 {
 
-                    for (int j = i; j < InventoryList.Count; j++)
+                    for (int j = position; j < InventoryList.Count; j++)
                     {
                         //인벤토리 마지막 칸이 아닐때 다음 슬롯 정보 당겨오기
                         if ((j + 1) < InventoryList.Count)
@@ -407,15 +407,15 @@ public class InventorySystem : MonoBehaviour
 
                     }
                 }
-                InventoryList.RemoveAt(i);
-                CountList.RemoveAt(i);
+                InventoryList.RemoveAt(position);
+                CountList.RemoveAt(position);
 
                 if (InventoryList.Count < SetSize)
                 {
                     FullInventory = false;
                 }
 
-                if (ImageSlot[i].activeSelf == false)
+                if (ImageSlot[position].activeSelf == false)
                 {
                     ItemInformation.slot_Select.SetActive(false);
                     UISystem.clicktoggle = false;
@@ -442,12 +442,20 @@ public class InventorySystem : MonoBehaviour
                 //소모품이 맞을 경우
                 if (ItemDB[i]["UseItem"].ToString() == "O")
                 {
-                    //포지션 카운트로 퀵슬롯에 지정되어 있는지 확인
+                    Debug.Log("QuickSlotPosition[0] : " + QuickSlotPosition[0]);
+                    Debug.Log("QuickSlotPosition[1] : " + QuickSlotPosition[1]);
+                    Debug.Log("QuickSlotPosition[2] : " + QuickSlotPosition[2]);
+
+                    //포지션 카운트로 퀵슬롯에 지정되어 있는지 확인 + 같은 종류가 있는지 체크
                     for (int n = 0; n < QuickSlotPosition.Count; n++)
                     {
+                       
                         //지정되어 있을 경우 퀵슬롯 해제
                         if (QuickSlotPosition[n] == Positioncount)
                         {
+                            Debug.Log("QuickSlotPosition[n] : " + QuickSlotPosition[n]);
+                            Debug.Log("Positioncount : " + Positioncount);
+
                             QuickSlotList[n] = "null";
                             QuickSlotPosition[n] = -1;
                             Debug.Log("퀵슬롯 해제");
@@ -457,10 +465,23 @@ public class InventorySystem : MonoBehaviour
                             break;
 
                         }
+
+                        //같은 종류가 있을 경우 추가 못하게 막기
+                        if (QuickSlotList[n] == InventoryList[Positioncount])
+                        {
+                            Debug.Log("같은 종류의 아이템이 등록되어 있습니다.");
+
+                            //아래 코드 못돌아가게 설정
+                            delete_toggle = true;
+
+
+                        }
+
+
                     }
 
                     //삭제 용도로 돌아간게 아닐 경우
-                    if(delete_toggle == false)
+                    if (delete_toggle == false)
                     {
                         //퀵슬롯 지정
                         for (int j = 0; j < QuickSlotList.Count; j++)
@@ -472,8 +493,8 @@ public class InventorySystem : MonoBehaviour
                                 QuickSlotPosition[j] = Positioncount;
 
                                 Debug.Log(j);
-                                Debug.Log(QuickSlotList[j]);
-                                Debug.Log(QuickSlotPosition[j]);
+                                Debug.Log("QuickSlotList[j] : " + QuickSlotList[j]);
+                                Debug.Log("QuickSlotPosition[j] : " + QuickSlotPosition[j]);
 
                                 break;
 
@@ -540,30 +561,25 @@ public class InventorySystem : MonoBehaviour
 
 
                 //인벤토리 이동이 있을때
-                for (int j = 0; j < InventoryList.Count; j++)
+                if (QuickSlotList[i] != InventoryList[QuickSlotPosition[i]])
                 {
-                    if (QuickSlotList[i] == InventoryList[j])
+                    Debug.Log("이동 감지");
+
+                    for (int j = 0; j < InventoryList.Count; j++)
                     {
-                        InventoryImage = ImageSlot[j].GetComponent<Image>();
-                        QuickSlotPosition[i] = j;
+                        if (QuickSlotList[i] == InventoryList[j] && QuickSlotNumberList[i] == NumberList[j])
+                        {
+                            InventoryImage = ImageSlot[j].GetComponent<Image>();
+                            QuickSlotPosition[i] = j;
 
-                        //텍스트 연동
-                        QuickSlotNumberList[i].text = NumberList[j].text;
+                            //텍스트 연동
+                            QuickSlotNumberList[i].text = NumberList[j].text;
 
-                        break;
+                            break;
+                        }
                     }
                 }
-                //폐기 예정
-                if (InventoryImage.sprite == null)
-                {
-                    Debug.Log("이거 지금 작동하면 안됨");
-                    
-                }
-
-                else
-                {
-                    
-                }
+                
 
 
                 //퀵슬롯 이미지가 꺼져있을 경우
@@ -579,7 +595,10 @@ public class InventorySystem : MonoBehaviour
                 }
 
                 QuickImage.sprite = InventoryImage.sprite;
-                
+
+                //텍스트 연동
+                QuickSlotNumberList[i].text = NumberList[QuickSlotPosition[i]].text;
+
             }
         }
     }

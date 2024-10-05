@@ -35,12 +35,14 @@ public class StorageSystem : MonoBehaviour
 
     //창고 아이템 관련
     public List<string> StorageList = new List<string>();
-    private List<int> StorageCountList = new List<int>();
+    public List<int> StorageCountList = new List<int>();
 
     private int maxcount;
     public bool storageside;
 
-    //private int storagearray;
+    private int pageNumber;
+    private int pagecalcul;
+    public Text pageText;
 
     // Start is called before the first frame update
     void Start()
@@ -58,8 +60,8 @@ public class StorageSystem : MonoBehaviour
         ItemInformation = this.GetComponent<ItemInformation>();
 
         maxcount = 99;
-
-        //storagearray = 4;
+        pageNumber = 1;
+        pagecalcul = 12 * (pageNumber - 1);
 
         storageside = false;
 
@@ -122,6 +124,8 @@ public class StorageSystem : MonoBehaviour
         {
             InventorySlot[num].SetActive(false);
         }
+
+        Reload_Info();
     }
 
     public void CloseStorage()
@@ -198,7 +202,7 @@ public class StorageSystem : MonoBehaviour
         for (int i = 0; i < InventoryCount; i++)
         {
             AddStorage(InventorySystem.InventoryList[0], InventorySystem.CountList[0]);
-            InventorySystem.DeleteItem(InventorySystem.InventoryList[0]);
+            InventorySystem.DeleteItem(InventorySystem.InventoryList[0], 0);
         }
 
         Debug.Log("모든 아이템이 창고로 옮겨졌습니다.");
@@ -226,15 +230,15 @@ public class StorageSystem : MonoBehaviour
                 if (StorageList[n] == name)
                 {
                     // 아이템 습득 후 갯수가 99이하일때
-                    if ((StorageCountList[n] + count) < maxcount)
+                    if ((StorageCountList[n] + count) <= maxcount)
                     {
                         StorageCountList[n] += count;
                         Debug.Log(StorageCountList[n]);
                         Debug.Log("같은 아이템을 가지고 있습니다.");
                     }
 
-                    //// 아이템 습득 후 갯수가 99이상일 때
-                    else if ((StorageCountList[n] + count) >= maxcount)
+                    //// 아이템 습득 후 갯수가 99초과일 때
+                    else if ((StorageCountList[n] + count) > maxcount)
                     {
                         Debug.Log("99개가 넘는다!!");
                         StorageCountList[n] += count;
@@ -244,7 +248,6 @@ public class StorageSystem : MonoBehaviour
                         StorageList.Add(name);
                         StorageCountList.Add(nextcount);
                     }
-                    StorageNumberList[n].text = StorageCountList[n].ToString();
 
                     break;
                 }
@@ -254,36 +257,38 @@ public class StorageSystem : MonoBehaviour
 
         Debug.Log("Add Storage");
 
-        //갯수 텍스트 키기
-        for (int n = 0; n < StorageList.Count; n++)
-        {
-            if (StorageNumberList[n].gameObject.activeSelf == false)
-            {
-                StorageNumberList[n].gameObject.SetActive(true);
-                StorageNumberList[n].text = StorageCountList[n].ToString();
-                break;
-            }
-        }
+        Reload_Info();
 
-        // 이미지 생성
-        for (int num = 0; num < StorageList.Count; num++)
-        {
-            //이미지 연동
-            Image Image = StorageImageSlot[num].GetComponent<Image>();
+        ////갯수 텍스트 키기
+        //for (int n = 0; n < StorageList.Count; n++)
+        //{
+        //    if (StorageNumberList[n].gameObject.activeSelf == false)
+        //    {
+        //        StorageNumberList[n].gameObject.SetActive(true);
+        //        StorageNumberList[n].text = StorageCountList[n].ToString();
+        //        break;
+        //    }
+        //}
 
-            if (StorageImageSlot[num].activeSelf == false)
-            {
-                StorageImageSlot[num].SetActive(true);
-            }
+        //// 이미지 생성
+        //for (int num = 0; num < StorageList.Count; num++)
+        //{
+        //    //이미지 연동
+        //    Image Image = StorageImageSlot[num].GetComponent<Image>();
 
-            if (Image.enabled == false)
-            {
-                Image.enabled = true;
-            }
+        //    if (StorageImageSlot[num].activeSelf == false)
+        //    {
+        //        StorageImageSlot[num].SetActive(true);
+        //    }
 
-            Image.sprite = Resources.Load<Sprite>("Image/" + StorageList[num]);
+        //    if (Image.enabled == false)
+        //    {
+        //        Image.enabled = true;
+        //    }
 
-        }
+        //    Image.sprite = Resources.Load<Sprite>("Image/" + StorageList[num]);
+
+        //}
     }
 
     public void TransItem()
@@ -305,11 +310,12 @@ public class StorageSystem : MonoBehaviour
 
                     for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
                     {
-                        if (StorageList[i] == InventorySystem.ItemDB[j]["ImgName"].ToString())
+                        if (StorageList[i + pagecalcul] == InventorySystem.ItemDB[j]["ImgName"].ToString())
                         {
+                            //컨트롤키 눌러져 있을 시
                             if (InteractionSystem.max_Trans_toggle == true)
                             {
-                                transnumber = StorageCountList[i];
+                                transnumber = StorageCountList[i + pagecalcul];
                             }
 
                             InventorySystem.AddInventory(InventorySystem.ItemDB[j]["ImgName"], transnumber);
@@ -319,7 +325,7 @@ public class StorageSystem : MonoBehaviour
 
                     if (InventorySystem.FullInventory == false)
                     {
-                        StorageUse(i, transnumber);
+                        StorageUse(i + pagecalcul, transnumber);
                     }
 
                     break;
@@ -347,6 +353,8 @@ public class StorageSystem : MonoBehaviour
 
             }
         }
+
+        Reload_Info();
         //토큰 설정밎 포지션 리셋
         //if (StorageList.Any() == false)
         //{
@@ -367,7 +375,7 @@ public class StorageSystem : MonoBehaviour
         InventorySystem.NumberList[number].text = InventorySystem.CountList[number].ToString();
         if (InventorySystem.CountList[number] == 0)
         {
-            InventorySystem.DeleteItem(InventorySystem.InventoryList[number]);
+            InventorySystem.DeleteItem(InventorySystem.InventoryList[number], number);
             InventoryImageSlot[number].SetActive(false);
 
         }
@@ -388,40 +396,50 @@ public class StorageSystem : MonoBehaviour
     public void StorageUse(int number, int transnumber)
     {
         StorageCountList[number] -= transnumber;
-        StorageNumberList[number].text = StorageCountList[number].ToString();
+        //StorageNumberList[number].text = StorageCountList[number].ToString();
         if (StorageCountList[number] == 0)
         {
-            Delete_Storage_Item(StorageList[number]);
+            Delete_Storage_Item(StorageList[number], number);
+            Debug.Log("버그 체크용@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         }
 
-        LinkInventory();
-
+        if (storageUI.activeSelf == true)
+        {
+            LinkInventory();
+        }
     }
 
-    public void Delete_Storage_Item(string name)
+    public void Delete_Storage_Item(string name, int position)
     {
         for (int i = 0; i < StorageList.Count; i++)
         {
-            if (StorageList[i] == name)
+            if (StorageList[position] == name)
             {
                 //아이템 사용으로 인벤토리에 아무것도 안남을때
                 if (StorageList.Count == 1)
                 {
-                    StorageNumberList[i].text = null;
-                    StorageNumberList[i].gameObject.SetActive(false);
-                    StorageImageSlot[i].GetComponent<Image>().sprite = null;
-                    StorageImageSlot[i].GetComponent<Image>().enabled = false;
-                    StorageImageSlot[i].SetActive(false);
+                    StorageNumberList[position].text = null;
+                    StorageNumberList[position].gameObject.SetActive(false);
+                    StorageImageSlot[position].GetComponent<Image>().sprite = null;
+                    StorageImageSlot[position].GetComponent<Image>().enabled = false;
+                    StorageImageSlot[position].SetActive(false);
                     UISystem.clicktoggle = false;
 
                     //ResetPosition();
                     //Reset_Information();
                 }
 
+                //2페이지 이상 첫번째 칸일 때
+                else if (pageNumber >= 2 && position - pagecalcul == 0)
+                {
+                    pageNumber--;
+                    pageText.text = pageNumber.ToString();
+                }
+
                 else
                 {
 
-                    for (int j = i; j < StorageList.Count; j++)
+                    for (int j = position; j < StorageList.Count; j++)
                     {
                         //마지막 칸이 아닐 때 다음 슬롯 정보 땡겨오기
                         if ((j + 1) < StorageList.Count)
@@ -431,12 +449,12 @@ public class StorageSystem : MonoBehaviour
                                 StorageImageSlot[j].SetActive(true);
                             }
 
-                            StorageNumberList[j].text = StorageNumberList[j + 1].text;
-                            StorageImageSlot[j].GetComponent<Image>().sprite = StorageImageSlot[j + 1].GetComponent<Image>().sprite;
+                            StorageNumberList[j].text = StorageCountList[j + 1].ToString();
+                            StorageImageSlot[j].GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/" + StorageList[j + 1]); ;
                         }
 
                         //삭제되는게 마지막 칸일때
-                        else if ((j + 1) == StorageList.Count)
+                        else if ((j + 1) == StorageList.Count && (j + 1) <= 12*pageNumber)
                         {
                             StorageNumberList[j].text = null;
                             StorageNumberList[j].gameObject.SetActive(false);
@@ -445,24 +463,117 @@ public class StorageSystem : MonoBehaviour
                             break;
                         }
 
-                        
+
+
+                        if (j == StorageImageSlot.Count)
+                        {
+                            break;
+                        }
                     }
 
                     Debug.Log("이거 작동 왜 안하냐 ㅅㅂ");
                     ItemInformation.Load_Information(UISystem.overObject);
                 }
 
-                StorageList.RemoveAt(i);
-                StorageCountList.RemoveAt(i);
+                
+                Debug.Log("i는 : " + i);
+                Debug.Log("pageNumber : " + pageNumber);
+                Debug.Log("StorageList.Count : " + StorageList.Count);
+                Debug.Log("StorageCountList.Count : " + StorageCountList.Count);
 
-                if (StorageImageSlot[i].activeSelf == false)
+                StorageList.RemoveAt(position);
+                StorageCountList.RemoveAt(position);
+
+                if (StorageImageSlot[position - pagecalcul].activeSelf == false)
                 {
                     ItemInformation.slot_Select.SetActive(false);
                     UISystem.clicktoggle = false;
                 }
+
+                pagecalcul = (12 * (pageNumber - 1));
+
+                break;
             }
         }
     }
+
+    public void Reload_Info()
+    {
+        Debug.Log("스토리지 카운트 : " + StorageList.Count);
+        
+        int count = 0;
+
+        //스토리지 정보 갱신
+        for (int i = 0; i < StorageImageSlot.Count; i++)
+        {
+            //스토리지 정보가 켜져 있을때만 지우기
+            if (StorageNumberList[i].enabled == true)
+            {
+                StorageImageSlot[i].GetComponent<Image>().sprite = null;
+                StorageImageSlot[i].SetActive(false);
+                StorageNumberList[i].text = null;
+            }
+        }
+
+        //페이지에 맞춰 정보 리로드
+        for (int i = 0 + pagecalcul; i < StorageList.Count; i++)
+        {
+            //갯수 텍스트 키기
+            if (StorageNumberList[i - pagecalcul].gameObject.activeSelf == false)
+            {
+                StorageNumberList[i - pagecalcul].gameObject.SetActive(true);
+            }
+
+            StorageNumberList[i - pagecalcul].text = StorageCountList[i].ToString();
+
+            //이미지 연동
+            Image Image = StorageImageSlot[i - pagecalcul].GetComponent<Image>();
+
+            if (StorageImageSlot[i - pagecalcul].activeSelf == false)
+            {
+                StorageImageSlot[i - pagecalcul].SetActive(true);
+            }
+
+            if (Image.enabled == false)
+            {
+                Image.enabled = true;
+            }
+
+            Image.sprite = Resources.Load<Sprite>("Image/" + StorageList[i]);
+
+            count ++;
+
+            if(count == 12)
+            {
+                break;
+            }
+        }
+
+    }
+
+    public void Next_Page()
+    {
+        if (StorageList.Count > 12 + pagecalcul)
+        {
+            pageNumber++;
+            pagecalcul = (12 * (pageNumber - 1));
+            pageText.text = pageNumber.ToString();
+            Reload_Info();
+        }
+    }
+
+    public void Back_Page()
+    {
+        if (pageNumber != 1)
+        {
+            pageNumber--;
+            pagecalcul = (12 * (pageNumber - 1));
+            pageText.text = pageNumber.ToString();
+            Reload_Info();
+        }
+    }
+
+
 
     //폐기된 시스템 혹시 몰라 백업해놈
 
