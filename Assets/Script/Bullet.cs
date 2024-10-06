@@ -7,8 +7,8 @@ public class Bullet : MonoBehaviour
     private ElementManager elementManager;
     private SkillManager skillManager;
 
-    public float speed = 10f;
-    public float time = 2f;
+    public float speed = 6.5f;
+    public float time = 1f;
     public ObjectPool objectPool;
     public float damage;
 
