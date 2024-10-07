@@ -29,6 +29,8 @@ public class InventorySystem : MonoBehaviour
     public int SetSize;
     public int GetCount;
     private int maxcount;
+    private int nextcount;
+    public bool fullActive_toggle;
     
     //아이템DB 가져오기
     public List<Dictionary<string, object>> ItemDB;
@@ -63,6 +65,7 @@ public class InventorySystem : MonoBehaviour
         // Inventory_Select.SetActive(false);
         //Content.text = null;
         FullInventory = false;
+        fullActive_toggle = false;
         maxcount = 99;
         Positioncount = 0;
         QuickSlotList = new List<string>() { "null", "null", "null" };
@@ -159,70 +162,106 @@ public class InventorySystem : MonoBehaviour
     public void AddInventory(object name, int number)
     {
         string Strname = name.ToString();
+        bool continue_toggle = false;
+        fullActive_toggle = false;
 
-        //인벤토리가 비었을때 아이템 추가
-        if (InventoryList.Any() == false)
+        //인벤토리 공간이 부족할때
+        if (CountList.Count == SetSize)
+        {
+            FullInventory = true;
+        }
+
+        //인벤토리에 같은 종류의 아이템이 없을때
+        if (!InventoryList.Contains(Strname) && InventoryList.Count < SetSize)
         {
             AddItem(Strname, number);
         }
 
-        else
+        //인벤토리에 같은 종류의 아이템이 있을때
+        else if (InventoryList.Contains(Strname))
         {
             for (int i = 0; i < InventoryList.Count; i++)
             {
-                //인벤토리에 같은 종류의 아이템이 없을때
-                if (!InventoryList.Contains(Strname) && CountList.Count < SetSize)
-                {
-                    AddItem(Strname, number);
-                    break;
-                }
 
-                //인벤토리에 같은 종류의 아이템이 있을때
-                else if (InventoryList.Contains(Strname))
+                if (InventoryList[i] == Strname)
                 {
-                    if (InventoryList[i] == Strname)
+                    Debug.Log("이거 작동중임?");
+
+                    //인벤토리 슬롯은 없는데 같은 종류가 더 들어갈 수 있을 경우
+                    if (FullInventory == true && CountList[i] + number <= maxcount)
                     {
-                        Debug.Log("이거 작동중임?");
-
-                        // 아이템 습득 후 갯수가 99이하일때
-                        if ((CountList[i] + number) <= maxcount)
-                        {
-                            CountList[i] += number;
-                            Debug.Log(CountList[i]);
-                            Debug.Log("같은 아이템을 가지고 있습니다.");
-                        }
-
-                        //// 아이템 습득 후 갯수가 99초과일 때
-                        else if ((CountList[i] + number) > maxcount)
-                        {
-                            if ((InventoryList.Count + 1) > SetSize)
-                            {
-                                FullInventory = true;
-                                Debug.Log("인벤토리 공간이 부족합니다.");
-                                break;
-                            }
-
-                            CountList[i] += number;
-                            int nextcount = CountList[i] - maxcount;
-                            CountList[i] = maxcount;
-                            AddItem(Strname, nextcount);
-                        }
+                        CountList[i] += number;
+                        Debug.Log(CountList[i]);
+                        Debug.Log("같은 아이템을 가지고 있습니다.");
                         NumberList[i].text = CountList[i].ToString();
 
+                        continue_toggle = false;
+                        fullActive_toggle = true; 
                         break;
+                    }
 
+                    // 아이템 습득 후 갯수가 99이하일때
+                    if ((CountList[i] + number) <= maxcount && CountList[i] != maxcount && CountList.Count < SetSize)
+                    {
+                        CountList[i] += number;
+                        Debug.Log(CountList[i]);
+                        Debug.Log("같은 아이템을 가지고 있습니다.");
+                        NumberList[i].text = CountList[i].ToString();
+
+                        continue_toggle = false;
+                        break;
+                    }
+
+                    //// 아이템 습득 후 갯수가 99초과일 때
+                    else if ((CountList[i] + number) > maxcount && CountList[i] != maxcount && CountList.Count < SetSize)
+                    {
+                        //넘어갈 슬롯에 없을 경우 브레이크
+                        if ((InventoryList.Count + 1) > SetSize)
+                        {
+                            FullInventory = true;
+                            Debug.Log("인벤토리 공간이 부족합니다.");
+                            continue_toggle = false;
+                            break;
+                        }
+
+                        CountList[i] += number;
+                        nextcount = CountList[i] - maxcount;
+                        CountList[i] = maxcount;
+                        NumberList[i].text = CountList[i].ToString();
+                        continue_toggle = false;
+
+                        number = nextcount;
+
+                        continue;
+                        
+                    }
+
+                    //같은 종류의 아이템이 99개로 창고에 이미 있을 때
+                    else if (CountList[i] == maxcount && CountList.Count < SetSize)
+                    {
+                        Debug.Log("넘겨버리기");
+                        continue_toggle = true;
+                        continue;
+                    }
+                    
+                    //더 슬롯이 없을때
+                    else if (CountList.Count == SetSize)
+                    {
+                        FullInventory = true;
+                        Debug.Log("인벤토리 공간이 부족합니다.");
                     }
 
                 }
 
-                //인벤토리 공간이 부족할때
-                else if (CountList.Count == SetSize)
-                {
-                    FullInventory = true;
-                    Debug.Log("인벤토리 공간이 부족합니다.");
-                    break;
-                }
+            }
 
+
+            //컨티뉴로 넘어가서 같은걸 못찾았을때
+            if (continue_toggle == true)
+            {
+                //새로 하나 추가해버리기
+                Debug.Log("안에 같은 종류는 있으나 99개로 꽉차서 새로 하나 만듬");
+                AddItem(Strname, number);
             }
         }
 
@@ -355,6 +394,9 @@ public class InventorySystem : MonoBehaviour
     {
         for (int i = 0; i < InventoryList.Count; i++)
         {
+            Debug.Log("InventoryList[position]" + InventoryList[position]);
+            Debug.Log("name" + name);
+
             if (InventoryList[position] == name)
             {
                 //아이템 사용으로 인벤토리에 아무것도 안남을때
@@ -407,8 +449,10 @@ public class InventorySystem : MonoBehaviour
 
                     }
                 }
+
                 InventoryList.RemoveAt(position);
                 CountList.RemoveAt(position);
+
 
                 if (InventoryList.Count < SetSize)
                 {
@@ -420,6 +464,8 @@ public class InventorySystem : MonoBehaviour
                     ItemInformation.slot_Select.SetActive(false);
                     UISystem.clicktoggle = false;
                 }
+
+                break;
             }
         }
     }

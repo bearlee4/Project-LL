@@ -38,6 +38,7 @@ public class StorageSystem : MonoBehaviour
     public List<int> StorageCountList = new List<int>();
 
     private int maxcount;
+    private int nextcount;
     public bool storageside;
 
     private int pageNumber;
@@ -214,14 +215,16 @@ public class StorageSystem : MonoBehaviour
     //아이템 추가
     public void AddStorage(string name, int count)
     {
-        //인벤토리에 같은 종류의 아이템이 없을때
+        bool continue_toggle = false;
+
+        //창고에 같은 종류의 아이템이 없을때
         if (!StorageList.Contains(name))
         {
             StorageList.Add(name);
             StorageCountList.Add(count);
         }
 
-        //인벤토리에 같은 종류의 아이템이 있을때
+        //창고에 같은 종류의 아이템이 있을때
         else if (StorageList.Contains(name))
         {
             Debug.Log("아이템 발견");
@@ -230,27 +233,49 @@ public class StorageSystem : MonoBehaviour
                 if (StorageList[n] == name)
                 {
                     // 아이템 습득 후 갯수가 99이하일때
-                    if ((StorageCountList[n] + count) <= maxcount)
+                    if ((StorageCountList[n] + count) <= maxcount && StorageCountList[n] != maxcount)
                     {
                         StorageCountList[n] += count;
                         Debug.Log(StorageCountList[n]);
                         Debug.Log("같은 아이템을 가지고 있습니다.");
+
+                        continue_toggle = false;
+
+                        break;
                     }
 
                     //// 아이템 습득 후 갯수가 99초과일 때
-                    else if ((StorageCountList[n] + count) > maxcount)
+                    else if ((StorageCountList[n] + count) > maxcount && StorageCountList[n] != maxcount)
                     {
                         Debug.Log("99개가 넘는다!!");
                         StorageCountList[n] += count;
-                        int nextcount = StorageCountList[n] - maxcount;
+                        nextcount = StorageCountList[n] - maxcount;
                         StorageCountList[n] = maxcount;
+                        continue_toggle = true;
+                        count = nextcount;
 
-                        StorageList.Add(name);
-                        StorageCountList.Add(nextcount);
+                        continue;
                     }
 
-                    break;
+                    //창고에 있는 아이템이 99개일때 넘겨버리기
+                    else if (StorageCountList[n] == maxcount)
+                    {
+                        Debug.Log("넘겨버리기");
+                        continue_toggle = true;
+                        continue;
+                    }
+
                 }
+            }
+
+
+            //컨티뉴로 넘어가서 같은걸 못찾았을때
+            if (continue_toggle == true)
+            {
+                //새로 하나 추가해버리기
+                Debug.Log("안에 같은 종류는 있으나 99개로 꽉차서 새로 하나 만듬");
+                StorageList.Add(name);
+                StorageCountList.Add(count);
             }
 
         }
@@ -305,9 +330,10 @@ public class StorageSystem : MonoBehaviour
             for(int i = 0; i < StorageList.Count; i++)
             {
                 Debug.Log("스토리지 쪽 작동중");
+                //선택 위치 찾기
                 if (ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
                 {
-
+                    //같은거 정보 찾기
                     for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
                     {
                         if (StorageList[i + pagecalcul] == InventorySystem.ItemDB[j]["ImgName"].ToString())
@@ -318,12 +344,15 @@ public class StorageSystem : MonoBehaviour
                                 transnumber = StorageCountList[i + pagecalcul];
                             }
 
+                            //인벤토리가 꽉차 있어도 같은 아이템이 맥스치가 아니라 어느정도 들어갈 수 있을 경우(아직 안만듬 고쳐야됨)
+                            //if (InventorySystem.InventoryList.Count == InventorySystem.SetSize)
+
                             InventorySystem.AddInventory(InventorySystem.ItemDB[j]["ImgName"], transnumber);
                             break;
                         }
                     }
 
-                    if (InventorySystem.FullInventory == false)
+                    if (InventorySystem.FullInventory == false || (InventorySystem.FullInventory == true && InventorySystem.fullActive_toggle == true))
                     {
                         StorageUse(i + pagecalcul, transnumber);
                     }
@@ -343,6 +372,7 @@ public class StorageSystem : MonoBehaviour
                     if (InteractionSystem.max_Trans_toggle == true)
                     {
                         transnumber = InventorySystem.CountList[i];
+                        Debug.Log("transnumber : " + transnumber);
                     }
 
                     AddStorage(InventorySystem.InventoryList[i], transnumber);
