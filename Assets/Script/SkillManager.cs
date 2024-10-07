@@ -15,9 +15,13 @@ public class SkillManager : MonoBehaviour
     public List<float> ESkillDamage = new List<float> { 5, 5, 5, 5 };
 
     Camera cam;
-
     public bool beamShadowActive = false;
     public bool beamActive = false;
+    public bool isBeamCoroutineRunning = false;
+    public bool isBeamStopCoroutine = false;
+
+    private IEnumerator BeamCoroutine;
+
     Vector3 beamPos;
     Quaternion beamRot;
 
@@ -29,17 +33,20 @@ public class SkillManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.V) && !isBeamCoroutineRunning)
         {
             PyroE();
         }
 
-        else
+        else if (Input.GetKeyUp(KeyCode.V) && !isBeamStopCoroutine)
         {
-            beamShadowActive = false;
-            beamShadowPrefab.SetActive(false);
-            beamActive = false;
-            beamPrefab.SetActive(false);
+            StopCoroutine(BeamCoroutine);
+            StartCoroutine(BeamStop(6f));
+        }
+
+        else if (Input.GetKeyDown(KeyCode.V) && isBeamCoroutineRunning)
+        {
+            Debug.Log("빔 쿨타임 중");
         }
     }
 
@@ -51,7 +58,19 @@ public class SkillManager : MonoBehaviour
 
     public void ESkill(int Element)
     {
-
+        switch (Element)
+        {
+            case 0:
+                PyroE();
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
+        
         Debug.Log(elementManager.Element[Element] + " E Skill Atcivity");
     }
 
@@ -71,27 +90,58 @@ public class SkillManager : MonoBehaviour
 
 
 
-
-
     void PyroE()
     {
-        beamShadowActive = true;
-        beamShadowPrefab.SetActive(true);
-        StartCoroutine(BeamStopDelay(0.5f));
+        BeamCoroutine = BeamAiming(0.75f);
+        StartCoroutine(BeamCoroutine);
     }
 
-    private IEnumerator BeamStopDelay(float v)
+    private IEnumerator BeamAiming(float delay)
     {
-        yield return new WaitForSeconds(v);
+        isBeamCoroutineRunning = true;
+        beamShadowActive = true;
+        beamShadowPrefab.SetActive(true);
+
+        ShadowBeam shadowBeam = beamShadowPrefab.GetComponent<ShadowBeam>();
+        if (shadowBeam != null)
+        {
+            shadowBeam.isActive = true;
+        }
+
+        yield return new WaitForSeconds(delay);
+
+        if (shadowBeam != null)
+        {
+            shadowBeam.isActive = false;
+        }
         beamShadowActive = false;
         beamShadowPrefab.SetActive(false);
+
         beamPos = beamShadowPrefab.transform.position;
         beamRot = beamShadowPrefab.transform.rotation;
         beamActive = true;
         beamPrefab.SetActive(true);
 
-        //beamPrefab.transform.position = beamPos;
-        //beamPrefab.transform.rotation = beamRot;
+        beamPrefab.transform.position = beamPos;
+        beamPrefab.transform.rotation = beamRot;
 
+        yield return new WaitForSeconds(1.5f);
+
+        yield return BeamStop(6f);
+    }
+
+    private IEnumerator BeamStop(float coolTime)
+    {
+        isBeamStopCoroutine = true;
+
+        beamShadowActive = false;
+        beamShadowPrefab.SetActive(false);
+        beamActive = false;
+        beamPrefab.SetActive(false);
+        yield return new WaitForSeconds(coolTime);
+        Debug.Log("빔 사용가능");
+
+        isBeamCoroutineRunning = false;
+        isBeamStopCoroutine = false;
     }
 }

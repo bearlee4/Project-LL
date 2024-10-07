@@ -24,7 +24,7 @@ public class ElementManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Q))      // Q스킬사용
+        if (Input.GetKeyDown(KeyCode.Q))      // Q스킬사용
         {
             UseQSkill();
         }
@@ -80,7 +80,7 @@ public class ElementManager : MonoBehaviour
         if (skill_E)
         {
             skillManager.ESkill(currentElement);
-            StartCoroutine(SkillEDelayCoroutine(7f));
+            StartCoroutine(SkillEDelayCoroutine(delay));
         }
         else
         {

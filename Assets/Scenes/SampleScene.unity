@@ -5165,11 +5165,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 624364038}
   m_CullTransparentMesh: 1
---- !u!1 &624407443 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2695826551529587098, guid: 34562cf1997b74c4db54bd495caa3d59, type: 3}
-  m_PrefabInstance: {fileID: 2695826551039816201}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &644042884
 GameObject:
   m_ObjectHideFlags: 0
@@ -9676,6 +9671,7 @@ MonoBehaviour:
   FullInventory: 0
   SetSize: 0
   GetCount: 0
+  fullActive_toggle: 0
   QuickSlot:
   - {fileID: 320477339}
   - {fileID: 1107635474}
@@ -14978,8 +14974,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectPool: {fileID: 1042541607}
-  beamPrefab: {fileID: 624407443}
-  beamShadowPrefab: {fileID: 4363769580309446598}
+  beamPrefab: {fileID: 0}
+  beamShadowPrefab: {fileID: 0}
   QSkillDamage:
   - 2
   - 3
@@ -14992,6 +14988,8 @@ MonoBehaviour:
   - 5
   beamShadowActive: 0
   beamActive: 0
+  isBeamCoroutineRunning: 0
+  isBeamStopCoroutine: 0
 --- !u!114 &1931117062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16591,11 +16589,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34562cf1997b74c4db54bd495caa3d59, type: 3}
---- !u!1 &4363769580309446598 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4744735410563305548, guid: bffda476c76830747bf8c91ef4973357, type: 3}
-  m_PrefabInstance: {fileID: 9031853499686072202}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9031853499686072202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16645,15 +16638,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4744735410563305550, guid: bffda476c76830747bf8c91ef4973357, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4744735410563305550, guid: bffda476c76830747bf8c91ef4973357, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4744735410563305550, guid: bffda476c76830747bf8c91ef4973357, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4744735410563305550, guid: bffda476c76830747bf8c91ef4973357, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
