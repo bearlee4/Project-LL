@@ -176,7 +176,7 @@ public class AlchemySystem : MonoBehaviour
             for (int i = 0; i < AlchemyList.Count; i++)
             {
                 Debug.Log("연금솥->창고 쪽 이동 작동중");
-                if (ItemInformation.slot_Select.transform.position == AlchemySlot[i].transform.position)
+                if (ItemInformation.slot_Select.transform.position.ToString() == AlchemySlot[i].transform.position.ToString())
                 {
 
                     for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
@@ -202,7 +202,7 @@ public class AlchemySystem : MonoBehaviour
         {
             for (int i = 0 + pagecalcul; i < StorageSystem.StorageList.Count; i++)
             {
-                if (ItemInformation.slot_Select.transform.position == StorageSlot[i - pagecalcul].transform.position && fullAlchemy_Slot == false)
+                if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i - pagecalcul].transform.position.ToString() && fullAlchemy_Slot == false)
                 {
                     
                     AddAlchemy(StorageSystem.StorageList[i]);

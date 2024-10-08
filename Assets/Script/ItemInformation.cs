@@ -89,7 +89,7 @@ public class ItemInformation : MonoBehaviour
 
         for (int i = 0; i < mainside.Count; i++)
         {
-            if (slot_Select.transform.position == mainside[i].transform.position)
+            if (slot_Select.transform.position.ToString() == mainside[i].transform.position.ToString())
             {
                 positioncount = i;
                 sidetoken = true;
@@ -100,7 +100,7 @@ public class ItemInformation : MonoBehaviour
 
         for (int i = 0; i < subside.Count; i++)
         {
-            if (slot_Select.transform.position == subside[i].transform.position)
+            if (slot_Select.transform.position.ToString() == subside[i].transform.position.ToString())
             {
                 positioncount = i;
                 sidetoken = false;

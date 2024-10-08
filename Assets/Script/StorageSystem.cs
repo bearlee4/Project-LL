@@ -331,7 +331,7 @@ public class StorageSystem : MonoBehaviour
             for(int i = 0; i < StorageList.Count; i++)
             {
                 //선택 위치 찾기
-                if (ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
+                if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i].transform.position.ToString())
                 {
                     //같은거 정보 찾기
                     for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
@@ -365,10 +365,15 @@ public class StorageSystem : MonoBehaviour
 
         else
         {
+            Debug.Log("ItemInformation.slot_Select.transform.position : " + ItemInformation.slot_Select.transform.position.ToString("N10"));
             for (int i = 0; i < InventorySlot.Count; i++)
             {
+                
+                Debug.Log("InventorySlot[" + i + "].transform.position : " + InventorySlot[i].transform.position.ToString("N10"));
+
+
                 //인벤토리 to 창고
-                if (ItemInformation.slot_Select.transform.position == InventorySlot[i].transform.position)
+                if (ItemInformation.slot_Select.transform.position.ToString() == InventorySlot[i].transform.position.ToString())
                 {
                     if (InteractionSystem.max_Trans_toggle == true)
                     {
@@ -383,6 +388,7 @@ public class StorageSystem : MonoBehaviour
                 }
 
             }
+
         }
 
         Reload_Info();

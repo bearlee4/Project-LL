@@ -293,7 +293,7 @@ public class InventorySystem : MonoBehaviour
         for (int i = 0; i < Slot_Position.Count; i++)
         {
 
-            if (selectObject.transform.position == Slot_Position[i])
+            if (selectObject.transform.position.ToString() == Slot_Position[i].ToString())
             {
                 Debug.Log(i+1 + "번째 칸에 있음");
                 Positioncount = i;
