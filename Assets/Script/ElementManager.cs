@@ -6,6 +6,9 @@ using UnityEngine;
 public class ElementManager : MonoBehaviour
 {
     private SkillManager skillManager;
+    private PyroESkill pyroESkill;
+
+
     public Boolean skill_Q = true;      //스킬사용가능
     public Boolean skill_E = true;
 
@@ -29,10 +32,10 @@ public class ElementManager : MonoBehaviour
             UseQSkill();
         }
 
-        //if (Input.GetKeyUp(KeyCode.E))      // E스킬사용
-        //{
-        //    UseESkill();
-        //}
+        if (Input.GetKeyDown(KeyCode.E))      // E스킬사용
+        {
+            UseESkill();
+        }
 
         if (Input.GetKeyDown(KeyCode.Tab))    // 원소바꾸기
         {
@@ -74,27 +77,25 @@ public class ElementManager : MonoBehaviour
         skill_Q = true;
     }
 
-    //private void UseESkill()
-    //{
-    //    float delay = ESkillDelay[currentElement];
-    //    if (skill_E)
-    //    {
-    //        skillManager.ESkill(currentElement);
-    //        StartCoroutine(SkillEDelayCoroutine(delay));
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("E스킬 사용 불가, 쿨타임 중");
-    //    }
-    //}
-    //private IEnumerator SkillEDelayCoroutine(float delay)
-    //{
-    //    skill_E = false;
-    //    Debug.Log("E스킬 쿨타임 중!!");
-    //    yield return new WaitForSeconds(delay);
-    //    Debug.Log("E스킬 사용가능");
-    //    skill_E = true;
-    //}
+    private void UseESkill()
+    {
+        float coolTime = ESkillDelay[currentElement];
+        if (skill_E)
+        {
+            skillManager.ESkill(currentElement);
+        }
+        else
+        {
+            Debug.Log("E스킬 사용 불가, 쿨타임 중");
+        }
+    }
+    internal IEnumerator SkillEDelayCoroutine(float delay)
+    {
+        Debug.Log("E스킬 쿨타임 중!!");
+        yield return new WaitForSeconds(delay);
+        Debug.Log("E스킬 사용가능");
+        skill_E = true;
+    }
 
 
 }

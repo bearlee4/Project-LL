@@ -1505,6 +1505,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 156717407}
   m_CullTransparentMesh: 1
+--- !u!1 &159635212 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2695826551529587098, guid: 34562cf1997b74c4db54bd495caa3d59, type: 3}
+  m_PrefabInstance: {fileID: 2695826551039816201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &194829036
 GameObject:
   m_ObjectHideFlags: 0
@@ -6124,6 +6129,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 718729618}
   m_CullTransparentMesh: 1
+--- !u!1 &728870257 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4744735410563305548, guid: bffda476c76830747bf8c91ef4973357, type: 3}
+  m_PrefabInstance: {fileID: 9031853499686072202}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &757348503
 GameObject:
   m_ObjectHideFlags: 0
@@ -15937,6 +15947,7 @@ GameObject:
   - component: {fileID: 1931117063}
   - component: {fileID: 1931117062}
   - component: {fileID: 1931117061}
+  - component: {fileID: 1931117064}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -16102,8 +16113,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectPool: {fileID: 1042541607}
-  beamPrefab: {fileID: 0}
-  beamShadowPrefab: {fileID: 0}
   QSkillDamage:
   - 2
   - 3
@@ -16114,10 +16123,6 @@ MonoBehaviour:
   - 5
   - 5
   - 5
-  beamShadowActive: 0
-  beamActive: 0
-  isBeamCoroutineRunning: 0
-  isBeamStopCoroutine: 0
 --- !u!114 &1931117062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16171,6 +16176,25 @@ MonoBehaviour:
   def: 0
   crt_R: 0
   crt_H: 0
+--- !u!114 &1931117064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931117054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ed340b7dddd2af4fa7fd4fe11053fb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beamPrefab: {fileID: 159635212}
+  beamShadowPrefab: {fileID: 728870257}
+  beamShadowActive: 0
+  beamActive: 0
+  isBeamCoroutineRunning: 0
+  isBeamStopCoroutine: 0
+  coolTime: 0
 --- !u!1 &1933618540
 GameObject:
   m_ObjectHideFlags: 0
