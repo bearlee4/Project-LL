@@ -6,6 +6,7 @@ using UnityEngine;
 public class SkillManager : MonoBehaviour
 {
     private ElementManager elementManager;
+    private Player player;
 
     public ObjectPool objectPool;
     public GameObject beamPrefab;
@@ -28,25 +29,31 @@ public class SkillManager : MonoBehaviour
     void Start() 
     { 
         elementManager = GetComponent<ElementManager>(); 
+        player = GetComponent<Player>();    
         cam = Camera.main;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V) && !isBeamCoroutineRunning)
-        {
-            PyroE();
-        }
+        int element = elementManager.currentElement;
 
-        else if (Input.GetKeyUp(KeyCode.V) && !isBeamStopCoroutine)
+        if (element == 0)
         {
-            StopCoroutine(BeamCoroutine);
-            StartCoroutine(BeamStop(6f));
-        }
+            if (Input.GetKeyDown(KeyCode.E) && !isBeamCoroutineRunning)
+            {
+                PyroE();
+            }
 
-        else if (Input.GetKeyDown(KeyCode.V) && isBeamCoroutineRunning)
-        {
-            Debug.Log("빔 쿨타임 중");
+            else if (Input.GetKeyUp(KeyCode.E) && !isBeamStopCoroutine)
+            {
+                StopCoroutine(BeamCoroutine);
+                StartCoroutine(BeamStop(6f));
+            }
+
+            else if (Input.GetKeyDown(KeyCode.E) && isBeamCoroutineRunning)
+            {
+                Debug.Log("빔 쿨타임 중");
+            }
         }
     }
 
@@ -98,6 +105,8 @@ public class SkillManager : MonoBehaviour
 
     private IEnumerator BeamAiming(float delay)
     {
+        player.MovePower = 1.5f;
+
         isBeamCoroutineRunning = true;
         beamShadowActive = true;
         beamShadowPrefab.SetActive(true);
@@ -109,6 +118,8 @@ public class SkillManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(delay);
+
+        player.MovePower = 0f;
 
         if (shadowBeam != null)
         {
@@ -132,6 +143,8 @@ public class SkillManager : MonoBehaviour
 
     private IEnumerator BeamStop(float coolTime)
     {
+        StartCoroutine(SkillMoveDelay(0.5f));
+
         isBeamStopCoroutine = true;
 
         beamShadowActive = false;
@@ -143,5 +156,12 @@ public class SkillManager : MonoBehaviour
 
         isBeamCoroutineRunning = false;
         isBeamStopCoroutine = false;
+    }
+
+    private IEnumerator SkillMoveDelay(float delay)
+    {
+        player.MovePower = 1.5f;
+        yield return new WaitForSeconds(delay);
+        player.MovePower = 5f;
     }
 }

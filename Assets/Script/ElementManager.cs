@@ -29,12 +29,12 @@ public class ElementManager : MonoBehaviour
             UseQSkill();
         }
 
-        if (Input.GetKeyUp(KeyCode.E))      // E스킬사용
-        {
-            UseESkill();
-        }
+        //if (Input.GetKeyUp(KeyCode.E))      // E스킬사용
+        //{
+        //    UseESkill();
+        //}
 
-        if (Input.GetKeyUp(KeyCode.Tab))    // 원소바꾸기
+        if (Input.GetKeyDown(KeyCode.Tab))    // 원소바꾸기
         {
             if (skill_Q && skill_E)       // 스킬 쿨타임 중 못 바꿈
                 ChangeElement();
@@ -74,27 +74,27 @@ public class ElementManager : MonoBehaviour
         skill_Q = true;
     }
 
-    private void UseESkill()
-    {
-        float delay = ESkillDelay[currentElement];
-        if (skill_E)
-        {
-            skillManager.ESkill(currentElement);
-            StartCoroutine(SkillEDelayCoroutine(delay));
-        }
-        else
-        {
-            Debug.Log("E스킬 사용 불가, 쿨타임 중");
-        }
-    }
-    private IEnumerator SkillEDelayCoroutine(float delay)
-    {
-        skill_E = false;
-        Debug.Log("E스킬 쿨타임 중!!");
-        yield return new WaitForSeconds(delay);
-        Debug.Log("E스킬 사용가능");
-        skill_E = true;
-    }
+    //private void UseESkill()
+    //{
+    //    float delay = ESkillDelay[currentElement];
+    //    if (skill_E)
+    //    {
+    //        skillManager.ESkill(currentElement);
+    //        StartCoroutine(SkillEDelayCoroutine(delay));
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("E스킬 사용 불가, 쿨타임 중");
+    //    }
+    //}
+    //private IEnumerator SkillEDelayCoroutine(float delay)
+    //{
+    //    skill_E = false;
+    //    Debug.Log("E스킬 쿨타임 중!!");
+    //    yield return new WaitForSeconds(delay);
+    //    Debug.Log("E스킬 사용가능");
+    //    skill_E = true;
+    //}
 
 
 }
