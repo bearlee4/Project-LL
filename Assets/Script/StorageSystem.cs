@@ -45,6 +45,8 @@ public class StorageSystem : MonoBehaviour
     private int pagecalcul;
     public Text pageText;
 
+    private bool quick_toggle;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -401,8 +403,28 @@ public class StorageSystem : MonoBehaviour
 
     public void InventoryUse(int number, int transnumber)
     {
+        quick_toggle = false;
+
+        for (int i = 0; i < InventorySystem.QuickSlotList.Count; i++)
+        {
+            //퀵슬롯에 지정되어 있는 아이템이 창고에 옮겨졌을 떄
+            if (InventorySystem.QuickSlotList[i] == InventorySystem.InventoryList[number] && InventorySystem.QuickSlotNumberList[i].text == InventorySystem.CountList[number].ToString())
+            {
+                //퀵슬롯 리셋 작동 토글
+                quick_toggle = true;
+            }
+        }
+
         InventorySystem.CountList[number] -= transnumber;
         InventorySystem.NumberList[number].text = InventorySystem.CountList[number].ToString();
+
+        //변경된 인벤토리 정보를 퀵슬롯에 연동. 퀵슬롯에 없을 경우 아무 변동없이 빠져나갈 것.
+        if(quick_toggle == true)
+        {
+            Debug.Log("퀵슬롯 정보 갱신");
+            InventorySystem.Quick_Load_Info();
+        }    
+
         if (InventorySystem.CountList[number] == 0)
         {
             InventorySystem.DeleteItem(InventorySystem.InventoryList[number], number);
@@ -417,6 +439,8 @@ public class StorageSystem : MonoBehaviour
             ItemInformation.Load_Information(UISystem.overObject);
         }
 
+        
+
         //if (InventoryImageSlot[number].GetComponent<Image>().enabled == false && number != 0)
         //{
         //    Slot_Select.transform.position = InventorySlot[number - 1].transform.position;
@@ -426,17 +450,19 @@ public class StorageSystem : MonoBehaviour
     public void StorageUse(int number, int transnumber)
     {
         StorageCountList[number] -= transnumber;
+
         //StorageNumberList[number].text = StorageCountList[number].ToString();
         if (StorageCountList[number] == 0)
         {
             Delete_Storage_Item(StorageList[number], number);
-            Debug.Log("버그 체크용@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+           
         }
 
         if (storageUI.activeSelf == true)
         {
             LinkInventory();
         }
+
     }
 
     public void Delete_Storage_Item(string name, int position)
@@ -510,9 +536,12 @@ public class StorageSystem : MonoBehaviour
                 Debug.Log("pageNumber : " + pageNumber);
                 Debug.Log("StorageList.Count : " + StorageList.Count);
                 Debug.Log("StorageCountList.Count : " + StorageCountList.Count);
+                Debug.Log("position : " + position);
+                Debug.Log("StorageList[position] : " + StorageList[position]);
 
                 StorageList.RemoveAt(position);
                 StorageCountList.RemoveAt(position);
+                
 
                 if (StorageImageSlot[position - pagecalcul].activeSelf == false)
                 {

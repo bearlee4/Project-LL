@@ -2520,7 +2520,7 @@ GameObject:
   - component: {fileID: 299433861}
   - component: {fileID: 299433860}
   m_Layer: 0
-  m_Name: Fire_Bay_Tree
+  m_Name: Fire_leap
   m_TagString: Forage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2609,7 +2609,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0.5560052, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.4431373, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -6822,7 +6822,7 @@ GameObject:
   - component: {fileID: 974234901}
   - component: {fileID: 974234900}
   m_Layer: 0
-  m_Name: Bay_Tree
+  m_Name: Leap
   m_TagString: Forage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6911,7 +6911,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.6273585, g: 1, b: 0.6819155, a: 1}
+  m_Color: {r: 0.16078432, g: 0.9490197, b: 0.72156864, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -8410,7 +8410,7 @@ GameObject:
   - component: {fileID: 1116694548}
   - component: {fileID: 1116694547}
   m_Layer: 0
-  m_Name: Liquid
+  m_Name: Purified_water
   m_TagString: Forage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

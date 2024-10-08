@@ -133,7 +133,7 @@ public class InteractionSystem : MonoBehaviour
                 //그 아이템 사용
                 InventorySystem.UseItem(InventorySystem.QuickSlotPosition[0]);
                 //정보 리로드
-                InventorySystem.Quick_Load_Info();
+                //InventorySystem.Quick_Load_Info();
             }
 
             //2 버튼
@@ -143,7 +143,7 @@ public class InteractionSystem : MonoBehaviour
                 //그 아이템 사용
                 InventorySystem.UseItem(InventorySystem.QuickSlotPosition[1]);
                 //정보 리로드
-                InventorySystem.Quick_Load_Info();
+                //InventorySystem.Quick_Load_Info();
             }
 
             //3 버튼
@@ -153,7 +153,7 @@ public class InteractionSystem : MonoBehaviour
                 //그 아이템 사용
                 InventorySystem.UseItem(InventorySystem.QuickSlotPosition[2]);
                 //정보 리로드
-                InventorySystem.Quick_Load_Info();
+                //InventorySystem.Quick_Load_Info();
             }
         }
 

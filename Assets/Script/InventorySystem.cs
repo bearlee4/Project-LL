@@ -182,7 +182,7 @@ public class InventorySystem : MonoBehaviour
         {
             for (int i = 0; i < InventoryList.Count; i++)
             {
-
+                //같은거 찾았을 때
                 if (InventoryList[i] == Strname)
                 {
                     Debug.Log("이거 작동중임?");
@@ -224,11 +224,12 @@ public class InventorySystem : MonoBehaviour
                             break;
                         }
 
+                        Debug.Log("99개 초과로 인해 컨티뉴 작동");
                         CountList[i] += number;
                         nextcount = CountList[i] - maxcount;
                         CountList[i] = maxcount;
                         NumberList[i].text = CountList[i].ToString();
-                        continue_toggle = false;
+                        continue_toggle = true;
 
                         number = nextcount;
 
@@ -369,10 +370,20 @@ public class InventorySystem : MonoBehaviour
                     //아이템을 다 사용했을 떄
                     if (CountList[number] == 0)
                     {
-                        if(QuickSlotList.Contains(InventoryList[number]))
+                        for (int n = 0; n < QuickSlotList.Count; n ++)
                         {
-                            Quick_Reset(InventoryList[number]);
+                            //이름도 같고 위치도 같은 소모품이 다 사용됐을 떄
+                            if (QuickSlotList[n] == InventoryList[number] && number == QuickSlotPosition[n])
+                            {
+                                Quick_Reset(InventoryList[number], number);
+                            }
+
                         }
+
+                        //if(QuickSlotList.Contains(InventoryList[number]))
+                        //{
+                        //    Quick_Reset(InventoryList[number]);
+                        //}
 
                         DeleteItem(InventoryList[number], number);
                     }
@@ -387,6 +398,10 @@ public class InventorySystem : MonoBehaviour
             }
 
         }
+
+        //변경된 인벤토리 정보를 퀵슬롯에 연동. 퀵슬롯에 없을 경우 아무 변동없이 빠져나갈 것.
+        Debug.Log("퀵슬롯 정보 갱신");
+        Quick_Load_Info();
     }
 
     //아이템 삭제
@@ -488,9 +503,6 @@ public class InventorySystem : MonoBehaviour
                 //소모품이 맞을 경우
                 if (ItemDB[i]["UseItem"].ToString() == "O")
                 {
-                    Debug.Log("QuickSlotPosition[0] : " + QuickSlotPosition[0]);
-                    Debug.Log("QuickSlotPosition[1] : " + QuickSlotPosition[1]);
-                    Debug.Log("QuickSlotPosition[2] : " + QuickSlotPosition[2]);
 
                     //포지션 카운트로 퀵슬롯에 지정되어 있는지 확인 + 같은 종류가 있는지 체크
                     for (int n = 0; n < QuickSlotPosition.Count; n++)
@@ -605,7 +617,6 @@ public class InventorySystem : MonoBehaviour
                 Image InventoryImage = ImageSlot[QuickSlotPosition[i]].GetComponent<Image>();
 
 
-
                 //인벤토리 이동이 있을때
                 if (QuickSlotList[i] != InventoryList[QuickSlotPosition[i]])
                 {
@@ -613,15 +624,25 @@ public class InventorySystem : MonoBehaviour
 
                     for (int j = 0; j < InventoryList.Count; j++)
                     {
-                        if (QuickSlotList[i] == InventoryList[j] && QuickSlotNumberList[i] == NumberList[j])
+                        //이름과 갯수가 저장된 정보와 맞는걸 서치
+                        if (QuickSlotList[i] == InventoryList[j] && QuickSlotNumberList[i].text == NumberList[j].text)
                         {
                             InventoryImage = ImageSlot[j].GetComponent<Image>();
                             QuickSlotPosition[i] = j;
 
                             //텍스트 연동
-                            QuickSlotNumberList[i].text = NumberList[j].text;
+                            QuickSlotNumberList[i].text = NumberList[j].text; 
 
                             break;
+                        }
+
+                        //종류와 갯수가 맞는게 없을 경우(ex.창고에 들어갔을 경우)
+                        else
+                        {
+                            //사라졌다 판단 퀵슬롯 정보 삭제
+                            Debug.Log("같은걸 찾을 수 없음. 삭제 처리");
+                            Quick_Reset(QuickSlotList[i], QuickSlotPosition[i]);
+
                         }
                     }
                 }
@@ -645,24 +666,39 @@ public class InventorySystem : MonoBehaviour
                 //텍스트 연동
                 QuickSlotNumberList[i].text = NumberList[QuickSlotPosition[i]].text;
 
+                //받아온 정보의 갯수가 0일때 삭제
+                if (QuickSlotNumberList[i].text == "0")
+                {
+                    Debug.Log("0개 일때 들어와지는지 체크");
+                    Quick_Reset(QuickSlotList[i], QuickSlotPosition[i]);
+                }
+
             }
         }
     }
 
-    public void Quick_Reset(string name)
+    public void Quick_Reset(string name, int position)
     {
 
         for (int i = 0; i < QuickSlotList.Count; i ++)
         {
-            if (QuickSlotList[i] == name)
+            //이미지 이름과 위치 정보가 맞을 때
+            if (QuickSlotList[i] == name && QuickSlotPosition[i] == position)
             {
 
                 //정보 리셋
                 QuickSlotList[i] = "null";
                 QuickSlotPosition[i] = -1;
                 QuickSlotImage[i].SetActive(false);
+                QuickSlotNumberList[i].text = null;
                 break;
 
+            }
+
+            //못찾았을때
+            else
+            {
+                Debug.Log("오류 : 같은 정보를 찾을 수 없습니다.");
             }
         }
     }

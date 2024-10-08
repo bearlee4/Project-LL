@@ -204,12 +204,9 @@ public class AlchemySystem : MonoBehaviour
             {
                 if (ItemInformation.slot_Select.transform.position == StorageSlot[i - pagecalcul].transform.position && fullAlchemy_Slot == false)
                 {
-
+                    
                     AddAlchemy(StorageSystem.StorageList[i]);
                     StorageSystem.StorageUse(i, transnumber);
-
-                    Debug.Log("StorageSystem.StorageList[i] : " + StorageSystem.StorageList[i]);
-                    Debug.Log("StorageSystem.StorageCountList[i] : " + StorageSystem.StorageCountList[i]);
 
                     LinkStorage();
 
@@ -407,7 +404,7 @@ public class AlchemySystem : MonoBehaviour
                         Image.enabled = true;
                     }
 
-                    Image.sprite = Resources.Load<Sprite>("Image/Twincleglass");
+                    Image.sprite = Resources.Load<Sprite>("Image/Fail_potion");
                     Debug.Log("합성 실패. 맞는 레시피가 없습니다.");
                     
                 }
