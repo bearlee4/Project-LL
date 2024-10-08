@@ -10,6 +10,7 @@ public class InteractionSystem : MonoBehaviour
     StorageSystem StorageSystem;
     ItemInformation ItemInformation;
     AlchemySystem AlchemySystem;
+    FieldSystem FieldSystem;
 
     private GameObject canvas;
     UISystem UISystem;
@@ -18,13 +19,16 @@ public class InteractionSystem : MonoBehaviour
     private bool forageincounter;
     private bool storageincounter;
     private bool alchemyincounter;
+    private bool spawnerincounter;
 
     public bool max_Trans_toggle;
+    public GameObject enter_object;
 
     //테스트용
     private bool backhomeincounter;
 
     public List<Dictionary<string, object>> ItemDB;
+
     private List<string> TriggerList = new List<string>();
 
     // Start is called before the first frame update
@@ -37,15 +41,19 @@ public class InteractionSystem : MonoBehaviour
         forageincounter = false;
         storageincounter = false;
         alchemyincounter = false;
+        spawnerincounter = false;
         InventorySystem = Manager.GetComponent<InventorySystem>();
         StorageSystem = Manager.GetComponent<StorageSystem>();
         ItemInformation = Manager.GetComponent<ItemInformation>();
         AlchemySystem = Manager.GetComponent<AlchemySystem>();
+        FieldSystem = Manager.GetComponent<FieldSystem>();
         ItemDB = CSVReader.Read("ItemDB");
 
         max_Trans_toggle = false;
 
         backhomeincounter = false;
+
+        FieldSystem.Forage_Classification();
     }
 
 
@@ -57,6 +65,8 @@ public class InteractionSystem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        enter_object = col.gameObject;
+
         //채집물 접촉
         if (col.gameObject.tag == "Forage")
         {
@@ -89,6 +99,19 @@ public class InteractionSystem : MonoBehaviour
             Debug.Log("일과 끝내기 접촉");
             backhomeincounter = true;
         }
+
+        //스포너와 접촉
+        if (col.gameObject.tag == "Spawner")
+        {
+            Debug.Log("스포너 접촉");
+            spawnerincounter = true;
+        }
+
+        //스포너리스폰과 접촉시 발동
+        if (col.gameObject.name == "Spawner_Respawn")
+        {
+            FieldSystem.Respawn_spawner();
+        }
     }
 
     private void OnTriggerStay2D(Collider2D col)
@@ -100,9 +123,7 @@ public class InteractionSystem : MonoBehaviour
     {
         if (col.gameObject.tag == "Forage")
         {
-            Debug.Log("리스트 클리어 작동 했음");
-            forageincounter = true;
-            TriggerList.Clear();
+            forageincounter = false;
         }
 
         if (col.gameObject.name == "Storage")
@@ -118,6 +139,12 @@ public class InteractionSystem : MonoBehaviour
         if (col.gameObject.name == "Back_Home")
         {
             backhomeincounter = false;
+        }
+
+        if (col.gameObject.tag == "Spawner")
+        {
+            Debug.Log("스포너 접촉");
+            spawnerincounter = false;
         }
     }
 
@@ -163,7 +190,7 @@ public class InteractionSystem : MonoBehaviour
             //채집물 획득
             if (InventorySystem.Inventory.activeSelf == false && forageincounter == true)
             {
-                AddDropItem();
+                AddDropItem(enter_object);
             }
 
             //창고 여닫기
@@ -212,6 +239,12 @@ public class InteractionSystem : MonoBehaviour
             if (backhomeincounter == true)
             {
                 StorageSystem.Back_Home();
+            }
+
+            //스포너 상호작용
+            if (spawnerincounter == true)
+            {
+                RandomItem(enter_object);
             }
         }
 
@@ -307,37 +340,91 @@ public class InteractionSystem : MonoBehaviour
         }
     }
 
+
     //아이템 추가
-    public void AddDropItem()
+    public void AddDropItem(GameObject col)
     {
-        int listcount;
 
-        listcount = TriggerList.Count;
-
-        if (TriggerList.Any() == true)
+        for (int IDB = 0; IDB < ItemDB.Count; IDB++)
         {
-
-            for (int IDB = 0; IDB < ItemDB.Count; IDB++)
+            if (col.name == ItemDB[IDB]["ImgName"].ToString())
             {
-                if (TriggerList[0] == ItemDB[IDB]["ImgName"].ToString())
-                {
-                    InventorySystem.AddInventory(ItemDB[IDB]["ImgName"], InventorySystem.GetCount);
-                    break;
-                }
-
+                InventorySystem.AddInventory(ItemDB[IDB]["ImgName"], InventorySystem.GetCount);
+                break;
             }
 
-            if (InventorySystem.FullInventory == false)
-            {
-                GameObject.Find(TriggerList[0]).SetActive(false);
-                //TriggerList.Remove(TriggerList[0]);
-            }
         }
 
-        else if (!TriggerList.Any() == false)
+        if (InventorySystem.FullInventory == false)
         {
-            forageincounter = false;
+            col.SetActive(false);
+            //TriggerList.Remove(TriggerList[0]);
         }
 
     }
+
+    
+
+    //커먼 8, 레어 2 비율로 확률 돌리기
+    public void RandomItem(GameObject col)
+    {
+        int random_number = Random.Range(1, 10);
+        int second_random_number;
+
+        Debug.Log("random_number : " + random_number);
+
+        if (random_number <= 8)
+        {
+            Debug.Log("일반 등급 당첨!");
+            second_random_number = Random.Range(1, FieldSystem.common_ForageList.Count);
+            InventorySystem.AddInventory(FieldSystem.common_ForageList[second_random_number], InventorySystem.GetCount);
+
+        }
+
+        else if(random_number > 8)
+        {
+            Debug.Log("희귀 등급 당첨!");
+            second_random_number = Random.Range(1, FieldSystem.rare_ForageList.Count);
+            InventorySystem.AddInventory(FieldSystem.rare_ForageList[second_random_number], InventorySystem.GetCount);
+        }
+
+        if(InventorySystem.FullInventory == false)
+        {
+            col.SetActive(false);
+        }
+    }
+
+    ////아이템 추가
+    //public void AddDropItem()
+    //{
+    //    int listcount;
+
+    //    listcount = TriggerList.Count;
+
+    //    if (TriggerList.Any() == true)
+    //    {
+
+    //        for (int IDB = 0; IDB < ItemDB.Count; IDB++)
+    //        {
+    //            if (TriggerList[0] == ItemDB[IDB]["ImgName"].ToString())
+    //            {
+    //                InventorySystem.AddInventory(ItemDB[IDB]["ImgName"], InventorySystem.GetCount);
+    //                break;
+    //            }
+
+    //        }
+
+    //        if (InventorySystem.FullInventory == false)
+    //        {
+    //            GameObject.Find(TriggerList[0]).SetActive(false);
+    //            //TriggerList.Remove(TriggerList[0]);
+    //        }
+    //    }
+
+    //    else if (!TriggerList.Any() == false)
+    //    {
+    //        forageincounter = false;
+    //    }
+
+    //}
 }

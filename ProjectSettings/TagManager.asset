@@ -8,6 +8,7 @@ TagManager:
   - ItemSlot
   - ItemImage
   - InteractionObject
+  - Spawner
   layers:
   - Default
   - TransparentFX

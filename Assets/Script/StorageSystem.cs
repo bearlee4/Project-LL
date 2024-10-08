@@ -324,14 +324,12 @@ public class StorageSystem : MonoBehaviour
         int transnumber = 1;
 
         storageside = ItemInformation.sidetoken;
-        Debug.Log("현재 스토리지 사이드" + storageside);
 
         //창고 to 인벤토리
         if (storageside == true)
         {
             for(int i = 0; i < StorageList.Count; i++)
             {
-                Debug.Log("스토리지 쪽 작동중");
                 //선택 위치 찾기
                 if (ItemInformation.slot_Select.transform.position == StorageSlot[i].transform.position)
                 {
@@ -344,12 +342,13 @@ public class StorageSystem : MonoBehaviour
                             if (InteractionSystem.max_Trans_toggle == true)
                             {
                                 transnumber = StorageCountList[i + pagecalcul];
+
+                                Debug.Log("StorageList[i + pagecalcul]" + StorageList[i + pagecalcul]);
+                                Debug.Log("StorageCountList[i + pagecalcul] : " + StorageCountList[i + pagecalcul]);
                             }
 
-                            //인벤토리가 꽉차 있어도 같은 아이템이 맥스치가 아니라 어느정도 들어갈 수 있을 경우(아직 안만듬 고쳐야됨)
-                            //if (InventorySystem.InventoryList.Count == InventorySystem.SetSize)
-
                             InventorySystem.AddInventory(InventorySystem.ItemDB[j]["ImgName"], transnumber);
+
                             break;
                         }
                     }
@@ -485,59 +484,65 @@ public class StorageSystem : MonoBehaviour
                     //Reset_Information();
                 }
 
-                //2페이지 이상 첫번째 칸일 때
-                else if (pageNumber >= 2 && position - pagecalcul == 0)
-                {
-                    pageNumber--;
-                    pageText.text = pageNumber.ToString();
-                }
+                //그 마지막 칸이 2페이지 이상 첫번째 칸일 때
+                //else if (pageNumber >= 2 && position - pagecalcul == 0)
+                //{
+                //    pageNumber--;
+                //    pageText.text = pageNumber.ToString();
+                //}
+
 
                 else
                 {
+                    Debug.Log("position : " + position);
 
                     for (int j = position; j < StorageList.Count; j++)
                     {
                         //마지막 칸이 아닐 때 다음 슬롯 정보 땡겨오기
                         if ((j + 1) < StorageList.Count)
                         {
-                            if (StorageImageSlot[j].activeSelf == false)
+                            if (StorageImageSlot[j - pagecalcul].activeSelf == false)
                             {
-                                StorageImageSlot[j].SetActive(true);
+                                StorageImageSlot[j - pagecalcul].SetActive(true);
                             }
-
-                            StorageNumberList[j].text = StorageCountList[j + 1].ToString();
-                            StorageImageSlot[j].GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/" + StorageList[j + 1]); ;
+                            StorageNumberList[j - pagecalcul].text = StorageCountList[(j - pagecalcul) + 1].ToString();
+                            StorageImageSlot[j - pagecalcul].GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/" + StorageList[j + 1]);
                         }
 
                         //삭제되는게 마지막 칸일때
-                        else if ((j + 1) == StorageList.Count && (j + 1) <= 12*pageNumber)
+                        else if (position + 1 == StorageList.Count && (j - pagecalcul) + 1 <= 12*pageNumber)
                         {
-                            StorageNumberList[j].text = null;
-                            StorageNumberList[j].gameObject.SetActive(false);
-                            StorageImageSlot[j].GetComponent<Image>().enabled = false;
-                            StorageImageSlot[j].SetActive(false);
+                            Debug.Log("j + 1 : " + (j + 1));
+                            Debug.Log("StorageList.Count : " + StorageList.Count);
+
+                            //그 마지막 칸이 2페이지 이상 첫번째 칸일 때
+                            if (pageNumber >= 2 && position - pagecalcul == 0)
+                            {
+                                Debug.Log("이거 작동?중");
+                                pageNumber--;
+                                pageText.text = pageNumber.ToString();
+
+                                break;
+                            }
+
+                            StorageNumberList[j - pagecalcul].text = null;
+                            StorageNumberList[j - pagecalcul].gameObject.SetActive(false);
+                            StorageImageSlot[j - pagecalcul].GetComponent<Image>().enabled = false;
+                            StorageImageSlot[j - pagecalcul].SetActive(false);
                             break;
                         }
 
-
-
-                        if (j == StorageImageSlot.Count)
+                       
+                        if ((j - pagecalcul) + 1 == StorageImageSlot.Count)
                         {
+                            Debug.Log("이미지 슬롯이 더 없어 강제 종료");
                             break;
                         }
                     }
 
-                    Debug.Log("이거 작동 왜 안하냐 ㅅㅂ");
                     ItemInformation.Load_Information(UISystem.overObject);
                 }
 
-                
-                Debug.Log("i는 : " + i);
-                Debug.Log("pageNumber : " + pageNumber);
-                Debug.Log("StorageList.Count : " + StorageList.Count);
-                Debug.Log("StorageCountList.Count : " + StorageCountList.Count);
-                Debug.Log("position : " + position);
-                Debug.Log("StorageList[position] : " + StorageList[position]);
 
                 StorageList.RemoveAt(position);
                 StorageCountList.RemoveAt(position);
