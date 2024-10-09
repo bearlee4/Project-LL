@@ -9,6 +9,7 @@ TagManager:
   - ItemImage
   - InteractionObject
   - Spawner
+  - Enemy
   layers:
   - Default
   - TransparentFX
