@@ -61,9 +61,6 @@ public class InventorySystem : MonoBehaviour
         Player = GameObject.Find("Player");
         InteractionSystem = Player.GetComponent<InteractionSystem>();
 
-        //ChooseItem = GameObject.Find("ChooseItem");
-        // Inventory_Select.SetActive(false);
-        //Content.text = null;
         FullInventory = false;
         fullActive_toggle = false;
         maxcount = 99;
@@ -71,16 +68,12 @@ public class InventorySystem : MonoBehaviour
         QuickSlotList = new List<string>() { "null", "null", "null" };
         QuickSlotPosition = new List<int>() { -1, -1, -1 };
 
-        ItemDB = CSVReader.Read("ItemDB");
+        GetCount = Random.Range(1, 2);
 
-        //임의로 지정한 획득한 아이템갯수(나중에 수정예정)
-        GetCount = 99;
+        ItemDB = CSVReader.Read("ItemDB");
 
         //기본 사이즈 지정
         ChangeSize(3);
-
-        //선택 이미지 초기 위치 지정
-        //Inventory_Select.transform.position = Slot[0].transform.position;
 
         for (int i = 0; i < Slot.Count; i++)
         {
@@ -88,7 +81,10 @@ public class InventorySystem : MonoBehaviour
         }
 
         //인벤토리 UI 숨김
-        //Inventory.SetActive(false);
+        if(Inventory.activeSelf == true)
+        {
+            Inventory.SetActive(false);
+        }
 
         //인벤토리가 비었을때 갯수 텍스트 감추기
         for (int i = 0; i < SetSize; i++)
@@ -104,10 +100,6 @@ public class InventorySystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Inventory_Select.activeSelf == true)
-        //{
-        //    Select_Move();
-        //}
 
     }
 
@@ -137,18 +129,6 @@ public class InventorySystem : MonoBehaviour
         {
             Slot[num].SetActive(false);
         }
-
-        ////슬롯 선택 이미지 표기
-        //if (InventoryList.Any() == false)
-        //{
-        //    Inventory_Select.SetActive(false);
-        //}
-
-        //else
-        //{
-        //    Inventory_Select.SetActive(true);
-        //    Load_Information();
-        //}
     }
 
     //인벤토리 닫기
@@ -298,37 +278,6 @@ public class InventorySystem : MonoBehaviour
                 Debug.Log(i+1 + "번째 칸에 있음");
                 Positioncount = i;
 
-                //if (ChooseImage.enabled == false)
-                //{
-                //    ChooseImage.enabled = true;
-                //}
-
-                //ChooseImage.sprite = ImageSlot[i].GetComponent<Image>().sprite;
-
-                //if (ChooseImage.sprite == null)
-                //{
-                //    ChooseImage.enabled = false;
-                //    Content.text = null;
-                //    if (i <= 0)
-                //    {
-                //        Inventory_Select.transform.position = Slot_Position[i - 1];
-                //    }
-
-                //}
-
-                //else
-                //{
-                //    for (int j = 0; j < ItemDB.Count; j++)
-                //    {
-                //        if (ChooseImage.sprite.name.ToString() == ItemDB[j]["ImgName"].ToString())
-                //        {
-                //            Content.text = ItemDB[j]["Content"].ToString();
-
-                //            break;
-                //        }
-                //    }
-                //}
-
                 break;
             }
         }
@@ -380,11 +329,6 @@ public class InventorySystem : MonoBehaviour
 
                         }
 
-                        //if(QuickSlotList.Contains(InventoryList[number]))
-                        //{
-                        //    Quick_Reset(InventoryList[number]);
-                        //}
-
                         DeleteItem(InventoryList[number], number);
                     }
                     break;
@@ -426,9 +370,6 @@ public class InventorySystem : MonoBehaviour
                     {
                         ImageSlot[position].SetActive(false);
                     }
-                    //Content.text = null;
-                    //ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().sprite = null;
-                    //ChooseItem.transform.Find("ChooseItemImage").GetComponent<Image>().enabled = false;
                 }
 
                 else

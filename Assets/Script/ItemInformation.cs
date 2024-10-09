@@ -22,6 +22,8 @@ public class ItemInformation : MonoBehaviour
     public int positioncount;
     public bool sidetoken;
 
+    private string contenttext;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -75,7 +77,10 @@ public class ItemInformation : MonoBehaviour
                 if (ChooseImage.sprite.name.ToString() == InventorySystem.ItemDB[j]["ImgName"].ToString())
                 {
                     title.text = InventorySystem.ItemDB[j]["Name"].ToString();
-                    Content.text = InventorySystem.ItemDB[j]["Content"].ToString();
+                    //Content.text = InventorySystem.ItemDB[j]["Content"].ToString();
+
+                    contenttext = InventorySystem.ItemDB[j]["Content"].ToString();
+                    Cut_Line();
 
                     break;
                 }
@@ -107,6 +112,27 @@ public class ItemInformation : MonoBehaviour
 
                 Debug.Log("flase 작동중");
             }
+        }
+    }
+
+    public void Cut_Line()
+    {
+        string[] text_line = contenttext.Split(". ");
+        Debug.Log(text_line.Length);
+        Content.text = null;
+
+        for (int i = 0; i < text_line.Length; i++)
+        {
+
+            //마지막 줄이 아닐 경우
+            if (i + 1 < text_line.Length)
+            {
+                text_line[i] += ".";
+
+            }
+
+            Debug.Log(text_line[i]);
+            Content.text += text_line[i] + "\n";
         }
     }
 }

@@ -14,7 +14,7 @@
 13,허브(약초),치유력을 높여주는 풀이다.,,,Herb,X,X,Forage,Common
 14,정제수,기존 물에서 불순물을 제거한 물이다. 마실 수는 있으나 효과는 없다.,,,Purified_water,O,X,UseItem,Common
 15,연금 액체,연금술의 기초가 되는 액체다.,,,Base_liquid,X,Purified_water+Moon_Flower,Product,Common
-16,체력회복 포션,체력을 회복시켜주는 포션. 사용시 HP를 회복한다,,,Health_potion,O,Base_liquid+Herb,Potion,Common
+16,체력회복 포션,체력을 회복시켜주는 포션. 사용시 HP를 회복한다.,,,Health_potion,O,Base_liquid+Herb,Potion,Common
 17,마나회복 포션,마나를 회복시켜주는 포션. 사용시 MP를 회복한다.,,,Mana_potion,O,Base_liquid+Sakura,Potion,Common
 99,정체모를 포션,무슨 효력이 있는지 짐작조차 되지 않는 포션. 실패작인듯 하다. 마셔보고 싶지 않다.,,,Fail_potion,X,X,Product,Common
 ,,,,,,,,,

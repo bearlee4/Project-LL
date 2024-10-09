@@ -370,8 +370,7 @@ public class InteractionSystem : MonoBehaviour
     {
         int random_number = Random.Range(1, 10);
         int second_random_number;
-
-        Debug.Log("random_number : " + random_number);
+        InventorySystem.GetCount = Random.Range(1, 2);
 
         if (random_number <= 8)
         {
