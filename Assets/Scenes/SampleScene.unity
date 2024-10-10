@@ -10469,6 +10469,7 @@ GameObject:
   - component: {fileID: 1288554466}
   - component: {fileID: 1288554467}
   - component: {fileID: 1288554468}
+  - component: {fileID: 1288554469}
   m_Layer: 5
   m_Name: Manager
   m_TagString: Untagged
@@ -10754,6 +10755,20 @@ MonoBehaviour:
   spawner: {fileID: 1989579794}
   common_ForageList: []
   rare_ForageList: []
+--- !u!114 &1288554469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288554462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673e1947e930ad14d9466469dbcc26dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  request_List: []
+  request_Count: 0
 --- !u!1 &1291566471
 GameObject:
   m_ObjectHideFlags: 0
