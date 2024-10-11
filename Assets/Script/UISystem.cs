@@ -101,6 +101,12 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
                     InteractionSystem.UItoken = false;
                 }
             }
+
+            if (clickedObject.name == "RequestScroll")
+            {
+                RequestSystem.information_toggle = true;
+                RequestSystem.Load_Information(clickedObject);
+            }
         }
 
         //우클릭시
@@ -184,7 +190,7 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             //}
         }
 
-        else if (overObject.name == "RequestScroll")
+        else if (overObject.name == "RequestScroll" && RequestSystem.information_toggle == false)
         {
             Debug.Log("스크롤 접촉");
             RequestSystem.Load_Information(overObject);
@@ -213,7 +219,10 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         else if (overObject.name == "RequestScroll")
         {
             Debug.Log("스크롤 나감");
-            RequestSystem.request_information.SetActive(false);
+            if (RequestSystem.information_toggle == false)
+            {
+                RequestSystem.request_information.SetActive(false);
+            }
         }
     }
 

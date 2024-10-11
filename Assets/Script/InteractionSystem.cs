@@ -262,6 +262,7 @@ public class InteractionSystem : MonoBehaviour
                 RandomItem(enter_object);
             }
 
+            //의뢰UI 상호작용
             if (requestincounter == true)
             {
                 if (RequestSystem.request_UI.activeSelf == false && UItoken == false)
@@ -273,6 +274,7 @@ public class InteractionSystem : MonoBehaviour
                 else if (RequestSystem.request_UI.activeSelf == true && UItoken == true)
                 {
                     RequestSystem.request_UI.SetActive(false);
+                    RequestSystem.information_toggle = false;
                     UItoken = false;
                 }
             }

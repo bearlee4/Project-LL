@@ -4,14 +4,23 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 
 public class RequestSystem : MonoBehaviour
 {
-    InventorySystem InventorySystem;
-
+    public GameObject request_Scroll;
+    public GameObject request_UI;
+    public GameObject request_information;
+    public GameObject request_Item;
+    public Button gain_Button;
+    private GameObject player;
     private GameObject canvas;
+
+    InventorySystem InventorySystem;
+    StorageSystem StorageSystem;
     UISystem UISystem;
+    Player Player;
 
     //퀘스트DB 가져오기
     public List<Dictionary<string, object>> RequestDB;
@@ -19,20 +28,23 @@ public class RequestSystem : MonoBehaviour
     public List<object> available_Requst_List = new List<object>();
     //선택된 퀘스트들 저장해두는 리스트
     public List<string> request_List = new List<string>();
-    public List<GameObject> scroll_Position = new List<GameObject>();
+    //스크롤들의 위치를 저장해두는 리스트
     public List<int> position_Number = new List<int>();
 
-    public GameObject request_Scroll;
-    public GameObject request_UI;
-    public GameObject request_information;
-    public GameObject request_Item;
+    
     public int request_Count;
     public Text title;
     public Text content;
+    public Text reward;
+    public bool information_toggle;
 
     private string contenttext;
     private int get_Itemcount;
     private int need_Itemcount;
+    private string code_Number;
+    private int select_position_Nubmer;
+   
+    
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +53,11 @@ public class RequestSystem : MonoBehaviour
         canvas = GameObject.Find("Canvas");
         UISystem = canvas.GetComponent<UISystem>();
         InventorySystem = this.GetComponent<InventorySystem>();
+        StorageSystem = this.GetComponent<StorageSystem>();
+        reward.text = "보수\n";
+        information_toggle = false;
+        player = GameObject.Find("Player");
+        Player = player.GetComponent<Player>();
         Debug.Log(request_Scroll.transform.childCount);
 
         if (request_UI.activeSelf == true)
@@ -156,6 +173,8 @@ public class RequestSystem : MonoBehaviour
             request_information.SetActive(true);
         }
 
+        reward.text = "보수\n";
+
         Image RequestImage = request_Item.transform.Find("ItemImage").GetComponent<Image>();
 
         if (RequestImage.enabled == false)
@@ -179,6 +198,9 @@ public class RequestSystem : MonoBehaviour
 
                         if (request_List[i] == RequestDB[n]["Code"].ToString())
                         {
+                            code_Number = request_List[i];
+                            select_position_Nubmer = i;
+
                             Debug.Log("버그 체크");
                             RequestImage.sprite = Resources.Load<Sprite>("Image/" + RequestDB[n]["Need"].ToString());
                             title.text = RequestDB[n]["Title"].ToString();
@@ -206,6 +228,34 @@ public class RequestSystem : MonoBehaviour
                             
                             Requesttext.text = get_Itemcount.ToString() + " / " + need_Itemcount.ToString();
 
+                            if (get_Itemcount < need_Itemcount)
+                            {
+                                Requesttext.color = Color.red;
+                                if (gain_Button.gameObject.activeSelf == true)
+                                {
+                                    gain_Button.gameObject.SetActive(false);
+                                }
+                            }
+
+                            else if (get_Itemcount >= need_Itemcount)
+                            {
+                                Requesttext.color = Color.blue;
+                                if (gain_Button.gameObject.activeSelf == false)
+                                {
+                                    gain_Button.gameObject.SetActive(true);
+                                }
+                            }
+
+                            if (RequestDB[n]["Reward_Gold"].ToString() != "X")
+                            {
+                                reward.text += RequestDB[n]["Reward_Gold"].ToString() + " Gold \n";
+                            }
+
+                            if (RequestDB[n]["Reward_Item"].ToString() != "X")
+                            {
+                                reward.text += RequestDB[n]["Reward_Item"].ToString() + "\n";
+                            }
+
                             break;
                         }
                     }
@@ -229,5 +279,46 @@ public class RequestSystem : MonoBehaviour
             Debug.Log(text_line[i]);
             content.text += text_line[i] + "\n";
         }
+    }
+
+    public void Get_Reward()
+    {
+        Image RequestImage = request_Item.transform.Find("ItemImage").GetComponent<Image>();
+        string name = RequestImage.sprite.name;
+
+        for (int i = 0; i < RequestDB.Count; i++)
+        {
+            if (name == RequestDB[i]["Need"].ToString() && code_Number == RequestDB[i]["Code"].ToString())
+            {
+                if (RequestDB[i]["Reward_Gold"].ToString() != "X")
+                {
+                    Player.Get_Gold((int)RequestDB[i]["Reward_Gold"]);
+                }
+
+                else if (RequestDB[i]["Reward_Item"].ToString() != "X")
+                {
+                    InventorySystem.AddInventory(RequestDB[i]["Reward_Item"], (int)RequestDB[i]["Reward_Item_Count"]);
+                }
+
+                for (int n = 0; n < InventorySystem.InventoryList.Count; n++)
+                {
+                    if (name == InventorySystem.InventoryList[n])
+                    {
+                        StorageSystem.InventoryUse(n, (int)RequestDB[i]["Count"]);
+                    }
+                }
+                request_Scroll.transform.GetChild(position_Number[select_position_Nubmer]).gameObject.SetActive(false);
+                information_toggle = false;
+                if (request_information.activeSelf == true)
+                {
+                    request_information.SetActive(false);
+                }
+                request_List.RemoveAt(select_position_Nubmer);
+                position_Number.RemoveAt(select_position_Nubmer);
+                break;
+            }
+        }
+
+
     }
 }

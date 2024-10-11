@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    public int gold;
+    public Text gold_Text;
     public float MovePower = 5f;
     public GameObject Manager;
     Rigidbody2D rigid;
@@ -20,6 +23,9 @@ public class Player : MonoBehaviour
         InventorySystem = Manager.GetComponent<InventorySystem>();
         InteractionSystem = this.GetComponent<InteractionSystem>();
         ItemDB = CSVReader.Read("ItemDB");
+        gold = 0;
+        gold_Text.text = "Gold : " + gold;
+        gold_Text.color = Color.yellow;
 
     }
 
@@ -45,5 +51,11 @@ public class Player : MonoBehaviour
         move.Normalize();
 
         transform.position += move * MovePower * Time.deltaTime;
+    }
+
+    public void Get_Gold(int number)
+    {
+        gold += number;
+        gold_Text.text = "Gold : " + gold;
     }
 }
