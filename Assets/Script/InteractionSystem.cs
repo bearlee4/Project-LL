@@ -11,6 +11,7 @@ public class InteractionSystem : MonoBehaviour
     ItemInformation ItemInformation;
     AlchemySystem AlchemySystem;
     FieldSystem FieldSystem;
+    RequestSystem RequestSystem;
 
     private GameObject canvas;
     UISystem UISystem;
@@ -20,6 +21,7 @@ public class InteractionSystem : MonoBehaviour
     private bool storageincounter;
     private bool alchemyincounter;
     private bool spawnerincounter;
+    private bool requestincounter;
 
     public bool max_Trans_toggle;
     public GameObject enter_object;
@@ -42,11 +44,13 @@ public class InteractionSystem : MonoBehaviour
         storageincounter = false;
         alchemyincounter = false;
         spawnerincounter = false;
+        requestincounter = false;
         InventorySystem = Manager.GetComponent<InventorySystem>();
         StorageSystem = Manager.GetComponent<StorageSystem>();
         ItemInformation = Manager.GetComponent<ItemInformation>();
         AlchemySystem = Manager.GetComponent<AlchemySystem>();
         FieldSystem = Manager.GetComponent<FieldSystem>();
+        RequestSystem = Manager.GetComponent<RequestSystem>();
         ItemDB = CSVReader.Read("ItemDB");
 
         max_Trans_toggle = false;
@@ -112,6 +116,12 @@ public class InteractionSystem : MonoBehaviour
         {
             FieldSystem.Respawn_spawner();
         }
+
+        if (col.gameObject.name == "RequestBoard")
+        {
+            Debug.Log("게시판 접촉");
+            requestincounter = true;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D col)
@@ -145,6 +155,11 @@ public class InteractionSystem : MonoBehaviour
         {
             Debug.Log("스포너 접촉");
             spawnerincounter = false;
+        }
+
+        if (col.gameObject.name == "RequestBoard")
+        {
+            requestincounter = false;
         }
     }
 
@@ -245,6 +260,21 @@ public class InteractionSystem : MonoBehaviour
             if (spawnerincounter == true)
             {
                 RandomItem(enter_object);
+            }
+
+            if (requestincounter == true)
+            {
+                if (RequestSystem.request_UI.activeSelf == false && UItoken == false)
+                {
+                    RequestSystem.Open_RequestBoard();
+                    UItoken = true;
+                }
+
+                else if (RequestSystem.request_UI.activeSelf == true && UItoken == true)
+                {
+                    RequestSystem.request_UI.SetActive(false);
+                    UItoken = false;
+                }
             }
         }
 
@@ -368,22 +398,22 @@ public class InteractionSystem : MonoBehaviour
     //커먼 8, 레어 2 비율로 확률 돌리기
     public void RandomItem(GameObject col)
     {
-        int random_number = Random.Range(1, 10);
+        int random_number = Random.Range(0, 10);
         int second_random_number;
-        InventorySystem.GetCount = Random.Range(1, 2);
+        InventorySystem.GetCount = Random.Range(1, 3);
 
-        if (random_number <= 8)
+        if (random_number < 8)
         {
             Debug.Log("일반 등급 당첨!");
-            second_random_number = Random.Range(1, FieldSystem.common_ForageList.Count);
+            second_random_number = Random.Range(0, FieldSystem.common_ForageList.Count);
             InventorySystem.AddInventory(FieldSystem.common_ForageList[second_random_number], InventorySystem.GetCount);
 
         }
 
-        else if(random_number > 8)
+        else if(random_number >= 8)
         {
             Debug.Log("희귀 등급 당첨!");
-            second_random_number = Random.Range(1, FieldSystem.rare_ForageList.Count);
+            second_random_number = Random.Range(0, FieldSystem.rare_ForageList.Count);
             InventorySystem.AddInventory(FieldSystem.rare_ForageList[second_random_number], InventorySystem.GetCount);
         }
 

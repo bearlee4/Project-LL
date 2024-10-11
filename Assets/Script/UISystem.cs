@@ -12,6 +12,7 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     InteractionSystem InteractionSystem;
     ItemInformation ItemInformation;
     AlchemySystem AlchemySystem;
+    RequestSystem RequestSystem;
 
     public GameObject Manager;
     private GameObject Player;
@@ -29,7 +30,9 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         StorageSystem = Manager.GetComponent<StorageSystem>();
         ItemInformation = Manager.GetComponent<ItemInformation>();
         AlchemySystem = Manager.GetComponent<AlchemySystem>();
+        RequestSystem = Manager.GetComponent<RequestSystem>();
         InteractionSystem = Player.GetComponent<InteractionSystem>();
+
 
         slotSize = ItemInformation.slot_Select.GetComponent<RectTransform>();
     }
@@ -180,6 +183,12 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             //    ItemInformation.Load_Information(overObject);
             //}
         }
+
+        else if (overObject.name == "RequestScroll")
+        {
+            Debug.Log("스크롤 접촉");
+            RequestSystem.Load_Information(overObject);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -199,6 +208,12 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             //    ItemInformation.InformationWindow.SetActive(false);
 
             //}
+        }
+
+        else if (overObject.name == "RequestScroll")
+        {
+            Debug.Log("스크롤 나감");
+            RequestSystem.request_information.SetActive(false);
         }
     }
 
