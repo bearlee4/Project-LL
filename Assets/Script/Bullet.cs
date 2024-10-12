@@ -43,4 +43,18 @@ public class Bullet : MonoBehaviour
         Debug.Log("부딪힘");
         ReturnToPool();
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            EnemyStatus enemy = collision.GetComponent<EnemyStatus>();
+
+            if (enemy != null)
+            {
+                enemy.Damaged(damage);
+            }
+            ReturnToPool();
+        }
+    }
 }

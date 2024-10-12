@@ -122,4 +122,8 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    internal void Damaged(float damage)
+    {
+        
+    }
 }

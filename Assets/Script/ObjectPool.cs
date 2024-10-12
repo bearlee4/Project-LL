@@ -5,11 +5,9 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     public GameObject bulletPrefab;
-    public GameObject deathBeamPrefab;
     public int poolSize = 2;
 
     private Queue<GameObject> bulletPool = new Queue<GameObject>();
-    private Queue<GameObject> beamPool = new Queue<GameObject>();
 
 
     void Start()
