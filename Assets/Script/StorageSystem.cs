@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class StorageSystem : MonoBehaviour
 {
@@ -439,7 +440,7 @@ public class StorageSystem : MonoBehaviour
 
         LinkInventory();
 
-        if (InventoryImageSlot[number].activeSelf == true)
+        if (InventoryImageSlot[number].activeSelf == true && ItemInformation.slot_Select.activeSelf == true)
         {
             ItemInformation.Load_Information(UISystem.overObject);
         }

@@ -313,6 +313,7 @@ public class RequestSystem : MonoBehaviour
                 {
                     request_information.SetActive(false);
                 }
+
                 request_List.RemoveAt(select_position_Nubmer);
                 position_Number.RemoveAt(select_position_Nubmer);
                 break;

@@ -9135,7 +9135,7 @@ GameObject:
   - component: {fileID: 1012272256}
   m_Layer: 5
   m_Name: ItemImage
-  m_TagString: ItemImage
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11902,7 +11902,6 @@ MonoBehaviour:
   request_Item: {fileID: 979269251}
   gain_Button: {fileID: 1802446516}
   request_List: []
-  scroll_Position: []
   position_Number: 
   request_Count: 0
   title: {fileID: 1366443505}
@@ -15369,7 +15368,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1686345506
 RectTransform:
   m_ObjectHideFlags: 0

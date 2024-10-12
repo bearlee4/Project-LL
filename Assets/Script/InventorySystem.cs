@@ -68,7 +68,7 @@ public class InventorySystem : MonoBehaviour
         QuickSlotList = new List<string>() { "null", "null", "null" };
         QuickSlotPosition = new List<int>() { -1, -1, -1 };
 
-        GetCount = Random.Range(1, 2);
+        GetCount = 99;
 
         ItemDB = CSVReader.Read("ItemDB");
 
