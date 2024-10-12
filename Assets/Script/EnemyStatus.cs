@@ -10,14 +10,15 @@ public class EnemyStatus : MonoBehaviour
 
     public void Damaged(float damage)
     {
-        hp =- damage;
+        hp -= damage;
+        if (hp <= 0)
+        {
+            Die();
+        }
     }
 
     void Die()
     {
-        if (hp <= 0)
-        {
-            gameObject.SetActive(false);
-        }
+        gameObject.SetActive(false);
     }
 }

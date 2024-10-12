@@ -46,7 +46,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy")&&collision is CapsuleCollider2D)
         {
             EnemyStatus enemy = collision.GetComponent<EnemyStatus>();
 
