@@ -24,6 +24,7 @@ public class AlchemySystem : MonoBehaviour
     public List<GameObject> AlchemySlot = new List<GameObject>();
     public List<GameObject> AlchemyImageSlot = new List<GameObject>();
     public GameObject resultImageSlot;
+    public Text resultNumber;
 
     //창고측 슬롯
     public List<GameObject> StorageSlot = new List<GameObject>();
@@ -37,7 +38,9 @@ public class AlchemySystem : MonoBehaviour
     private bool alchemySusccess;
     private bool storage_side;
 
+    public GameObject mix_UI;
     public GameObject mix_Button;
+    public Text mix_Text;
     public GameObject get_Button;
     public Button inventory_Button;
     public Button storage_Button;
@@ -45,6 +48,7 @@ public class AlchemySystem : MonoBehaviour
     private int pageNumber;
     private int pagecalcul;
     public Text pageText;
+    private int transnumber;
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +63,7 @@ public class AlchemySystem : MonoBehaviour
         alchemyside = false;
         storage_side = true;
 
-        mix_Button.SetActive(false);
+        mix_UI.SetActive(false);
         get_Button.SetActive(false);
 
         if (alchemyUI.activeSelf == true)
@@ -85,15 +89,27 @@ public class AlchemySystem : MonoBehaviour
         LinkStorage();
         alchemyUI.SetActive(true);
 
+        Color color;
+
+        for (int i = 0; i < AlchemySlot.Count; i++)
+        {
+            color = AlchemySlot[i].GetComponent<Image>().color;
+            color.a = 1.0f;
+            AlchemySlot[i].GetComponent<Image>().color = color;
+        }
+
         //연금 슬롯 사이즈에 맞게 인벤토리 슬롯 생성
         for (int num = alchemySize; AlchemySlot.Count > num; num++)
         {
-            AlchemySlot[num].SetActive(false);
+            //AlchemySlot[num].SetActive(false);
+            color = AlchemySlot[num].GetComponent<Image>().color;
+            color.a = 0.5f;
+            AlchemySlot[num].GetComponent<Image>().color = color;
         }
 
-        if (mix_Button.activeSelf == true && AlchemyList.Count < 2)
+        if (mix_UI.activeSelf == true && AlchemyList.Count < 2)
         {
-            mix_Button.SetActive(false);
+            mix_UI.SetActive(false);
         }
 
         if (storage_side == true)
@@ -107,6 +123,9 @@ public class AlchemySystem : MonoBehaviour
             Change_Inventory();
             LinkInventory();
         }
+
+        //갯수 1로 리셋
+        transnumber = 1;
 
     }
 
@@ -216,8 +235,6 @@ public class AlchemySystem : MonoBehaviour
 
     public void TransItem()
     {
-        int transnumber = 1;
-
         alchemyside = ItemInformation.sidetoken;
         Debug.Log("현재 스토리지 사이드" + alchemyside);
 
@@ -255,7 +272,7 @@ public class AlchemySystem : MonoBehaviour
 
             if(alchemyUI.activeSelf == true && AlchemyList.Count < 2)
             {
-                mix_Button.SetActive(false);
+                mix_UI.SetActive(false);
             }
         }
 
@@ -269,8 +286,7 @@ public class AlchemySystem : MonoBehaviour
                     if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i - pagecalcul].transform.position.ToString() && fullAlchemy_Slot == false)
                     {
 
-
-                        AddAlchemy(StorageSystem.StorageList[i]);
+                        AddAlchemy(StorageSystem.StorageList[i], transnumber);
                         StorageSystem.StorageUse(i, transnumber);
                         LinkStorage();
 
@@ -293,7 +309,7 @@ public class AlchemySystem : MonoBehaviour
                     {
 
 
-                        AddAlchemy(InventorySystem.InventoryList[i]);
+                        AddAlchemy(InventorySystem.InventoryList[i], transnumber);
                         StorageSystem.InventoryUse(i, transnumber);
                         LinkInventory();
 
@@ -312,13 +328,14 @@ public class AlchemySystem : MonoBehaviour
             //버튼 숨긴거 꺼내기
             if (alchemyUI.activeSelf == true && AlchemyList.Count >= alchemySize)
             {
-                mix_Button.SetActive(true);
+                mix_UI.SetActive(true);
+                mix_Text.text = "1";
             }
         }
     }
 
     //아이템 추가
-    public void AddAlchemy(string name)
+    public void AddAlchemy(string name, int transnumber)
     {
         //연금솥 공간이 부족할때
         if (AlchemyList.Count == alchemySize)
@@ -514,7 +531,7 @@ public class AlchemySystem : MonoBehaviour
             }
         }
 
-        mix_Button.SetActive(false);
+        mix_UI.SetActive(false);
         get_Button.SetActive(true);
     }
 
