@@ -111,6 +111,9 @@ public class EnemyManager : MonoBehaviour
                 StopCoroutine(moveCoroutine);
             }
             targetTransform = null;
+
+            endPosition = Vector3.zero;
+            endPosition = transform.position;
         }
     }
 
