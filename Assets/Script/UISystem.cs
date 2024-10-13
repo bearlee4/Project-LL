@@ -151,7 +151,8 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             }
 
             ItemInformation.InformationWindow.transform.position = overObject.transform.position;
-            ItemInformation.InformationWindow.transform.position += new Vector3(115, -165, 0);
+            ItemInformation.InformationWindow.transform.position += new Vector3(180, 0, 0);
+            //ItemInformation.InformationWindow.transform.position += new Vector3(115, -165, 0);
             ItemInformation.Load_Information(overObject);
 
             //인벤토리가 켜졌을 떄

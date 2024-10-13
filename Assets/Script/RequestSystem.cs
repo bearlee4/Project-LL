@@ -31,6 +31,8 @@ public class RequestSystem : MonoBehaviour
     //스크롤들의 위치를 저장해두는 리스트
     public List<int> position_Number = new List<int>();
 
+    public List<Sprite> Sprite_List = new List<Sprite>();
+
     
     public int request_Count;
     public Text title;
@@ -77,6 +79,7 @@ public class RequestSystem : MonoBehaviour
 
     public void Open_RequestBoard()
     {
+        int random_Number;
         request_UI.SetActive (true);
 
         if (request_information.activeSelf == true)
@@ -97,6 +100,8 @@ public class RequestSystem : MonoBehaviour
             if (position_Number.Contains(i))
             {
                 request_Scroll.transform.GetChild(i).gameObject.SetActive(true);
+                random_Number = Random.Range(0, 4);
+                request_Scroll.transform.GetChild(i).gameObject.GetComponent<Image>().sprite = Sprite_List[random_Number];
             }
         }
     }
@@ -123,7 +128,7 @@ public class RequestSystem : MonoBehaviour
     {
         int select_number;
         //하루 의뢰 갯수. 조건 없는 의뢰가 당장은 4개까지라 3~4개로 설정. 3~5개로 할 예정
-        request_Count = Random.Range(3, 5);
+        request_Count = Random.Range(3, 6);
 
         Debug.Log("request_Count : " + request_Count);
         Debug.Log("request_List.Count : " + request_List.Count);

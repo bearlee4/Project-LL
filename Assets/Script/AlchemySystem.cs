@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.PlasticSCM.Editor.WebApi;
 
 public class AlchemySystem : MonoBehaviour
 {
@@ -34,9 +35,12 @@ public class AlchemySystem : MonoBehaviour
     public bool alchemyside;
     public bool fullAlchemy_Slot;
     private bool alchemySusccess;
+    private bool storage_side;
 
     public GameObject mix_Button;
     public GameObject get_Button;
+    public Button inventory_Button;
+    public Button storage_Button;
 
     private int pageNumber;
     private int pagecalcul;
@@ -47,13 +51,13 @@ public class AlchemySystem : MonoBehaviour
     {
         canvas = GameObject.Find("Canvas");
         UISystem = canvas.GetComponent<UISystem>();
-
         StorageSystem = this.GetComponent<StorageSystem>();
         ItemInformation = this.GetComponent<ItemInformation>();
         InventorySystem = this.GetComponent<InventorySystem>();
 
         alchemySize = 2;
         alchemyside = false;
+        storage_side = true;
 
         mix_Button.SetActive(false);
         get_Button.SetActive(false);
@@ -92,7 +96,18 @@ public class AlchemySystem : MonoBehaviour
             mix_Button.SetActive(false);
         }
 
-        LinkStorage();
+        if (storage_side == true)
+        {
+            Change_Storage();
+            LinkStorage();
+        }
+
+        else
+        {
+            Change_Inventory();
+            LinkInventory();
+        }
+
     }
 
     //창고 UI 닫기
@@ -163,6 +178,42 @@ public class AlchemySystem : MonoBehaviour
         }
     }
 
+    public void LinkInventory()
+    {
+        int count = 0;
+
+        Slot_Reset();
+        if (InventorySystem.InventoryList.Any() == true)
+        {
+            for (int i = 0 + pagecalcul; i < InventorySystem.InventoryList.Count; i++)
+            {
+                //이미지 연동
+                Image Image = StorageImageSlot[i - pagecalcul].GetComponent<Image>();
+                //Image StorageImage = StorageSystem.StorageImageSlot[i].GetComponent<Image>();
+                if (StorageImageSlot[i - pagecalcul].activeSelf == false)
+                {
+                    StorageImageSlot[i - pagecalcul].SetActive(true);
+                }
+
+                if (Image.enabled == false)
+                {
+                    Image.sprite = Resources.Load<Sprite>("Image/" + InventorySystem.InventoryList[i]);
+                    Image.enabled = true;
+                }
+
+                //텍스트 연동
+                StorageNumberList[i - pagecalcul].text = InventorySystem.CountList[i].ToString();
+
+                count++;
+
+                if (count == 12)
+                {
+                    break;
+                }
+            }
+        }
+    }
+
     public void TransItem()
     {
         int transnumber = 1;
@@ -183,9 +234,20 @@ public class AlchemySystem : MonoBehaviour
                     {
                         if (AlchemyList[i] == InventorySystem.ItemDB[j]["ImgName"].ToString())
                         {
-                            StorageSystem.AddStorage(InventorySystem.ItemDB[j]["ImgName"].ToString(), transnumber);
-                            AlchemyUse(i);
-                            break;
+                            if (storage_side == true)
+                            {
+                                StorageSystem.AddStorage(InventorySystem.ItemDB[j]["ImgName"].ToString(), transnumber);
+                                AlchemyUse(i);
+                                break;
+                            }
+
+                            else
+                            {
+                                InventorySystem.AddInventory(InventorySystem.ItemDB[j]["ImgName"].ToString(), transnumber);
+                                AlchemyUse(i);
+                                break;
+                            }
+                            
                         }
                     }
                 }
@@ -200,25 +262,52 @@ public class AlchemySystem : MonoBehaviour
         //창고 to 연금솥
         else
         {
-            for (int i = 0 + pagecalcul; i < StorageSystem.StorageList.Count; i++)
+            if(storage_side == true)
             {
-                if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i - pagecalcul].transform.position.ToString() && fullAlchemy_Slot == false)
+                for (int i = 0 + pagecalcul; i < StorageSystem.StorageList.Count; i++)
                 {
-                    
-                    AddAlchemy(StorageSystem.StorageList[i]);
-                    StorageSystem.StorageUse(i, transnumber);
-
-                    LinkStorage();
-
-                    if (StorageImageSlot[i - pagecalcul].activeSelf == true && StorageImageSlot[i - pagecalcul].GetComponent<Image>().sprite != null)
+                    if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i - pagecalcul].transform.position.ToString() && fullAlchemy_Slot == false)
                     {
-                        ItemInformation.Load_Information(UISystem.overObject);
+
+
+                        AddAlchemy(StorageSystem.StorageList[i]);
+                        StorageSystem.StorageUse(i, transnumber);
+                        LinkStorage();
+
+                        if (StorageImageSlot[i - pagecalcul].activeSelf == true && StorageImageSlot[i - pagecalcul].GetComponent<Image>().sprite != null)
+                        {
+                            ItemInformation.Load_Information(UISystem.overObject);
+                        }
+
+                        break;
                     }
 
-                    break;
                 }
-
             }
+
+            else
+            {
+                for (int i = 0 + pagecalcul; i < InventorySystem.InventoryList.Count; i++)
+                {
+                    if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i - pagecalcul].transform.position.ToString() && fullAlchemy_Slot == false)
+                    {
+
+
+                        AddAlchemy(InventorySystem.InventoryList[i]);
+                        StorageSystem.InventoryUse(i, transnumber);
+                        LinkInventory();
+
+                        if (StorageImageSlot[i - pagecalcul].activeSelf == true && StorageImageSlot[i - pagecalcul].GetComponent<Image>().sprite != null)
+                        {
+                            ItemInformation.Load_Information(UISystem.overObject);
+                        }
+
+                        break;
+                    }
+
+                }
+            }
+            
 
             //버튼 숨긴거 꺼내기
             if (alchemyUI.activeSelf == true && AlchemyList.Count >= alchemySize)
@@ -322,7 +411,15 @@ public class AlchemySystem : MonoBehaviour
             UISystem.clicktoggle = false;
         }
 
-        LinkStorage();
+        if (storage_side == true)
+        {
+            LinkStorage();
+        }
+        
+        else
+        {
+            LinkInventory();
+        }
     }
 
     public void Delete_All()
@@ -432,7 +529,10 @@ public class AlchemySystem : MonoBehaviour
                 StorageSystem.AddStorage(InventorySystem.ItemDB[i]["ImgName"].ToString(), 1);
                 resultImageSlot.SetActive(false);
                 get_Button.SetActive(false);
-                LinkStorage();
+                if (storage_side == true)
+                {
+                    LinkStorage();
+                }
             }
         }
     }
@@ -457,5 +557,41 @@ public class AlchemySystem : MonoBehaviour
             pageText.text = pageNumber.ToString();
             LinkStorage();
         }
+    }
+
+    public void Change_Inventory()
+    {
+        pageNumber = 0;
+
+        Color color = storage_Button.GetComponent<Image>().color;
+        color.a = 0.5f;
+        storage_Button.GetComponent<Image>().color = color;
+        color = inventory_Button.GetComponent<Image>().color;
+        color.a = 1.0f;
+        inventory_Button.GetComponent<Image>().color = color;
+
+        LinkInventory();
+
+        storage_side = false;
+
+        Debug.Log("인벤토리 변경");
+    }
+
+    public void Change_Storage()
+    {
+        pageNumber = 0;
+
+        Color color = inventory_Button.GetComponent <Image>().color;
+        color.a = 0.5f;
+        inventory_Button.GetComponent<Image>().color = color;
+        color = storage_Button.GetComponent<Image>().color;
+        color.a = 1.0f;
+        storage_Button.GetComponent<Image>().color = color;
+
+        LinkStorage();
+
+        storage_side = true;
+
+        Debug.Log("창고 변경");
     }
 }

@@ -438,7 +438,10 @@ public class StorageSystem : MonoBehaviour
 
         }
 
-        LinkInventory();
+        if (storageUI.activeSelf == true)
+        {
+            LinkInventory();
+        }
 
         if (InventoryImageSlot[number].activeSelf == true && ItemInformation.slot_Select.activeSelf == true)
         {
