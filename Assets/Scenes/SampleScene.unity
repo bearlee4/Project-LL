@@ -2089,9 +2089,9 @@ GameObject:
   - component: {fileID: 197102519}
   - component: {fileID: 197102523}
   - component: {fileID: 197102522}
-  - component: {fileID: 197102521}
   - component: {fileID: 197102524}
   - component: {fileID: 197102525}
+  - component: {fileID: 197102526}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -2166,22 +2166,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &197102521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 197102518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e189bbebd6998cf4f9426821056b758f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
-  delay: 3
-  currentAngle: 0
-  followTarget: 0
 --- !u!58 &197102522
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2250,6 +2234,24 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
+--- !u!114 &197102526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 197102518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d84e540120ffd604cb575457dcf36728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  returnSpeed: 7
+  delay: 2
+  spawnArea: 10
+  currentAngle: 0
+  followTarget: 1
 --- !u!1 &204461260
 GameObject:
   m_ObjectHideFlags: 0
@@ -5777,7 +5779,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.571991
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
