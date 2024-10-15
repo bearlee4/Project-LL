@@ -2249,7 +2249,6 @@ MonoBehaviour:
   speed: 2
   returnSpeed: 7
   delay: 2
-  spawnArea: 10
   currentAngle: 0
   followTarget: 1
 --- !u!1 &204461260
