@@ -126,6 +126,9 @@ public class RequestSystem : MonoBehaviour
 
     public void Set_Request()
     {
+        request_List.Clear();
+        position_Number.Clear();
+
         int select_number;
         //하루 의뢰 갯수. 조건 없는 의뢰가 당장은 4개까지라 3~4개로 설정. 3~5개로 할 예정
         request_Count = Random.Range(3, 6);

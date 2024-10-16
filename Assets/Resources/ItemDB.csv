@@ -1,66 +1,20 @@
-﻿Code,Name,Content,Sale,Use,ImgName,UseItem,Recipe,Tag,Tier
-1,반짝이풀,은은하게 빛이 나는 풀. 밤에 보면 아름답게 빛난다.,100,0,Twincleglass,X,X,Forage,Common
-2,벚꽃,벚꽃나무의 잎. 회복 효과를 가진 연금술의 재료다.,100,0,Sakura,X,X,Forage,Common
-3,벚꽃(불),원소로 인해 원소식물로 성질이 변한 벚꽃. 불 원소를 머금고 있다.,,,Fire_Sakura,X,X,Forage,Rare
-4,벚꽃(물),원소로 인해 원소식물로 성질이 변한 벚꽃. 물 원소를 머금고 있다.,,,Water_sakura,X,X,Forage,Rare
-5,나뭇잎,흔한 나뭇잎이다.,,,Leap,X,X,Forage,Common
-6,나뭇잎(불),원소로 인해 원소식물로 성질이 변한 나뭇잎. 불 원소를 머금고 있다.,,,Fire_leap,X,X,Forage,Rare
-7,나뭇잎(물),원소로 인해 원소식물로 성질이 변한 나뭇잎. 물 원소를 머금고 있다.,,,Water_leap,X,X,Forage,Rare
-8,정령수잎,정령의 축복을 받은 나무의 잎. 순수한 원소의 힘을 가지고 있다. 원소의 힘을 머금게 하는 효과를 가지고 있다.,,,Bay_Tree,X,X,Forage,Rare
-9,정령수잎(불),정령의 축복을 받은 나무의 잎. 불 원소의 힘을 더 많이 머금고 있다.,,,Fire_Bay_Tree,X,X,Forage,Rare
-10,정령수잎(물),정령의 축복을 받은 나무의 잎. 물 원소의 힘을 더 많이 머금고 있다.,,,Water_bay_tree,X,X,Forage,Rare
-11,달맞이꽃,흔히 볼 수 있는 풀이지만 연금술의 기초 재료로 사용된다.,,,Moon_Flower,X,X,Forage,Common
-12,민들레풀,흔한 들풀이다.,,,Dandelion,X,X,Forage,Common
-13,허브(약초),치유력을 높여주는 풀이다.,,,Herb,X,X,Forage,Common
-14,정제수,기존 물에서 불순물을 제거한 물이다. 마실 수는 있으나 효과는 없다.,,,Purified_water,O,X,UseItem,Common
-15,연금 액체,연금술의 기초가 되는 액체다.,,,Base_liquid,X,Purified_water+Moon_Flower,Product,Common
-16,체력회복 포션,체력을 회복시켜주는 포션. 사용시 HP를 회복한다.,,,Health_potion,O,Base_liquid+Herb,Potion,Common
-17,마나회복 포션,마나를 회복시켜주는 포션. 사용시 MP를 회복한다.,,,Mana_potion,O,Base_liquid+Sakura,Potion,Common
-18,빛나는 액체,빛이 나는 액체. 밤에도 빛나 막대기 같은 것에 바르면 야광봉으로 사용할 수 있다.,,,Spakling_liquid,X,Base_liquid+Twincleglass,Product,Common
-99,정체모를 포션,무슨 효력이 있는지 짐작조차 되지 않는 포션. 실패작인듯 하다. 마셔보고 싶지 않다.,,,Fail_potion,X,X,Product,Common
-,,,,,,,,,
-100,불,아 뜨거,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-200,물,앗 차거,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-300,바람,시원해~,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-400,흙,엣툇툇,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-10001,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-1001,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-1010,,,,,,,,,
+﻿Code,Name,Content,Buy,ImgName,UseItem,Recipe,Tag,Tier
+1,반짝이풀,은은하게 빛이 나는 풀. 밤에 보면 아름답게 빛난다.,X,Twincleglass,X,X,Forage,Common
+2,벚꽃,벚꽃나무의 잎. 회복 효과를 가진 연금술의 재료다.,X,Sakura,X,X,Forage,Common
+3,벚꽃(불),원소로 인해 원소식물로 성질이 변한 벚꽃. 불 원소를 머금고 있다.,X,Fire_Sakura,X,X,Forage,Rare
+4,벚꽃(물),원소로 인해 원소식물로 성질이 변한 벚꽃. 물 원소를 머금고 있다.,X,Water_sakura,X,X,Forage,Rare
+5,나뭇잎,흔한 나뭇잎이다.,X,Leap,X,X,Forage,Common
+6,나뭇잎(불),원소로 인해 원소식물로 성질이 변한 나뭇잎. 불 원소를 머금고 있다.,X,Fire_leap,X,X,Forage,Rare
+7,나뭇잎(물),원소로 인해 원소식물로 성질이 변한 나뭇잎. 물 원소를 머금고 있다.,X,Water_leap,X,X,Forage,Rare
+8,정령수잎,정령의 축복을 받은 나무의 잎. 순수한 원소의 힘을 가지고 있다. 원소의 힘을 머금게 하는 효과를 가지고 있다.,X,Bay_Tree,X,X,Forage,Rare
+9,정령수잎(불),정령의 축복을 받은 나무의 잎. 불 원소의 힘을 더 많이 머금고 있다.,X,Fire_Bay_Tree,X,X,Forage,Rare
+10,정령수잎(물),정령의 축복을 받은 나무의 잎. 물 원소의 힘을 더 많이 머금고 있다.,X,Water_bay_tree,X,X,Forage,Rare
+11,달맞이꽃,흔히 볼 수 있는 풀이지만 연금술의 기초 재료로 사용된다.,X,Moon_Flower,X,X,Forage,Common
+12,민들레풀,흔한 들풀이다.,X,Dandelion,X,X,Forage,Common
+13,허브(약초),치유력을 높여주는 풀이다.,X,Herb,X,X,Forage,Common
+14,정제수,기존 물에서 불순물을 제거한 물이다. 마실 수는 있으나 효과는 없다.,10,Purified_water,O,X,UseItem,Common
+15,연금 액체,연금술의 기초가 되는 액체다.,20,Base_liquid,X,Purified_water+Moon_Flower,Product,Common
+16,체력회복 포션,체력을 회복시켜주는 포션. 사용시 HP를 회복한다.,X,Health_potion,O,Base_liquid+Herb,Potion,Common
+17,마나회복 포션,마나를 회복시켜주는 포션. 사용시 MP를 회복한다.,X,Mana_potion,O,Base_liquid+Sakura,Potion,Common
+18,빛나는 액체,빛이 나는 액체. 밤에도 빛나 막대기 같은 것에 바르면 야광봉으로 사용할 수 있다.,X,Spakling_liquid,X,Base_liquid+Twincleglass,Product,Common
+99,정체모를 포션,무슨 효력이 있는지 짐작조차 되지 않는 포션. 실패작인듯 하다. 마셔보고 싶지 않다.,X,Fail_potion,X,X,Product,Common

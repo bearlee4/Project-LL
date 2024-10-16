@@ -46,7 +46,7 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     public void OnPointerClick(PointerEventData eventData)
     {
         GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
-
+        Debug.Log("clickedObject.name : " + clickedObject.name);
         //좌클릭시
         if (eventData.button.Equals(PointerEventData.InputButton.Left))
         {
