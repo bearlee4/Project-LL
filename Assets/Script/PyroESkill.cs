@@ -32,9 +32,9 @@ public class PyroESkill : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        coolTime = elementManager.ESkillDelay[elementManager.currentElement];
+        coolTime = elementManager.ESkillDelay[0];
 
-        if (Input.GetKeyUp(KeyCode.E) && !isBeamStopCoroutine)
+        if (Input.GetKeyUp(KeyCode.E) && !isBeamStopCoroutine && elementManager.currentElement == 0)
         {
             StopCoroutine(BeamCoroutine);
             StartCoroutine(BeamStop(coolTime));

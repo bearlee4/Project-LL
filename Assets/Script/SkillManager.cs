@@ -7,6 +7,7 @@ public class SkillManager : MonoBehaviour
 {
     private ElementManager elementManager;
     private PyroESkill pyroESkill;
+    private TestSkill testSkill;
 
     public ObjectPool objectPool;
 
@@ -19,6 +20,7 @@ public class SkillManager : MonoBehaviour
     { 
         elementManager = GetComponent<ElementManager>();
         pyroESkill = GetComponent<PyroESkill>();
+        testSkill = GetComponent<TestSkill>();
         cam = Camera.main;
     }
 
@@ -36,6 +38,7 @@ public class SkillManager : MonoBehaviour
                 PyroE();
                 break;
             case 1:
+                TestE();
                 break;
             case 2:
                 break;
@@ -62,5 +65,10 @@ public class SkillManager : MonoBehaviour
     void PyroE()
     {
         pyroESkill.Beam();
+    }
+
+    void TestE()
+    {
+        testSkill.Arc();
     }
 }

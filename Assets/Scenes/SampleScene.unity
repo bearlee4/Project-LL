@@ -6827,6 +6827,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 624364038}
   m_CullTransparentMesh: 1
+--- !u!1 &627873362 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8403661302722383212, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
+  m_PrefabInstance: {fileID: 812685510556537433}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &632234260
 GameObject:
   m_ObjectHideFlags: 0
@@ -21000,6 +21005,7 @@ GameObject:
   - component: {fileID: 1931117062}
   - component: {fileID: 1931117061}
   - component: {fileID: 1931117064}
+  - component: {fileID: 1931117065}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -21248,6 +21254,20 @@ MonoBehaviour:
   beamActive: 0
   isBeamCoroutineRunning: 0
   isBeamStopCoroutine: 0
+  coolTime: 0
+--- !u!114 &1931117065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931117054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71125fc8cf1314041a5008f6896b8772, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arcPrefab: {fileID: 627873362}
   coolTime: 0
 --- !u!1 &1933618540
 GameObject:
@@ -22986,17 +23006,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 627873363, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1931117058}
     - target: {fileID: 6652396212946227187, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
       propertyPath: m_RootOrder
       value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6652396212946227187, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652396212946227187, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652396212946227187, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.54
+      value: -12.12
       objectReference: {fileID: 0}
     - target: {fileID: 6652396212946227187, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 139
+      value: 139.01
       objectReference: {fileID: 0}
     - target: {fileID: 6652396212946227187, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
       propertyPath: m_LocalPosition.z
@@ -23033,10 +23065,6 @@ PrefabInstance:
     - target: {fileID: 8403661302722383212, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
       propertyPath: m_Name
       value: arcSkill
-      objectReference: {fileID: 0}
-    - target: {fileID: 8403661302722383212, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
