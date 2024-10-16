@@ -58,4 +58,10 @@ public class Player : MonoBehaviour
         gold += number;
         gold_Text.text = gold.ToString();
     }
+
+    public void Use_Gold(int number)
+    {
+        gold -= number;
+        gold_Text.text = gold.ToString();
+    }
 }

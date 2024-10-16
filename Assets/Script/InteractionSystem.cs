@@ -12,6 +12,7 @@ public class InteractionSystem : MonoBehaviour
     AlchemySystem AlchemySystem;
     FieldSystem FieldSystem;
     RequestSystem RequestSystem;
+    ShopSystem ShopSystem;
 
     private GameObject canvas;
     UISystem UISystem;
@@ -22,6 +23,8 @@ public class InteractionSystem : MonoBehaviour
     private bool alchemyincounter;
     private bool spawnerincounter;
     private bool requestincounter;
+    private bool shopincounter;
+    private bool resetrequestincounter;
 
     public bool max_Trans_toggle;
     public GameObject enter_object;
@@ -45,12 +48,15 @@ public class InteractionSystem : MonoBehaviour
         alchemyincounter = false;
         spawnerincounter = false;
         requestincounter = false;
+        shopincounter = false;
+        resetrequestincounter = false;
         InventorySystem = Manager.GetComponent<InventorySystem>();
         StorageSystem = Manager.GetComponent<StorageSystem>();
         ItemInformation = Manager.GetComponent<ItemInformation>();
         AlchemySystem = Manager.GetComponent<AlchemySystem>();
         FieldSystem = Manager.GetComponent<FieldSystem>();
         RequestSystem = Manager.GetComponent<RequestSystem>();
+        ShopSystem = Manager.GetComponent<ShopSystem>();
         ItemDB = CSVReader.Read("ItemDB");
 
         max_Trans_toggle = false;
@@ -95,6 +101,18 @@ public class InteractionSystem : MonoBehaviour
                 alchemyincounter = true;
             }
 
+            if (col.gameObject.name == "RequestBoard")
+            {
+                Debug.Log("게시판 접촉");
+                requestincounter = true;
+            }
+
+            if (col.gameObject.name == "Shop")
+            {
+                Debug.Log("상점 접촉");
+                shopincounter = true;
+            }
+
         }
 
         //일과 끝내기 접촉
@@ -117,11 +135,12 @@ public class InteractionSystem : MonoBehaviour
             FieldSystem.Respawn_spawner();
         }
 
-        if (col.gameObject.name == "RequestBoard")
+        if (col.gameObject.name == "Reset_Request")
         {
-            Debug.Log("게시판 접촉");
-            requestincounter = true;
+            Debug.Log("의뢰 리셋 접촉");
+            resetrequestincounter = true;
         }
+
     }
 
     private void OnTriggerStay2D(Collider2D col)
@@ -160,6 +179,16 @@ public class InteractionSystem : MonoBehaviour
         if (col.gameObject.name == "RequestBoard")
         {
             requestincounter = false;
+        }
+
+        if (col.gameObject.name == "Shop")
+        {
+            shopincounter = false;
+        }
+
+        if (col.gameObject.name == "Reset_Request")
+        {
+            resetrequestincounter = false;
         }
     }
 
@@ -278,6 +307,28 @@ public class InteractionSystem : MonoBehaviour
                     UItoken = false;
                 }
             }
+
+            //상점UI 상호작용
+            if (shopincounter == true)
+            {
+                if (ShopSystem.shop_UI.activeSelf == false && UItoken == false)
+                {
+                    ShopSystem.shop_UI.SetActive(true);
+                    UItoken = true;
+                }
+
+                else if(ShopSystem.shop_UI.activeSelf == true && UItoken == true)
+                {
+                    ShopSystem.shop_UI.SetActive(false);
+                    UItoken = false;
+                }
+            }
+
+            //의뢰 리셋
+            if (resetrequestincounter == true)
+            {
+                RequestSystem.Set_Request();
+            }
         }
 
         //I버튼
@@ -326,6 +377,7 @@ public class InteractionSystem : MonoBehaviour
         //esc버튼
         if (Input.GetButtonDown("Cancel"))
         {
+            //창고
             if (StorageSystem.storageUI.activeSelf == true && UItoken == true)
             {
                 StorageSystem.CloseStorage();
@@ -337,6 +389,7 @@ public class InteractionSystem : MonoBehaviour
                 UItoken = false;
             }
 
+            //인벤토리
             else if (InventorySystem.Inventory.activeSelf == true && UItoken == true)
             {
                 InventorySystem.CloseInventory();
@@ -348,6 +401,7 @@ public class InteractionSystem : MonoBehaviour
                 UItoken = false;
             }
 
+            //연금
             else if (AlchemySystem.alchemyUI.activeSelf == true && UItoken == true)
             {
                 AlchemySystem.alchemyUI.SetActive(false);
@@ -356,6 +410,21 @@ public class InteractionSystem : MonoBehaviour
                 {
                     ItemInformation.slot_Select.SetActive(false);
                 }
+                UItoken = false;
+            }
+
+            //의뢰
+            else if (RequestSystem.request_UI.activeSelf == true && UItoken == true)
+            {
+                RequestSystem.request_UI.SetActive(false);
+                RequestSystem.information_toggle = false;
+                UItoken = false;
+            }
+
+            //상점
+            else if (ShopSystem.shop_UI.activeSelf == true && UItoken == true)
+            {
+                ShopSystem.shop_UI.SetActive(false);
                 UItoken = false;
             }
         }
