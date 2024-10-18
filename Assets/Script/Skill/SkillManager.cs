@@ -6,8 +6,8 @@ using UnityEngine;
 public class SkillManager : MonoBehaviour
 {
     private ElementManager elementManager;
+    private BeamSkill beamSkill;
     private PyroESkill pyroESkill;
-    private TestSkill testSkill;
 
     public ObjectPool objectPool;
 
@@ -19,8 +19,8 @@ public class SkillManager : MonoBehaviour
     void Start() 
     { 
         elementManager = GetComponent<ElementManager>();
+        beamSkill = GetComponent<BeamSkill>();
         pyroESkill = GetComponent<PyroESkill>();
-        testSkill = GetComponent<TestSkill>();
         cam = Camera.main;
     }
 
@@ -38,11 +38,11 @@ public class SkillManager : MonoBehaviour
                 PyroE();
                 break;
             case 1:
-                TestE();
                 break;
             case 2:
                 break;
             case 3:
+                SpecialSkill();
                 break;
         }
         
@@ -64,11 +64,11 @@ public class SkillManager : MonoBehaviour
 
     void PyroE()
     {
-        pyroESkill.Beam();
+        pyroESkill.Arc();
+    }
+    void SpecialSkill()
+    {
+        beamSkill.Beam();
     }
 
-    void TestE()
-    {
-        testSkill.Arc();
-    }
 }

@@ -2363,9 +2363,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 561d8c6158b46d14a8cfa038c30c9100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 10
+  maxHp: 10
+  currentHp: 0
   atk: 0
   def: 0
+  speed: 2
+  returnSpeed: 7
+  invincible: 0
 --- !u!70 &197102525
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2394,8 +2398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d84e540120ffd604cb575457dcf36728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  returnSpeed: 7
   delay: 2
   currentAngle: 0
   followTarget: 1
@@ -23887,14 +23889,6 @@ PrefabInstance:
       value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6652396212946227187, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6652396212946227187, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6652396212946227187, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.12
       objectReference: {fileID: 0}
@@ -23937,6 +23931,10 @@ PrefabInstance:
     - target: {fileID: 8403661302722383212, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
       propertyPath: m_Name
       value: arcSkill
+      objectReference: {fileID: 0}
+    - target: {fileID: 8403661302722383212, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf0bc400bb0a4e7438d87f1ef05492de, type: 3}

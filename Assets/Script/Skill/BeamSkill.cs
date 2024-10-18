@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using UnityEngine;
 
-public class PyroESkill : MonoBehaviour
+public class BeamSkill : MonoBehaviour
 {
     private Player player;
     private ElementManager elementManager;
@@ -34,7 +34,7 @@ public class PyroESkill : MonoBehaviour
     {
         coolTime = elementManager.ESkillDelay[0];
 
-        if (Input.GetKeyUp(KeyCode.E) && !isBeamStopCoroutine && elementManager.currentElement == 0)
+        if (Input.GetKeyUp(KeyCode.E) && !isBeamStopCoroutine && elementManager.currentElement == 3)
         {
             StopCoroutine(BeamCoroutine);
             StartCoroutine(BeamStop(coolTime));

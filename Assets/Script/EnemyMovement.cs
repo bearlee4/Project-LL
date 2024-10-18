@@ -7,10 +7,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CircleCollider2D))]
 
-public class EnemyTest : MonoBehaviour
+public class EnemyMovement : MonoBehaviour
 {
-    public float speed = 2f;
-    public float returnSpeed = 7f;
+    private EnemyStatus enemyStatus;
+
+    
     public float delay = 2f;
 
     private float currentSpeed;
@@ -30,8 +31,10 @@ public class EnemyTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        enemyStatus = GetComponent<EnemyStatus>();
+
         spawnPosition = transform.position;
-        currentSpeed = speed;
+        currentSpeed = enemyStatus.speed;
 
         rb2d = GetComponent<Rigidbody2D>();
         CircleCollider2D = GetComponent<CircleCollider2D>();
@@ -106,7 +109,7 @@ public class EnemyTest : MonoBehaviour
         }
     }
 
-    private IEnumerator ReturnSpawnPos(Rigidbody2D rb)
+    private IEnumerator ReturnSpawnPos(Rigidbody2D rb)  //스폰지점으로 복귀
     {
         if(moveCoroutine != null)
         {
@@ -114,11 +117,14 @@ public class EnemyTest : MonoBehaviour
             moveCoroutine = null;
         }
 
-        endPosition = Vector2.zero;
-        followTarget = false;
+        endPosition = Vector2.zero; // 멈추고
+        followTarget = false;       // 타겟해제
         targetTransform = null;
-        endPosition = spawnPosition;
-        currentSpeed = returnSpeed;
+        endPosition = spawnPosition;    // 도착지점 = 스폰지점
+        currentSpeed = enemyStatus.returnSpeed;     // 속도빠르게변경
+        enemyStatus.invincible = true;  // 무적
+        enemyStatus.currentHp = enemyStatus.maxHp;  // 체력회복
+
 
         yield return new WaitForSeconds(1f);
 
@@ -135,8 +141,8 @@ public class EnemyTest : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         followTarget = true;
-        currentSpeed = speed;
-
+        currentSpeed = enemyStatus.speed;
+        enemyStatus.invincible = false; // 무적해제
         moveCoroutine = StartCoroutine(NormalMove());
     }
 
@@ -150,7 +156,7 @@ public class EnemyTest : MonoBehaviour
                 StopCoroutine(moveCoroutine);
             }
 
-            moveCoroutine = StartCoroutine(Move(rb2d, speed));
+            moveCoroutine = StartCoroutine(Move(rb2d, currentSpeed));
         }
     }
 

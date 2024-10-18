@@ -9,7 +9,7 @@ public class ArcManager : MonoBehaviour
     //public float speed = 5f;
     public float distanceFromPlayer = 1.1f;
     public bool isActive = false;
-
+    public float damage;
 
     private void Start()
     {
@@ -42,5 +42,17 @@ public class ArcManager : MonoBehaviour
             return;
         }
 
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") && collision is CapsuleCollider2D)
+        {
+            EnemyStatus enemy = collision.GetComponent<EnemyStatus>();
+
+            if (enemy != null)
+            {
+                enemy.Damaged(damage);
+            }
+        }
     }
 }

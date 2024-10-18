@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using UnityEngine;
 
-public class TestSkill : MonoBehaviour
+public class PyroESkill : MonoBehaviour
 {
     private Player player;
     private ElementManager elementManager;

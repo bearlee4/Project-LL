@@ -4,16 +4,29 @@ using UnityEngine;
 
 public class EnemyStatus : MonoBehaviour
 {
-    public float hp;
+    public float maxHp;
+    public float currentHp;
     public float atk;
     public float def;
+    public float speed;
+    public float returnSpeed;
+
+    public bool invincible = false;
+
+    private void Start()
+    {
+        currentHp = maxHp;
+    }
 
     public void Damaged(float damage)
     {
-        hp -= damage;
-        if (hp <= 0)
+        if (!invincible)
         {
-            Die();
+            currentHp -= damage;
+            if (currentHp <= 0)
+            {
+                Die();
+            }
         }
     }
 
