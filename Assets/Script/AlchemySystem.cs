@@ -578,7 +578,7 @@ public class AlchemySystem : MonoBehaviour
 
     public void Change_Inventory()
     {
-        pageNumber = 0;
+        pageNumber = 1;
 
         Color color = storage_Button.GetComponent<Image>().color;
         color.a = 0.5f;
@@ -596,7 +596,7 @@ public class AlchemySystem : MonoBehaviour
 
     public void Change_Storage()
     {
-        pageNumber = 0;
+        pageNumber = 1;
 
         Color color = inventory_Button.GetComponent <Image>().color;
         color.a = 0.5f;
