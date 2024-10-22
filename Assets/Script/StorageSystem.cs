@@ -34,6 +34,8 @@ public class StorageSystem : MonoBehaviour
     public List<GameObject> StorageImageSlot = new List<GameObject>();
     public List<Text> StorageNumberList = new List<Text>();
 
+    //public GameObject storage_Slot;
+
     //창고 아이템 관련
     public List<string> StorageList = new List<string>();
     public List<int> StorageCountList = new List<int>();
@@ -65,7 +67,7 @@ public class StorageSystem : MonoBehaviour
 
         maxcount = 99;
         pageNumber = 1;
-        pagecalcul = 12 * (pageNumber - 1);
+        pagecalcul = StorageSlot.Count * (pageNumber - 1);
 
         storageside = false;
 
@@ -617,7 +619,7 @@ public class StorageSystem : MonoBehaviour
 
             count ++;
 
-            if(count == 12)
+            if(count == StorageSlot.Count)
             {
                 break;
             }
@@ -627,10 +629,10 @@ public class StorageSystem : MonoBehaviour
 
     public void Next_Page()
     {
-        if (StorageList.Count > 12 + pagecalcul)
+        if (StorageList.Count > StorageSlot.Count + pagecalcul)
         {
             pageNumber++;
-            pagecalcul = (12 * (pageNumber - 1));
+            pagecalcul = (StorageSlot.Count * (pageNumber - 1));
             pageText.text = pageNumber.ToString();
             Reload_Info();
         }
@@ -641,7 +643,7 @@ public class StorageSystem : MonoBehaviour
         if (pageNumber != 1)
         {
             pageNumber--;
-            pagecalcul = (12 * (pageNumber - 1));
+            pagecalcul = (StorageSlot.Count * (pageNumber - 1));
             pageText.text = pageNumber.ToString();
             Reload_Info();
         }

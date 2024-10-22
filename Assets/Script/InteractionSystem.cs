@@ -27,6 +27,7 @@ public class InteractionSystem : MonoBehaviour
     private bool resetrequestincounter;
 
     public bool max_Trans_toggle;
+    public bool IsdropItem;
     public GameObject enter_object;
 
     //테스트용
@@ -471,6 +472,7 @@ public class InteractionSystem : MonoBehaviour
     {
         int random_number = Random.Range(0, 10);
         int second_random_number;
+        IsdropItem = true;
         InventorySystem.GetCount = Random.Range(1, 3);
 
         if (random_number < 8)

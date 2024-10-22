@@ -72,7 +72,7 @@ public class AlchemySystem : MonoBehaviour
         }
 
         pageNumber = 1;
-        pagecalcul = 12 * (pageNumber - 1);
+        pagecalcul = StorageSlot.Count * (pageNumber - 1);
 
     }
 
@@ -189,7 +189,7 @@ public class AlchemySystem : MonoBehaviour
 
                 count++;
 
-                if(count == 12)
+                if(count == StorageSlot.Count)
                 {
                     break;
                 }
@@ -225,7 +225,7 @@ public class AlchemySystem : MonoBehaviour
 
                 count++;
 
-                if (count == 12)
+                if (count == StorageSlot.Count)
                 {
                     break;
                 }
@@ -556,10 +556,10 @@ public class AlchemySystem : MonoBehaviour
 
     public void Next_Page()
     {
-        if (StorageSystem.StorageList.Count > 12 + pagecalcul)
+        if (StorageSystem.StorageList.Count > StorageSlot.Count + pagecalcul)
         {
             pageNumber++;
-            pagecalcul = (12 * (pageNumber - 1));
+            pagecalcul = (StorageSlot.Count * (pageNumber - 1));
             pageText.text = pageNumber.ToString();
             LinkStorage();
         }
@@ -570,7 +570,7 @@ public class AlchemySystem : MonoBehaviour
         if (pageNumber != 1)
         {
             pageNumber--;
-            pagecalcul = (12 * (pageNumber - 1));
+            pagecalcul = (StorageSlot.Count * (pageNumber - 1));
             pageText.text = pageNumber.ToString();
             LinkStorage();
         }

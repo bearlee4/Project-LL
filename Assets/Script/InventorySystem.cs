@@ -264,6 +264,17 @@ public class InventorySystem : MonoBehaviour
                 break;
             }
         }
+
+        if (InteractionSystem.IsdropItem == true && FullInventory == false)
+        {
+            ItemInformation.Create_notice_Window(Strname, number);
+            InteractionSystem.IsdropItem = false;
+        }
+
+        else if (FullInventory == true)
+        {
+            ItemInformation.Create_Fullinventory_Notice();
+        }
     }
 
     public void Load_Information(GameObject selectObject)
