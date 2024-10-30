@@ -17,6 +17,7 @@ public class AlchemySystem : MonoBehaviour
 
     //연금 아이템 담아두기 위한 리스트
     public List<string> AlchemyList = new List<string>();
+    public List<int> AlchemyNumber = new List<int>();
 
     public List<string> Mix_ItemList = new List<string>();
 
@@ -36,7 +37,7 @@ public class AlchemySystem : MonoBehaviour
     public bool alchemyside;
     public bool fullAlchemy_Slot;
     private bool alchemySusccess;
-    private bool storage_side;
+    //private bool storage_side;
 
     public GameObject mix_UI;
     public GameObject mix_Button;
@@ -61,7 +62,7 @@ public class AlchemySystem : MonoBehaviour
 
         alchemySize = 2;
         alchemyside = false;
-        storage_side = true;
+        //storage_side = true;
 
         mix_UI.SetActive(false);
         get_Button.SetActive(false);
@@ -112,17 +113,20 @@ public class AlchemySystem : MonoBehaviour
             mix_UI.SetActive(false);
         }
 
-        if (storage_side == true)
-        {
-            Change_Storage();
-            LinkStorage();
-        }
+        //Change_Storage();
+        LinkStorage();
 
-        else
-        {
-            Change_Inventory();
-            LinkInventory();
-        }
+        //if (storage_side == true)
+        //{
+        //    Change_Storage();
+        //    LinkStorage();
+        //}
+
+        //else
+        //{
+        //    Change_Inventory();
+        //    LinkInventory();
+        //}
 
         //갯수 1로 리셋
         transnumber = 1;
@@ -138,7 +142,7 @@ public class AlchemySystem : MonoBehaviour
         {
             for (int i = 0; i < AlchemyList.Count; i++)
             {
-                StorageSystem.AddStorage(AlchemyList[i], 1);
+                StorageSystem.AddStorage(AlchemyList[i], transnumber);
                 AlchemyImageSlot[i].SetActive(false);
             }
 
@@ -251,19 +255,23 @@ public class AlchemySystem : MonoBehaviour
                     {
                         if (AlchemyList[i] == InventorySystem.ItemDB[j]["ImgName"].ToString())
                         {
-                            if (storage_side == true)
-                            {
-                                StorageSystem.AddStorage(InventorySystem.ItemDB[j]["ImgName"].ToString(), transnumber);
-                                AlchemyUse(i);
-                                break;
-                            }
+                            StorageSystem.AddStorage(InventorySystem.ItemDB[j]["ImgName"].ToString(), transnumber);
+                            AlchemyUse(i, transnumber);
+                            break;
 
-                            else
-                            {
-                                InventorySystem.AddInventory(InventorySystem.ItemDB[j]["ImgName"].ToString(), transnumber);
-                                AlchemyUse(i);
-                                break;
-                            }
+                            //if (storage_side == true)
+                            //{
+                            //    StorageSystem.AddStorage(InventorySystem.ItemDB[j]["ImgName"].ToString(), transnumber);
+                            //    AlchemyUse(i);
+                            //    break;
+                            //}
+
+                            //else
+                            //{
+                            //    InventorySystem.AddInventory(InventorySystem.ItemDB[j]["ImgName"].ToString(), transnumber);
+                            //    AlchemyUse(i);
+                            //    break;
+                            //}
                             
                         }
                     }
@@ -279,13 +287,18 @@ public class AlchemySystem : MonoBehaviour
         //창고 to 연금솥
         else
         {
-            if(storage_side == true)
+            for (int i = 0 + pagecalcul; i < StorageSystem.StorageList.Count; i++)
             {
-                for (int i = 0 + pagecalcul; i < StorageSystem.StorageList.Count; i++)
+                if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i - pagecalcul].transform.position.ToString() && fullAlchemy_Slot == false)
                 {
-                    if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i - pagecalcul].transform.position.ToString() && fullAlchemy_Slot == false)
+                    if (AlchemyList.Contains(StorageSystem.StorageList[i]) && mix_UI.activeSelf == false)
                     {
+                        Debug.Log("못들어감");
+                        break;
+                    }
 
+                    else
+                    {
                         AddAlchemy(StorageSystem.StorageList[i], transnumber);
                         StorageSystem.StorageUse(i, transnumber);
                         LinkStorage();
@@ -297,40 +310,63 @@ public class AlchemySystem : MonoBehaviour
 
                         break;
                     }
-
+                    
                 }
+
             }
-
-            else
-            {
-                for (int i = 0 + pagecalcul; i < InventorySystem.InventoryList.Count; i++)
-                {
-                    if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i - pagecalcul].transform.position.ToString() && fullAlchemy_Slot == false)
-                    {
-
-
-                        AddAlchemy(InventorySystem.InventoryList[i], transnumber);
-                        StorageSystem.InventoryUse(i, transnumber);
-                        LinkInventory();
-
-                        if (StorageImageSlot[i - pagecalcul].activeSelf == true && StorageImageSlot[i - pagecalcul].GetComponent<Image>().sprite != null)
-                        {
-                            ItemInformation.Load_Information(UISystem.overObject);
-                        }
-
-                        break;
-                    }
-
-                }
-            }
-            
 
             //버튼 숨긴거 꺼내기
             if (alchemyUI.activeSelf == true && AlchemyList.Count >= alchemySize)
             {
                 mix_UI.SetActive(true);
-                mix_Text.text = "1";
+                mix_Text.text = transnumber.ToString();
             }
+
+            //if (storage_side == true)
+            //{
+            //    for (int i = 0 + pagecalcul; i < StorageSystem.StorageList.Count; i++)
+            //    {
+            //        if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i - pagecalcul].transform.position.ToString() && fullAlchemy_Slot == false)
+            //        {
+
+            //            AddAlchemy(StorageSystem.StorageList[i], transnumber);
+            //            StorageSystem.StorageUse(i, transnumber);
+            //            LinkStorage();
+
+            //            if (StorageImageSlot[i - pagecalcul].activeSelf == true && StorageImageSlot[i - pagecalcul].GetComponent<Image>().sprite != null)
+            //            {
+            //                ItemInformation.Load_Information(UISystem.overObject);
+            //            }
+
+            //            break;
+            //        }
+
+            //    }
+            //}
+
+            //else
+            //{
+            //    for (int i = 0 + pagecalcul; i < InventorySystem.InventoryList.Count; i++)
+            //    {
+            //        if (ItemInformation.slot_Select.transform.position.ToString() == StorageSlot[i - pagecalcul].transform.position.ToString() && fullAlchemy_Slot == false)
+            //        {
+
+
+            //            AddAlchemy(InventorySystem.InventoryList[i], transnumber);
+            //            StorageSystem.InventoryUse(i, transnumber);
+            //            LinkInventory();
+
+            //            if (StorageImageSlot[i - pagecalcul].activeSelf == true && StorageImageSlot[i - pagecalcul].GetComponent<Image>().sprite != null)
+            //            {
+            //                ItemInformation.Load_Information(UISystem.overObject);
+            //            }
+
+            //            break;
+            //        }
+
+            //    }
+            //}
+
         }
     }
 
@@ -338,16 +374,36 @@ public class AlchemySystem : MonoBehaviour
     public void AddAlchemy(string name, int transnumber)
     {
         //연금솥 공간이 부족할때
-        if (AlchemyList.Count == alchemySize)
+        if (AlchemyList.Count == alchemySize && !AlchemyList.Contains(name))
         {
             fullAlchemy_Slot = true;
             Debug.Log("공간이 부족합니다.");
         }
 
         //부족하지 않으면 실행
-        if (fullAlchemy_Slot == false)
+        if (fullAlchemy_Slot == false || AlchemyList.Contains(name))
         {
-            AlchemyList.Add(name);
+            if (AlchemyList.Contains(name))
+            {
+                for (int i = 0; i < AlchemyList.Count; i++)
+                {
+                    if (AlchemyList[i] == name)
+                    {
+                        AlchemyNumber[i] += transnumber;
+                    }
+                }
+            }
+
+            else
+            {
+                AlchemyList.Add(name);
+                AlchemyNumber.Add(transnumber);
+            }
+        }
+
+        else
+        {
+            Debug.Log("같은 종류끼리 합성할 수 없습니다. 다른 아이템을 넣어주세요.");
         }
 
         Debug.Log("Add Alchemy");
@@ -357,6 +413,7 @@ public class AlchemySystem : MonoBehaviour
         {
             //이미지 연동
             Image Image = AlchemyImageSlot[num].GetComponent<Image>();
+            Text text = AlchemySlot[num].transform.Find("Text").GetComponent<Text>();
 
             if (AlchemyImageSlot[num].activeSelf == false)
             {
@@ -369,6 +426,7 @@ public class AlchemySystem : MonoBehaviour
             }
 
             Image.sprite = Resources.Load<Sprite>("Image/" + AlchemyList[num]);
+            text.text = AlchemyNumber[num].ToString();
 
         }
 
@@ -378,65 +436,88 @@ public class AlchemySystem : MonoBehaviour
         }
     }
 
-    public void AlchemyUse(int i)
+    public void AlchemyUse(int i, int transnumber)
     {
-        //아이템 사용으로 인벤토리에 아무것도 안남을때
-        if (AlchemyList.Count == 1)
+        //0개로 사라져야하지 않을때
+        if (AlchemyNumber[i] - transnumber != 0)
         {
-            AlchemyImageSlot[i].GetComponent<Image>().sprite = null;
-            AlchemyImageSlot[i].GetComponent<Image>().enabled = false;
-            AlchemyImageSlot[i].SetActive(false);
-            UISystem.clicktoggle = false;
+            AlchemyNumber[i] -= transnumber;
+            AlchemySlot[i].transform.Find("Text").GetComponent<Text>().text = AlchemyNumber[i].ToString();
 
         }
 
+        //사라져야 할 때
         else
         {
-
-            for (int j = i; j < AlchemyList.Count; j++)
+            //아이템 사용으로 인벤토리에 아무것도 안남을때
+            if (AlchemyList.Count == 1)
             {
-                //마지막 칸이 아닐 때 다음 슬롯 정보 땡겨오기
-                if ((j + 1) < AlchemyList.Count)
-                {
-                    if (AlchemyImageSlot[j].activeSelf == false)
-                    {
-                        AlchemyImageSlot[j].SetActive(true);
-                    }
-
-                    AlchemyImageSlot[j].GetComponent<Image>().sprite = AlchemyImageSlot[j + 1].GetComponent<Image>().sprite;
-                    ItemInformation.Load_Information(UISystem.overObject);
-                }
-
-                //삭제되는게 마지막 칸일때
-                else if ((j + 1) == AlchemyList.Count)
-                {
-                    AlchemyImageSlot[j].GetComponent<Image>().enabled = false;
-                    AlchemyImageSlot[j].SetActive(false);
-                    break;
-                }
-
+                AlchemyImageSlot[i].GetComponent<Image>().sprite = null;
+                AlchemyImageSlot[i].GetComponent<Image>().enabled = false;
+                AlchemyImageSlot[i].SetActive(false);
+                AlchemySlot[i].transform.Find("Text").GetComponent<Text>().text = null;
+                UISystem.clicktoggle = false;
 
             }
-        }
 
-        AlchemyList.RemoveAt(i);
-        fullAlchemy_Slot = false;
+            else
+            {
 
-        if (AlchemyImageSlot[i].activeSelf == false)
-        {
-            ItemInformation.slot_Select.SetActive(false);
-            UISystem.clicktoggle = false;
-        }
 
-        if (storage_side == true)
-        {
+                for (int j = i; j < AlchemyList.Count; j++)
+                {
+                    //마지막 칸이 아닐 때 다음 슬롯 정보 땡겨오기
+                    if ((j + 1) < AlchemyList.Count)
+                    {
+                        Text text1 = AlchemySlot[j].transform.Find("Text").GetComponent<Text>();
+                        Text text2 = AlchemySlot[j + 1].transform.Find("Text").GetComponent<Text>();
+
+                        if (AlchemyImageSlot[j].activeSelf == false)
+                        {
+                            AlchemyImageSlot[j].SetActive(true);
+                        }
+
+                        AlchemyImageSlot[j].GetComponent<Image>().sprite = AlchemyImageSlot[j + 1].GetComponent<Image>().sprite;
+                        text1.text = text2.text;
+                        ItemInformation.Load_Information(UISystem.overObject);
+                    }
+
+                    //삭제되는게 마지막 칸일때
+                    else if ((j + 1) == AlchemyList.Count)
+                    {
+                        AlchemyImageSlot[j].GetComponent<Image>().enabled = false;
+                        AlchemySlot[j].transform.Find("Text").GetComponent<Text>().text = null;
+                        AlchemyImageSlot[j].SetActive(false);
+                        break;
+                    }
+
+
+                }
+            }
+
+            AlchemyList.RemoveAt(i);
+            AlchemyNumber.Remove(i);
+            fullAlchemy_Slot = false;
+
+            if (AlchemyImageSlot[i].activeSelf == false)
+            {
+                ItemInformation.slot_Select.SetActive(false);
+                UISystem.clicktoggle = false;
+            }
+
             LinkStorage();
+
+            //if (storage_side == true)
+            //{
+            //    LinkStorage();
+            //}
+
+            //else
+            //{
+            //    LinkInventory();
+            //}
         }
-        
-        else
-        {
-            LinkInventory();
-        }
+
     }
 
     public void Delete_All()
@@ -448,9 +529,11 @@ public class AlchemySystem : MonoBehaviour
             AlchemyImageSlot[i].GetComponent<Image>().sprite = null;
             AlchemyImageSlot[i].GetComponent<Image>().enabled = false;
             AlchemyImageSlot[i].SetActive(false);
+            AlchemySlot[i].transform.Find("Text").GetComponent <Text>().text = null;
         }
 
         AlchemyList.Clear();
+        AlchemyNumber.Clear();
         fullAlchemy_Slot = false;
         UISystem.clicktoggle = false;
         Debug.Log("모든 아이템이 창고로 옮겨졌습니다.");
@@ -530,6 +613,8 @@ public class AlchemySystem : MonoBehaviour
                 break;
             }
         }
+        
+        resultNumber.text = transnumber.ToString();
 
         mix_UI.SetActive(false);
         get_Button.SetActive(true);
@@ -543,13 +628,19 @@ public class AlchemySystem : MonoBehaviour
             if (resultImageSlot.GetComponent<Image>().sprite.name == InventorySystem.ItemDB[i]["ImgName"].ToString())
             {
                 Debug.Log("같은거 찾음");
-                StorageSystem.AddStorage(InventorySystem.ItemDB[i]["ImgName"].ToString(), 1);
+                StorageSystem.AddStorage(InventorySystem.ItemDB[i]["ImgName"].ToString(), transnumber);
                 resultImageSlot.SetActive(false);
+                resultNumber.text = null;
                 get_Button.SetActive(false);
-                if (storage_side == true)
-                {
-                    LinkStorage();
-                }
+
+                LinkStorage();
+
+                transnumber = 1;
+
+                //if (storage_side == true)
+                //{
+                //    LinkStorage();
+                //}
             }
         }
     }
@@ -589,7 +680,7 @@ public class AlchemySystem : MonoBehaviour
 
         LinkInventory();
 
-        storage_side = false;
+        //storage_side = false;
 
         Debug.Log("인벤토리 변경");
     }
@@ -607,8 +698,82 @@ public class AlchemySystem : MonoBehaviour
 
         LinkStorage();
 
-        storage_side = true;
+        //storage_side = true;
 
         Debug.Log("창고 변경");
+    }
+
+    public void Plus_Item()
+    {
+        int change_Count;
+        int count_Toggle = 0;
+
+        change_Count = 1;
+        int[] test = new int[AlchemyList.Count];
+        
+
+        for (int i = 0; i < AlchemyList.Count; i++)
+        {
+            if (StorageSystem.StorageList.Contains(AlchemyList[i]))
+            {
+                for (int j = 0; j < StorageSystem.StorageList.Count; j++)
+                {
+                    if (AlchemyList[i] == StorageSystem.StorageList[j] && StorageSystem.StorageCountList[j] >= (transnumber - AlchemyNumber[i]))
+                    {
+                        //AddAlchemy(StorageSystem.StorageList[i], transnumber);
+                        //StorageSystem.StorageUse(i, transnumber);
+                        //LinkStorage();
+                        test[i] = j;
+                        count_Toggle ++;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (count_Toggle == AlchemyList.Count)
+        {
+            transnumber++;
+            mix_Text.text = transnumber.ToString();
+
+            for (int i = 0; i < AlchemyList.Count;i++)
+            {
+                AddAlchemy(AlchemyList[i], change_Count);
+                StorageSystem.StorageUse(test[i], change_Count);
+            }
+
+            LinkStorage();
+        }
+
+        else
+        {
+            Debug.Log("작동할 수 없습니다.");
+        }
+    }
+
+    public void Minus_Item()
+    {
+        int change_Count;
+        change_Count = 1;
+
+        if (transnumber <= 1)
+        {
+            Debug.Log("더 이상 내릴 수 없습니다.");
+        }
+
+        else
+        {
+            transnumber--;
+            mix_Text.text = transnumber.ToString();
+
+            for (int i = 0; i < AlchemyList.Count;i++)
+            {
+                AlchemyUse(i, change_Count);
+                StorageSystem.AddStorage(AlchemyList[i], change_Count);
+            }
+
+            LinkStorage();
+        }
+        
     }
 }

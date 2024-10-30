@@ -552,7 +552,10 @@ public class StorageSystem : MonoBehaviour
                         }
                     }
 
-                    ItemInformation.Load_Information(UISystem.overObject);
+                    if (UISystem.overObject.tag == "ItemImage")
+                    {
+                        ItemInformation.Load_Information(UISystem.overObject);
+                    }
                 }
 
 
