@@ -436,12 +436,12 @@ public class AlchemySystem : MonoBehaviour
         }
     }
 
-    public void AlchemyUse(int i, int transnumber)
+    public void AlchemyUse(int i, int number)
     {
         //0개로 사라져야하지 않을때
-        if (AlchemyNumber[i] - transnumber != 0)
+        if (AlchemyNumber[i] - number != 0)
         {
-            AlchemyNumber[i] -= transnumber;
+            AlchemyNumber[i] -= number;
             AlchemySlot[i].transform.Find("Text").GetComponent<Text>().text = AlchemyNumber[i].ToString();
 
         }
@@ -496,8 +496,11 @@ public class AlchemySystem : MonoBehaviour
             }
 
             AlchemyList.RemoveAt(i);
-            AlchemyNumber.Remove(i);
+            AlchemyNumber.RemoveAt(i);
             fullAlchemy_Slot = false;
+
+            Count_Reset();
+            Debug.Log("transnumber : " + transnumber);
 
             if (AlchemyImageSlot[i].activeSelf == false)
             {
@@ -775,5 +778,25 @@ public class AlchemySystem : MonoBehaviour
             LinkStorage();
         }
         
+    }
+
+    public void Count_Reset()
+    {
+        int return_Count;
+        transnumber = 1;
+
+        for(int i = 0; i < AlchemyList.Count; i++)
+        {
+            if (AlchemyNumber[i] > 1)
+            {
+                return_Count = AlchemyNumber[i] - 1;
+                AlchemyUse(i, return_Count);
+                StorageSystem.AddStorage(AlchemyList[i], return_Count);
+                AlchemySlot[i].transform.Find("Text").GetComponent<Text>().text = 1.ToString();
+
+                Debug.Log("AlchemyNumber[" + i + "] : " + AlchemyNumber[i]);
+            }
+            
+        }
     }
 }
