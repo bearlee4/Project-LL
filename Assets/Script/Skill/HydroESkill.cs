@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class HydroESkill : MonoBehaviour
 {
+    private Player player;
+    private ElementManager elementManager;
+
+    public GameObject wavePrefab;
+
+    public float coolTime;
+
+    private IEnumerator WaveCoroutine;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +23,10 @@ public class HydroESkill : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void wave()
+    {
+
     }
 }

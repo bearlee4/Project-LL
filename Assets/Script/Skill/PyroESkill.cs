@@ -12,7 +12,7 @@ public class PyroESkill : MonoBehaviour
 
     public float coolTime;
 
-    private IEnumerator BeamCoroutine;
+    private IEnumerator ArcCoroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +23,8 @@ public class PyroESkill : MonoBehaviour
     }
     public void Arc()
     {
-        BeamCoroutine = BeamAiming(0.4f);
-        StartCoroutine(BeamCoroutine);
+        ArcCoroutine = BeamAiming(0.4f);
+        StartCoroutine(ArcCoroutine);
     }
 
     private IEnumerator BeamAiming(float delay)

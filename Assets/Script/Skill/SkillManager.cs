@@ -8,6 +8,7 @@ public class SkillManager : MonoBehaviour
     private ElementManager elementManager;
     private BeamSkill beamSkill;
     private PyroESkill pyroESkill;
+    private HydroESkill hydroESkill;
 
     public ObjectPool objectPool;
 
@@ -38,6 +39,7 @@ public class SkillManager : MonoBehaviour
                 PyroE();
                 break;
             case 1:
+                HydroE();
                 break;
             case 2:
                 break;
@@ -66,6 +68,12 @@ public class SkillManager : MonoBehaviour
     {
         pyroESkill.Arc();
     }
+
+    void HydroE()
+    {
+        hydroESkill.wave();
+    }
+
     void SpecialSkill()
     {
         beamSkill.Beam();
