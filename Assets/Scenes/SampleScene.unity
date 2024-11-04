@@ -26402,6 +26402,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2942210773730206933, guid: 089a2815b750e004188e7f95a2c4b7a0, type: 3}
   m_PrefabInstance: {fileID: 1883358918}
   m_PrefabAsset: {fileID: 0}
+--- !u!58 &1781758297
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781758292}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &1785133487
 GameObject:
   m_ObjectHideFlags: 0
@@ -28112,6 +28128,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4757031653568113988, guid: 089a2815b750e004188e7f95a2c4b7a0, type: 3}
+      propertyPath: damage
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4757031653568113988, guid: 089a2815b750e004188e7f95a2c4b7a0, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1931117058}
@@ -28121,11 +28141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8507662563862017324, guid: 089a2815b750e004188e7f95a2c4b7a0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -15.66
+      value: -7.11
       objectReference: {fileID: 0}
     - target: {fileID: 8507662563862017324, guid: 089a2815b750e004188e7f95a2c4b7a0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 139
+      value: 138.4
       objectReference: {fileID: 0}
     - target: {fileID: 8507662563862017324, guid: 089a2815b750e004188e7f95a2c4b7a0, type: 3}
       propertyPath: m_LocalPosition.z

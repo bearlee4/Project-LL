@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour
     public float time = 1f;
     public ObjectPool objectPool;
     public float damage;
+    public float length;
 
     private Vector2 dir;
 

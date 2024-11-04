@@ -35,15 +35,43 @@ public class Tsunami : MonoBehaviour
     {
         transform.position = player.position;
         transform.localScale = new Vector3(2, 2, 2);
+        float increaseSpeed = (increase * Time.deltaTime * 100);
 
-        while (transform.localScale.x < 10f)
+
+        while (transform.localScale.x < 12f)
         {
-            transform.localScale += new Vector3(increase * Time.deltaTime * 50, increase * Time.deltaTime * 50, 0);
+            transform.localScale += new Vector3(increaseSpeed, increaseSpeed, 0);
             yield return null;
         }
 
         isActive = false;
         gameObject.SetActive(false);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") && collision.collider is CapsuleCollider2D)
+        {
+            EnemyStatus enemy = collision.gameObject.GetComponent<EnemyStatus>();
+
+            if (enemy != null)
+            {
+                enemy.Damaged(damage);
+            }
+        }
+    }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Enemy") && collision is CapsuleCollider2D)
+    //    {
+    //        EnemyStatus enemy = collision.GetComponent<EnemyStatus>();
+
+    //        if (enemy != null)
+    //        {
+    //            enemy.Damaged(damage);
+    //        }
+    //    }
+    //}
 
 }
