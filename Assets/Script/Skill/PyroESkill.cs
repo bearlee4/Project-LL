@@ -19,7 +19,7 @@ public class PyroESkill : MonoBehaviour
     {
         player = GetComponent<Player>();
         elementManager = GetComponent<ElementManager>();
-        coolTime = elementManager.ESkillDelay[1];
+        coolTime = elementManager.ESkillDelay[0];
     }
     public void Arc()
     {

@@ -16,17 +16,32 @@ public class HydroESkill : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        player = GetComponent<Player>();
+        elementManager = GetComponent<ElementManager>();
+        coolTime = elementManager.ESkillDelay[1];
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Wave()
     {
-        
+        WaveCoroutine = WaveAct();
+        StartCoroutine(WaveCoroutine);
     }
 
-    public void wave()
+    private IEnumerator WaveAct()
     {
+        player.MovePower = 0f;
+        elementManager.skill_E = false;
 
+        wavePrefab.SetActive(true);
+
+        Tsunami tsunami = wavePrefab.GetComponent<Tsunami>();
+        if (tsunami != null)
+        {
+            tsunami.isActive = true;
+        }
+        yield return new WaitForSeconds(1f);
+
+        player.MovePower = 5f;
+        elementManager.StartCoroutine(elementManager.SkillEDelayCoroutine(coolTime));
     }
 }

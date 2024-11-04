@@ -22,6 +22,7 @@ public class SkillManager : MonoBehaviour
         elementManager = GetComponent<ElementManager>();
         beamSkill = GetComponent<BeamSkill>();
         pyroESkill = GetComponent<PyroESkill>();
+        hydroESkill = GetComponent<HydroESkill>();
         cam = Camera.main;
     }
 
@@ -71,7 +72,7 @@ public class SkillManager : MonoBehaviour
 
     void HydroE()
     {
-        hydroESkill.wave();
+        hydroESkill.Wave();
     }
 
     void SpecialSkill()
