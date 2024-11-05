@@ -19419,6 +19419,7 @@ MonoBehaviour:
   alchemyUI: {fileID: 1223632488}
   alchemyside: 0
   fullAlchemy_Slot: 0
+  ban_trans: 0
   mix_UI: {fileID: 1168649668}
   mix_Button: {fileID: 514030434}
   mix_Text: {fileID: 1545925370}
@@ -25448,7 +25449,7 @@ GameObject:
   - component: {fileID: 1700707114}
   - component: {fileID: 1700707113}
   m_Layer: 5
-  m_Name: SlotImage
+  m_Name: ResultSlotImage
   m_TagString: ItemImage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

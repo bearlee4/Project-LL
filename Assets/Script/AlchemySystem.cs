@@ -36,6 +36,7 @@ public class AlchemySystem : MonoBehaviour
     public GameObject alchemyUI;
     public bool alchemyside;
     public bool fullAlchemy_Slot;
+    public bool ban_trans;
     private bool alchemySusccess;
     //private bool storage_side;
 
@@ -621,6 +622,7 @@ public class AlchemySystem : MonoBehaviour
 
         mix_UI.SetActive(false);
         get_Button.SetActive(true);
+        ban_trans = true;
     }
 
     public void Get_ResultItem()
@@ -646,6 +648,8 @@ public class AlchemySystem : MonoBehaviour
                 //}
             }
         }
+
+        ban_trans = false;
     }
 
     public void Next_Page()

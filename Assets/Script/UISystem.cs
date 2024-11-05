@@ -53,7 +53,7 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             Debug.Log("좌클릭");
 
             //아이템 창 클릭
-            if (clickedObject.tag == "ItemImage" && clickedObject.name != "QuickSlotImage")
+            if (clickedObject.tag == "ItemImage" && clickedObject.name != "QuickSlotImage" && clickedObject.name != "ResultSlotImage")
             {
                 RectTransform objectSize = clickedObject.GetComponent<RectTransform>();
                 slotSize.sizeDelta = new Vector2(objectSize.sizeDelta.x + 10, objectSize.sizeDelta.y + 10);
@@ -129,7 +129,7 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             }
 
             //연금 UI 전송시스템
-            if (AlchemySystem.alchemyUI.activeSelf == true && ItemInformation.slot_Select.activeSelf == true && clickedObject != AlchemySystem.resultImageSlot)
+            if (AlchemySystem.alchemyUI.activeSelf == true && ItemInformation.slot_Select.activeSelf == true && clickedObject != AlchemySystem.resultImageSlot && AlchemySystem.ban_trans == false)
             {
                 ItemInformation.slot_Select.transform.position = clickedObject.transform.position;
                 ItemInformation.Set_Position(AlchemySystem.AlchemySlot, AlchemySystem.StorageSlot);

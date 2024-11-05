@@ -268,7 +268,7 @@ public class InteractionSystem : MonoBehaviour
                     UItoken = true;
                 }
 
-                else if (AlchemySystem.alchemyUI.activeSelf == true && UItoken == true)
+                else if (AlchemySystem.alchemyUI.activeSelf == true && UItoken == true && AlchemySystem.ban_trans == false)
                 {
                     AlchemySystem.CloseAlchemy();
                     UISystem.clicktoggle = false;
