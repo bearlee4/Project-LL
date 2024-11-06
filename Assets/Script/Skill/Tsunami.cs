@@ -38,7 +38,7 @@ public class Tsunami : MonoBehaviour
         float increaseSpeed = (increase * Time.deltaTime * 100);
 
 
-        while (transform.localScale.x < 12f)
+        while (transform.localScale.x < 10f)
         {
             transform.localScale += new Vector3(increaseSpeed, increaseSpeed, 0);
             yield return null;

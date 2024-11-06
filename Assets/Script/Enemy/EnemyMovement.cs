@@ -28,6 +28,8 @@ public class EnemyMovement : MonoBehaviour
 
     public bool followTarget = true;
 
+    public int EnemyType;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -123,7 +125,9 @@ public class EnemyMovement : MonoBehaviour
         endPosition = spawnPosition;    // 도착지점 = 스폰지점
         currentSpeed = enemyStatus.returnSpeed;     // 속도빠르게변경
         enemyStatus.invincible = true;  // 무적
+
         enemyStatus.currentHp = enemyStatus.maxHp;  // 체력회복
+        CircleCollider2D.radius = 5f;       // 범위 정상화
 
 
         yield return new WaitForSeconds(1f);
@@ -146,20 +150,6 @@ public class EnemyMovement : MonoBehaviour
         moveCoroutine = StartCoroutine(NormalMove());
     }
 
-    void OnTriggerEnter2D(Collider2D collision)     // 범위에 플레이어 들어감
-    {
-        if (collision.gameObject.CompareTag("Player") && followTarget)
-        {
-            targetTransform = collision.gameObject.transform;
-            if (moveCoroutine != null)
-            {
-                StopCoroutine(moveCoroutine);
-            }
-
-            moveCoroutine = StartCoroutine(Move(rb2d, currentSpeed));
-        }
-    }
-
     private void OnDrawGizmos()     // 범위표시
     {
         if (CircleCollider2D != null)
@@ -167,4 +157,48 @@ public class EnemyMovement : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, CircleCollider2D.radius);
         }
     }
+
+    void OnTriggerEnter2D(Collider2D collision)     // 범위에 플레이어 들어감
+    {
+        if (collision.gameObject.CompareTag("Player") && followTarget)
+        {
+            targetTransform = collision.gameObject.transform;
+
+            if(EnemyType == 0)      // 슬라임 등 일반적인 움직임
+            {
+                FollowPlayer();
+            }
+
+            if (EnemyType == 1)     // 멧돼지 등 돌진하는 유형
+            {
+                StartCoroutine(Rush());
+            }
+
+
+        }
+    }
+    void FollowPlayer()
+    {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+        
+        moveCoroutine = StartCoroutine(Move(rb2d, currentSpeed));
+    }
+
+    private IEnumerator Rush()
+    {
+        while (followTarget)
+        {
+            FollowPlayer();
+            yield return new WaitForSeconds(0.5f);
+            currentSpeed = 0f;
+            // 플레이어 방향으로 돌진
+            yield return new WaitForSeconds(1f);
+            // 다시 처음으로 반복
+        }
+
+    }
+
 }
