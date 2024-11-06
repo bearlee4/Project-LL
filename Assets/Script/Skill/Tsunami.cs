@@ -35,10 +35,10 @@ public class Tsunami : MonoBehaviour
     {
         transform.position = player.position;
         transform.localScale = new Vector3(2, 2, 2);
-        float increaseSpeed = (increase * Time.deltaTime * 100);
+        float increaseSpeed = (increase * Time.deltaTime * 150);
 
 
-        while (transform.localScale.x < 12f)
+        while (transform.localScale.x < 10f)
         {
             transform.localScale += new Vector3(increaseSpeed, increaseSpeed, 0);
             yield return null;

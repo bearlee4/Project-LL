@@ -22781,6 +22781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5c976214d9408f4f94e40c832cc0754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recipeList: []
   AlchemyList: []
   AlchemyNumber: 
   Mix_ItemList: []
@@ -22797,7 +22798,6 @@ MonoBehaviour:
   - {fileID: 1377210793}
   - {fileID: 22436538}
   resultImageSlot: {fileID: 1700707111}
-  resultNumber: {fileID: 70896799}
   StorageSlot:
   - {fileID: 217344730}
   - {fileID: 1431061717}
@@ -22897,8 +22897,6 @@ MonoBehaviour:
   get_Button: {fileID: 1320947132}
   inventory_Button: {fileID: 661290288}
   storage_Button: {fileID: 121242599}
-  success_fail: {fileID: 0}
-  alchemy_text: {fileID: 0}
   pageText: {fileID: 835834748}
 --- !u!114 &1288554468
 MonoBehaviour:
@@ -32288,7 +32286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1930255272
 RectTransform:
   m_ObjectHideFlags: 0
