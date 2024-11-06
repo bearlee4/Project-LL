@@ -152,6 +152,10 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
 
             ItemInformation.InformationWindow.transform.position = overObject.transform.position;
             ItemInformation.InformationWindow.transform.position += new Vector3(180, 0, 0);
+            if (ItemInformation.InformationWindow.transform.position.x >= 1000)
+            {
+                ItemInformation.InformationWindow.transform.position += new Vector3(-360, 0, 0);
+            }
             //ItemInformation.InformationWindow.transform.position += new Vector3(115, -165, 0);
             ItemInformation.Load_Information(overObject);
 

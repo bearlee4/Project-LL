@@ -15,6 +15,9 @@ public class AlchemySystem : MonoBehaviour
     private GameObject canvas;
     UISystem UISystem;
 
+    //레시피 담아두기 위한 리스트
+    public List<string> recipeList = new List<string>();
+
     //연금 아이템 담아두기 위한 리스트
     public List<string> AlchemyList = new List<string>();
     public List<int> AlchemyNumber = new List<int>();
@@ -25,7 +28,7 @@ public class AlchemySystem : MonoBehaviour
     public List<GameObject> AlchemySlot = new List<GameObject>();
     public List<GameObject> AlchemyImageSlot = new List<GameObject>();
     public GameObject resultImageSlot;
-    public Text resultNumber;
+    //public Text resultNumber;
 
     //창고측 슬롯
     public List<GameObject> StorageSlot = new List<GameObject>();
@@ -40,6 +43,7 @@ public class AlchemySystem : MonoBehaviour
     private bool alchemySusccess;
     //private bool storage_side;
 
+    public GameObject Result_UI;
     public GameObject mix_UI;
     public GameObject mix_Button;
     public Text mix_Text;
@@ -66,7 +70,12 @@ public class AlchemySystem : MonoBehaviour
         //storage_side = true;
 
         mix_UI.SetActive(false);
-        get_Button.SetActive(false);
+        //get_Button.SetActive(false);
+
+        if (Result_UI.activeSelf == true)
+        {
+            Result_UI.SetActive(false);
+        }
 
         if (alchemyUI.activeSelf == true)
         {
@@ -559,70 +568,98 @@ public class AlchemySystem : MonoBehaviour
 
         Delete_All();
 
-        
+
 
         for (int i = 0; i < Mix_ItemList.Count; i++)
         {
-            
+
             for (int j = 0; j < InventorySystem.ItemDB.Count; j++)
             {
                 if (Mix_ItemList[i] == InventorySystem.ItemDB[j]["Recipe"].ToString())
                 {
-                    
 
-                    //이미지 연동
-                    Image Image = resultImageSlot.GetComponent<Image>();
-                    if (resultImageSlot.activeSelf == false)
-                    {
-                        resultImageSlot.SetActive(true);
-                    }
-
-                    if (Image.enabled == false)
-                    {
-                        Image.enabled = true;  
-                    }
-
-                    Image.sprite = Resources.Load<Sprite>("Image/" + InventorySystem.ItemDB[j]["ImgName"].ToString());
-
-                    Debug.Log("합성 성공");
-                    Debug.Log(InventorySystem.ItemDB[j]["ImgName"]);
-                    alchemySusccess = true;
+                    Open_Result_UI(true, InventorySystem.ItemDB[j]["ImgName"].ToString(), InventorySystem.ItemDB[j]["Name"].ToString());
 
                     break;
                 }
 
                 else
                 {
-                    //이미지 연동
-                    Image Image = resultImageSlot.GetComponent<Image>();
-                    if (resultImageSlot.activeSelf == false)
-                    {
-                        resultImageSlot.SetActive(true);
-                    }
 
-                    if (Image.enabled == false)
-                    {
-                        Image.enabled = true;
-                    }
+                    Open_Result_UI(false, "Fail_potion", "정체모를 포션");
 
-                    Image.sprite = Resources.Load<Sprite>("Image/Fail_potion");
-                    Debug.Log("합성 실패. 맞는 레시피가 없습니다.");
-                    
                 }
 
             }
 
-            if(alchemySusccess == true)
+            if (alchemySusccess == true)
             {
                 break;
             }
         }
-        
-        resultNumber.text = transnumber.ToString();
+
+        //resultNumber.text = transnumber.ToString();
 
         mix_UI.SetActive(false);
-        get_Button.SetActive(true);
         ban_trans = true;
+    }
+
+    public void Open_Result_UI(bool Success, string name, string kor_name)
+    {
+        Debug.Log("합성 창 진입 성공");
+        Result_UI.SetActive(true);
+
+        Text truefail = Result_UI.transform.Find("Result").GetComponent<Text>();
+        Text content = Result_UI.transform.Find("Content").GetComponent<Text>();
+
+        if (Success == true)
+        {
+            truefail.text = "합성 성공!";
+            truefail.color = Color.yellow;
+
+            //이미지 연동
+            Image Image = resultImageSlot.GetComponent<Image>();
+            if (resultImageSlot.activeSelf == false)
+            {
+                resultImageSlot.SetActive(true);
+            }
+
+            if (Image.enabled == false)
+            {
+                Image.enabled = true;
+            }
+
+            Image.sprite = Resources.Load<Sprite>("Image/" + name);
+
+            Debug.Log("합성 성공");
+            Debug.Log(name);
+            alchemySusccess = true;
+        }
+
+        else
+        {
+            truefail.text = "합성 실패...";
+            truefail.color = Color.gray;
+
+            //이미지 연동
+            Image Image = resultImageSlot.GetComponent<Image>();
+            if (resultImageSlot.activeSelf == false)
+            {
+                resultImageSlot.SetActive(true);
+            }
+
+            if (Image.enabled == false)
+            {
+                Image.enabled = true;
+            }
+
+            Image.sprite = Resources.Load<Sprite>("Image/Fail_potion");
+            Debug.Log("합성 실패. 맞는 레시피가 없습니다.");
+        }
+
+        content.text = kor_name + " " + transnumber + "개를 획득하셨습니다.";
+
+        //get_Button.SetActive(true);
     }
 
     public void Get_ResultItem()
@@ -635,8 +672,9 @@ public class AlchemySystem : MonoBehaviour
                 Debug.Log("같은거 찾음");
                 StorageSystem.AddStorage(InventorySystem.ItemDB[i]["ImgName"].ToString(), transnumber);
                 resultImageSlot.SetActive(false);
-                resultNumber.text = null;
-                get_Button.SetActive(false);
+                //resultNumber.text = null;
+                Result_UI.SetActive(false);
+                //get_Button.SetActive(false);
 
                 LinkStorage();
 
@@ -802,5 +840,10 @@ public class AlchemySystem : MonoBehaviour
             }
             
         }
+    }
+
+    public void Open_Recipebook()
+    {
+
     }
 }
