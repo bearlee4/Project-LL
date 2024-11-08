@@ -11,6 +11,7 @@ TagManager:
   - Spawner
   - Enemy
   - Bullet
+  - RecipeImage
   layers:
   - Default
   - TransparentFX

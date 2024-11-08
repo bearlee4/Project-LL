@@ -14,16 +14,26 @@ public class AlchemySystem : MonoBehaviour
 
     private GameObject canvas;
     UISystem UISystem;
+    
+    [Header("Object")]
+    public GameObject alchemyUI;
+    //private bool storage_side;
 
-    //레시피 담아두기 위한 리스트
-    public List<string> recipeList = new List<string>();
+    public GameObject Result_UI;
+    public GameObject mix_UI;
+    public GameObject mix_Button;
+    public Text mix_Text;
 
-    //연금 아이템 담아두기 위한 리스트
-    public List<string> AlchemyList = new List<string>();
-    public List<int> AlchemyNumber = new List<int>();
+    public GameObject get_Button;
+    public Button inventory_Button;
+    public Button storage_Button;
+    public Text pageText;
+    private int pageNumber;
+    private int pagecalcul;
+    private int transnumber;
 
-    public List<string> Mix_ItemList = new List<string>();
 
+    [Header("ItemSlot")]
     //연금쪽 슬롯
     public List<GameObject> AlchemySlot = new List<GameObject>();
     public List<GameObject> AlchemyImageSlot = new List<GameObject>();
@@ -35,26 +45,31 @@ public class AlchemySystem : MonoBehaviour
     public List<GameObject> StorageImageSlot = new List<GameObject>();
     public List<Text> StorageNumberList = new List<Text>();
 
+    [Header("Recipe")]
+    //레시피 관련
+    public GameObject recipe_UI;
+    public GameObject recipe_content;
+    public GameObject recipe_Slot;
+    public List<string> recipeList = new List<string>();
+
+
+    [Header("Don't Touch in Unity")]
+    //연금 아이템 관련
+    public List<string> AlchemyList = new List<string>();
+    public List<int> AlchemyNumber = new List<int>();
+    public List<string> Mix_ItemList = new List<string>();
     public int alchemySize;
-    public GameObject alchemyUI;
     public bool alchemyside;
     public bool fullAlchemy_Slot;
     public bool ban_trans;
     private bool alchemySusccess;
-    //private bool storage_side;
+    public bool open_result_ui;
+    public bool open_recipe_ui;
 
-    public GameObject Result_UI;
-    public GameObject mix_UI;
-    public GameObject mix_Button;
-    public Text mix_Text;
-    public GameObject get_Button;
-    public Button inventory_Button;
-    public Button storage_Button;
-
-    private int pageNumber;
-    private int pagecalcul;
-    public Text pageText;
-    private int transnumber;
+    private void Awake()
+    {
+        alchemySize = 2;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -64,8 +79,7 @@ public class AlchemySystem : MonoBehaviour
         StorageSystem = this.GetComponent<StorageSystem>();
         ItemInformation = this.GetComponent<ItemInformation>();
         InventorySystem = this.GetComponent<InventorySystem>();
-
-        alchemySize = 2;
+        
         alchemyside = false;
         //storage_side = true;
 
@@ -634,6 +648,11 @@ public class AlchemySystem : MonoBehaviour
             Debug.Log("합성 성공");
             Debug.Log(name);
             alchemySusccess = true;
+
+            if (!recipeList.Contains(name))
+            {
+                Add_Recipe(name);
+            }
         }
 
         else
@@ -659,6 +678,7 @@ public class AlchemySystem : MonoBehaviour
 
         content.text = kor_name + " " + transnumber + "개를 획득하셨습니다.";
 
+        open_result_ui = true;
         //get_Button.SetActive(true);
     }
 
@@ -674,6 +694,7 @@ public class AlchemySystem : MonoBehaviour
                 resultImageSlot.SetActive(false);
                 //resultNumber.text = null;
                 Result_UI.SetActive(false);
+                open_result_ui = false;
                 //get_Button.SetActive(false);
 
                 LinkStorage();
@@ -844,6 +865,77 @@ public class AlchemySystem : MonoBehaviour
 
     public void Open_Recipebook()
     {
-
+        recipe_UI.SetActive(true);
+        open_recipe_ui = true;
+        Set_Recipe();
     }
+
+    public void Close_Recipebook()
+    {
+        recipe_UI.SetActive(false);
+        open_recipe_ui = false;
+    }
+
+    public void Add_Recipe(string name)
+    {
+        recipeList.Add(name);
+        Instantiate(recipe_Slot, recipe_content.transform);
+        Debug.Log("레시피 추가");
+    }
+
+    public void Set_Recipe()
+    {
+        for (int i = 0; i < recipeList.Count; i++)
+        {
+            for (int n = 0; n < InventorySystem.ItemDB.Count; n++)
+            {
+                if (recipeList[i] == InventorySystem.ItemDB[n]["ImgName"].ToString())
+                {
+                    string[] cut_Recipe = InventorySystem.ItemDB[n]["Recipe"].ToString().Split("+");
+                    Image Image1 = recipe_content.transform.GetChild(i).Find("Slot1").Find("Image").GetComponent<Image>();
+                    Image Image2 = recipe_content.transform.GetChild(i).Find("Slot2").Find("Image").GetComponent<Image>();
+                    Image ResultImage = recipe_content.transform.GetChild(i).Find("ResultSlot").Find("Image").GetComponent<Image>();
+
+                    if (recipe_content.transform.GetChild(i).Find("Slot1").Find("Image").gameObject.activeSelf == false)
+                    {
+                        recipe_content.transform.GetChild(i).Find("Slot1").Find("Image").gameObject.SetActive(true);
+                    }
+
+                    if (Image1.enabled == false)
+                    {
+                        Image1.enabled = true;
+                    }
+
+                    if (Image2.enabled == false)
+                    {
+                        Image2.enabled = true;
+                    }
+
+                    if (ResultImage.enabled == false)
+                    {
+                        ResultImage.enabled = true;
+                    }
+
+                    Image1.sprite = Resources.Load<Sprite>("Image/" + cut_Recipe[0]);
+                    Image2.sprite = Resources.Load<Sprite>("Image/" + cut_Recipe[1]);
+                    ResultImage.sprite = Resources.Load<Sprite>("Image/" + recipeList[i]);
+                    break;
+                }
+            }
+            
+
+        }
+    }
+
+    public void Check_Recipe()
+    {
+        if (recipeList.Count != recipe_content.transform.childCount)
+        {
+            for (int i = recipeList.Count; i == recipe_content.transform.childCount; i++)
+            {
+                Instantiate(recipe_Slot, recipe_content.transform);
+            }
+        }
+    }
+
 }

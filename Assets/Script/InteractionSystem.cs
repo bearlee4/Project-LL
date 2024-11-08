@@ -405,13 +405,26 @@ public class InteractionSystem : MonoBehaviour
             //연금
             else if (AlchemySystem.alchemyUI.activeSelf == true && UItoken == true)
             {
-                AlchemySystem.alchemyUI.SetActive(false);
-                UISystem.clicktoggle = false;
-                if (ItemInformation.slot_Select.activeSelf == true)
+                if (AlchemySystem.open_result_ui == true)
                 {
-                    ItemInformation.slot_Select.SetActive(false);
+                    AlchemySystem.Get_ResultItem();
                 }
-                UItoken = false;
+
+                else if (AlchemySystem.open_recipe_ui == true)
+                {
+                    AlchemySystem.Close_Recipebook();
+                }
+
+                else
+                {
+                    AlchemySystem.alchemyUI.SetActive(false);
+                    UISystem.clicktoggle = false;
+                    if (ItemInformation.slot_Select.activeSelf == true)
+                    {
+                        ItemInformation.slot_Select.SetActive(false);
+                    }
+                    UItoken = false;
+                }
             }
 
             //의뢰

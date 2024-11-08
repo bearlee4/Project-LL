@@ -16,10 +16,12 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
 
     public GameObject Manager;
     private GameObject Player;
+    private GameObject check_Object;
     public GameObject overObject;
 
     public bool clicktoggle;
     private RectTransform slotSize;
+    private bool double_Click_trigger;
 
 
     // Start is called before the first frame update
@@ -45,7 +47,13 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (check_Object == eventData.pointerCurrentRaycast.gameObject)
+        {
+            double_Click_trigger = true;
+        }
+
         GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
+        check_Object = clickedObject;
         Debug.Log("clickedObject.name : " + clickedObject.name);
         //좌클릭시
         if (eventData.button.Equals(PointerEventData.InputButton.Left))
@@ -84,6 +92,16 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
                     clicktoggle = true;
                 }
 
+            }
+
+            if (clickedObject.tag == "RecipeImage")
+            {
+
+                if (double_Click_trigger == true)
+                {
+                    clicktoggle = false;
+                    double_Click_trigger = false;
+                }
             }
 
             //가방UI 클릭시
@@ -208,7 +226,9 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         Debug.Log(overObject.tag + "나감");
         if (overObject.tag == "ItemImage")
         {
+
             ToggleStorageUI(ItemInformation.InformationWindow);
+
             if (clicktoggle == false && ItemInformation.slot_Select.activeSelf == true)
             {
                 ToggleStorageUI(ItemInformation.slot_Select);
