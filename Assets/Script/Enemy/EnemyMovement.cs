@@ -192,13 +192,24 @@ public class EnemyMovement : MonoBehaviour
         while (followTarget)
         {
             FollowPlayer();
+            yield return new WaitForSeconds(2f);
+            currentSpeed = 0f;
+            Vector3 directionToPlayer = (targetTransform.position - transform.position).normalized;
+
+            yield return new WaitForSeconds(0.5f);
+
+            Vector3 rushDistance = transform.position + directionToPlayer * 20f;   // 돌진거리
+            currentSpeed = 10f; // 돌진속도
+
+            Vector3 newPosition = Vector3.MoveTowards(rb2d.position, rushDistance, currentSpeed * Time.deltaTime);
+            rb2d.MovePosition(newPosition);
+
             yield return new WaitForSeconds(0.5f);
             currentSpeed = 0f;
-            // 플레이어 방향으로 돌진
-            yield return new WaitForSeconds(1f);
-            // 다시 처음으로 반복
+            yield return new WaitForSeconds(0.5f);
+
+            currentSpeed = enemyStatus.speed;
+            moveCoroutine = StartCoroutine(Move(rb2d, currentSpeed));
         }
-
     }
-
 }
