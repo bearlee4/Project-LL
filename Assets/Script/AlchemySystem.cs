@@ -59,6 +59,7 @@ public class AlchemySystem : MonoBehaviour
     public List<int> AlchemyNumber = new List<int>();
     public List<string> Mix_ItemList = new List<string>();
     public int alchemySize;
+    private int max_Count;
     public bool alchemyside;
     public bool fullAlchemy_Slot;
     public bool ban_trans;
@@ -98,6 +99,7 @@ public class AlchemySystem : MonoBehaviour
 
         pageNumber = 1;
         pagecalcul = StorageSlot.Count * (pageNumber - 1);
+        max_Count = 10;
 
     }
 
@@ -168,6 +170,7 @@ public class AlchemySystem : MonoBehaviour
             {
                 StorageSystem.AddStorage(AlchemyList[i], transnumber);
                 AlchemyImageSlot[i].SetActive(false);
+                AlchemySlot[i].transform.Find("Text").GetComponent<Text>().text = null;
             }
 
             AlchemyList.Clear();
@@ -777,7 +780,6 @@ public class AlchemySystem : MonoBehaviour
         change_Count = 1;
         int[] test = new int[AlchemyList.Count];
         
-
         for (int i = 0; i < AlchemyList.Count; i++)
         {
             if (StorageSystem.StorageList.Contains(AlchemyList[i]))
@@ -797,7 +799,7 @@ public class AlchemySystem : MonoBehaviour
             }
         }
 
-        if (count_Toggle == AlchemyList.Count)
+        if (count_Toggle == AlchemyList.Count && transnumber < max_Count)
         {
             transnumber++;
             mix_Text.text = transnumber.ToString();

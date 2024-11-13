@@ -32,12 +32,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(InteractionSystem.UItoken == false)
+        //Move();
+        if (InteractionSystem.UItoken == false)
         {
             Move();
         }
-        
-        
+
+
     }
 
     //캐릭터 움직임
