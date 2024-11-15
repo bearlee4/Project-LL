@@ -25,11 +25,14 @@ public class RequestSystem : MonoBehaviour
     //퀘스트DB 가져오기
     public List<Dictionary<string, object>> RequestDB;
 
+    //나올 수 있는 퀘스트 리스트
     public List<object> available_Requst_List = new List<object>();
     //선택된 퀘스트들 저장해두는 리스트
     public List<string> request_List = new List<string>();
     //스크롤들의 위치를 저장해두는 리스트
     public List<int> position_Number = new List<int>();
+
+    public List<int> image_Number = new List<int>();
 
     public List<Sprite> Sprite_List = new List<Sprite>();
 
@@ -79,7 +82,6 @@ public class RequestSystem : MonoBehaviour
 
     public void Open_RequestBoard()
     {
-        int random_Number;
         request_UI.SetActive (true);
 
         if (request_information.activeSelf == true)
@@ -87,23 +89,6 @@ public class RequestSystem : MonoBehaviour
             request_information.SetActive(false);
         }
 
-        for (int i = 0; i < request_Scroll.transform.childCount; i++)
-        {
-            if (request_Scroll.transform.GetChild(i).gameObject.activeSelf == true)
-            {
-                request_Scroll.transform.GetChild(i).gameObject.SetActive(false);
-            }
-        }
-
-        for (int i = 0; i < request_Scroll.transform.childCount; i++)
-        {
-            if (position_Number.Contains(i))
-            {
-                request_Scroll.transform.GetChild(i).gameObject.SetActive(true);
-                random_Number = Random.Range(0, 4);
-                request_Scroll.transform.GetChild(i).gameObject.GetComponent<Image>().sprite = Sprite_List[random_Number];
-            }
-        }
     }
 
 
@@ -147,8 +132,9 @@ public class RequestSystem : MonoBehaviour
             }
 
             request_List.Add(select_number.ToString());
+            image_Number.Add(select_number);
 
-            if(request_List.Count == request_Count)
+            if (request_List.Count == request_Count)
             {
                 break;
             }
@@ -169,6 +155,26 @@ public class RequestSystem : MonoBehaviour
             if (position_Number.Count == request_Count)
             {
                 break;
+            }
+        }
+
+
+        int random_Number;
+        for (int i = 0; i < request_Scroll.transform.childCount; i++)
+        {
+            if (request_Scroll.transform.GetChild(i).gameObject.activeSelf == true)
+            {
+                request_Scroll.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
+        for (int i = 0; i < request_Scroll.transform.childCount; i++)
+        {
+            if (position_Number.Contains(i))
+            {
+                request_Scroll.transform.GetChild(i).gameObject.SetActive(true);
+                random_Number = Random.Range(0, 4);
+                request_Scroll.transform.GetChild(i).gameObject.GetComponent<Image>().sprite = Sprite_List[random_Number];
             }
         }
     }

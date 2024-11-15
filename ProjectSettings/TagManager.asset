@@ -12,6 +12,7 @@ TagManager:
   - Enemy
   - Bullet
   - RecipeImage
+  - Potal
   layers:
   - Default
   - TransparentFX

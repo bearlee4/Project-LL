@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InteractionSystem : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class InteractionSystem : MonoBehaviour
     RequestSystem RequestSystem;
     ShopSystem ShopSystem;
 
+    public GameObject SaveData_Manager;
+    SaveData SaveData;
+
     private GameObject canvas;
     UISystem UISystem;
 
@@ -25,6 +29,8 @@ public class InteractionSystem : MonoBehaviour
     private bool requestincounter;
     private bool shopincounter;
     private bool resetrequestincounter;
+    private bool potalincounter;
+    private string potal_Value;
 
     public bool max_Trans_toggle;
     public bool IsdropItem;
@@ -51,6 +57,7 @@ public class InteractionSystem : MonoBehaviour
         requestincounter = false;
         shopincounter = false;
         resetrequestincounter = false;
+        potalincounter = false;
         InventorySystem = Manager.GetComponent<InventorySystem>();
         StorageSystem = Manager.GetComponent<StorageSystem>();
         ItemInformation = Manager.GetComponent<ItemInformation>();
@@ -58,6 +65,9 @@ public class InteractionSystem : MonoBehaviour
         FieldSystem = Manager.GetComponent<FieldSystem>();
         RequestSystem = Manager.GetComponent<RequestSystem>();
         ShopSystem = Manager.GetComponent<ShopSystem>();
+
+        SaveData = SaveData_Manager.GetComponent<SaveData>();
+
         ItemDB = CSVReader.Read("ItemDB");
 
         max_Trans_toggle = false;
@@ -142,6 +152,14 @@ public class InteractionSystem : MonoBehaviour
             resetrequestincounter = true;
         }
 
+        if(col.gameObject.tag == "Potal")
+        {
+            potalincounter = true;
+            if (col.gameObject.name == "To Forest")
+            {
+                potal_Value = "Forest";
+            }
+        }
     }
 
     private void OnTriggerStay2D(Collider2D col)
@@ -190,6 +208,11 @@ public class InteractionSystem : MonoBehaviour
         if (col.gameObject.name == "Reset_Request")
         {
             resetrequestincounter = false;
+        }
+
+        if (col.gameObject.tag == "Potal")
+        {
+            potalincounter = false;
         }
     }
 
@@ -329,6 +352,14 @@ public class InteractionSystem : MonoBehaviour
             if (resetrequestincounter == true)
             {
                 RequestSystem.Set_Request();
+            }
+
+            if (potalincounter == true)
+            {
+                if (potal_Value == "Forest")
+                {
+                    Change_Scene("Forest");
+                }
             }
         }
 
@@ -507,6 +538,37 @@ public class InteractionSystem : MonoBehaviour
         {
             col.SetActive(false);
         }
+    }
+    public void Save_Data()
+    {
+        for (int i = 0; i < InventorySystem.InventoryList.Count; i++)
+        {
+            SaveData.Inventory.Add(InventorySystem.InventoryList[i]);
+            SaveData.Inventory_CountList.Add(InventorySystem.CountList[i]) ;
+        }
+
+        for (int i = 0; i < StorageSystem.StorageList.Count; i++)
+        {
+            SaveData.Storage.Add(StorageSystem.StorageList[i]);
+            SaveData.Storage_CountList.Add(StorageSystem.StorageCountList[i]);
+
+        }
+
+        SaveData.gold = this.GetComponent<Player>().gold;
+
+        for (int i = 0; i < RequestSystem.request_List.Count; i++)
+        {
+            SaveData.today_request.Add(RequestSystem.request_List[i]);
+            SaveData.position_Number.Add(RequestSystem.position_Number[i]);
+            SaveData.image_Number.Add(RequestSystem.image_Number[i]);
+        }
+        
+    }
+
+    public void Change_Scene(string name)
+    {
+        Save_Data();
+        SceneManager.LoadScene(name);
     }
 
     ////아이템 추가

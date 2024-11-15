@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    private string currentSceneName;
     public int gold;
     public Text gold_Text;
     public float MovePower = 5f;
@@ -19,6 +21,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        currentSceneName = SceneManager.GetActiveScene().name;
         rigid = gameObject.GetComponent<Rigidbody2D>();
         InventorySystem = Manager.GetComponent<InventorySystem>();
         InteractionSystem = this.GetComponent<InteractionSystem>();
@@ -32,13 +35,19 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Move();
-        if (InteractionSystem.UItoken == false)
+        
+        if(currentSceneName != "Forest")
+        {
+            if (InteractionSystem.UItoken == false)
+            {
+                Move();
+            }
+        }
+
+        else if(currentSceneName == "Forest")
         {
             Move();
         }
-
-
     }
 
     //캐릭터 움직임
