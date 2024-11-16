@@ -6,12 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class InteractionSystem : MonoBehaviour
 {
+
+    private string currentSceneName;
+
     public GameObject Manager;
     InventorySystem InventorySystem;
-    StorageSystem StorageSystem;
     ItemInformation ItemInformation;
-    AlchemySystem AlchemySystem;
     FieldSystem FieldSystem;
+    StorageSystem StorageSystem;
+    AlchemySystem AlchemySystem;
     RequestSystem RequestSystem;
     ShopSystem ShopSystem;
 
@@ -46,6 +49,8 @@ public class InteractionSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        currentSceneName = SceneManager.GetActiveScene().name;
+
         canvas = GameObject.Find("Canvas");
         UISystem = canvas.GetComponent<UISystem>();
 
@@ -66,6 +71,7 @@ public class InteractionSystem : MonoBehaviour
         RequestSystem = Manager.GetComponent<RequestSystem>();
         ShopSystem = Manager.GetComponent<ShopSystem>();
 
+        SaveData_Manager = GameObject.Find("SaveData_Manager");
         SaveData = SaveData_Manager.GetComponent<SaveData>();
 
         ItemDB = CSVReader.Read("ItemDB");
