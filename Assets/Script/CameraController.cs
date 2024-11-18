@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
         // 플레이어 위치에 오프셋을 더해 새로운 카메라 위치 계산
         Vector3 desiredPosition = player.position + offset;
