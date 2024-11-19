@@ -1272,9 +1272,9 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: 6, y: -1}
-        - {x: -3, y: -10}
-        - {x: -16, y: -12}
+      - - {x: 4, y: 13}
+        - {x: -7, y: 1}
+        - {x: -16, y: -1}
         - {x: -16, y: -16}
         - {x: 16, y: -16}
         - {x: 16, y: 16}
@@ -2414,8 +2414,9 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: -16, y: 16}
-        - {x: 4, y: 3}
+      - - {x: -16, y: 15}
+        - {x: -16, y: 13}
+        - {x: 1, y: 0}
         - {x: 12, y: -16}
         - {x: 16, y: -16}
         - {x: 16, y: 16}

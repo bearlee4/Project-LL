@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         
         if(currentSceneName != "Forest")
@@ -60,7 +60,9 @@ public class Player : MonoBehaviour
 
         move.Normalize();
 
-        transform.position += move * MovePower * Time.deltaTime;
+        rigid.MovePosition(transform.position + move * MovePower * Time.deltaTime);
+
+        //transform.position = transform.position + move * MovePower * Time.deltaTime;
     }
 
     public void Get_Gold(int number)
