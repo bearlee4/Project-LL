@@ -46,7 +46,8 @@ public class PyroESkill : MonoBehaviour
         yield return new WaitForSeconds(delay);
         arcPrefab.SetActive(false);
 
-        player.MovePower = 5f;
+        
+        player.MovePower = 2.2f;
         elementManager.StartCoroutine(elementManager.SkillEDelayCoroutine(coolTime));
     }
 }
