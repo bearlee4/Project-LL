@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    public GameObject HP_bar;
+    public GameObject MP_bar;
+
+    private Slider HP_slider;
+    private Slider MP_slider;
+
     private string currentSceneName;
     public int gold;
     public Text gold_Text;
@@ -15,6 +21,7 @@ public class Player : MonoBehaviour
 
     InventorySystem InventorySystem;
     InteractionSystem InteractionSystem;
+    PlayerStatus PlayerStatus;
 
     public List<Dictionary<string, object>> ItemDB;
 
@@ -25,10 +32,19 @@ public class Player : MonoBehaviour
         rigid = gameObject.GetComponent<Rigidbody2D>();
         InventorySystem = Manager.GetComponent<InventorySystem>();
         InteractionSystem = this.GetComponent<InteractionSystem>();
+        PlayerStatus = this.GetComponent<PlayerStatus>();
         ItemDB = CSVReader.Read("ItemDB");
         gold = 0;
         gold_Text.text = gold.ToString();
         gold_Text.color = Color.yellow;
+
+
+        HP_slider = HP_bar.GetComponent<Slider>();
+        MP_slider = MP_bar.GetComponent<Slider>();
+        HP_slider.maxValue = PlayerStatus.maxHP;
+        MP_slider.maxValue = PlayerStatus.maxMP;
+        HP_slider.value = PlayerStatus.CurrentHP;
+        MP_slider.value = PlayerStatus.CurrentMP;
 
     }
 

@@ -73,7 +73,7 @@ public class InventorySystem : MonoBehaviour
         ItemDB = CSVReader.Read("ItemDB");
 
         //기본 사이즈 지정
-        ChangeSize(3);
+        ChangeSize(2);
 
         for (int i = 0; i < Slot.Count; i++)
         {

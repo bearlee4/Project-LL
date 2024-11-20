@@ -17,6 +17,7 @@ public class InteractionSystem : MonoBehaviour
     AlchemySystem AlchemySystem;
     RequestSystem RequestSystem;
     ShopSystem ShopSystem;
+    RecipeBook RecipeBook;
 
     public GameObject SaveData_Manager;
     SaveData SaveData;
@@ -70,6 +71,7 @@ public class InteractionSystem : MonoBehaviour
         FieldSystem = Manager.GetComponent<FieldSystem>();
         RequestSystem = Manager.GetComponent<RequestSystem>();
         ShopSystem = Manager.GetComponent<ShopSystem>();
+        RecipeBook = Manager.GetComponent<RecipeBook>();
 
         SaveData_Manager = GameObject.Find("SaveData_Manager");
         SaveData = SaveData_Manager.GetComponent<SaveData>();
@@ -449,7 +451,7 @@ public class InteractionSystem : MonoBehaviour
 
                 else if (AlchemySystem.open_recipe_ui == true)
                 {
-                    AlchemySystem.Close_Recipebook();
+                    RecipeBook.Close_Recipebook();
                 }
 
                 else
