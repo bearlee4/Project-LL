@@ -146,6 +146,11 @@ public class RecipeBook : MonoBehaviour
 
         remainder = recipeList.Count % recipe_Count;
 
+        if (remainder != 0)
+        {
+            max_page++;
+        }
+
         for (int i = 0 + ((current_page - 1) * recipe_Count); i < recipeList.Count; i++)
         {
             for (int n = 0; n < InventorySystem.ItemDB.Count; n++)
@@ -153,13 +158,13 @@ public class RecipeBook : MonoBehaviour
                 if (recipeList[i] == InventorySystem.ItemDB[n]["ImgName"].ToString())
                 {
                     string[] cut_Recipe = InventorySystem.ItemDB[n]["Recipe"].ToString().Split("+");
-                    Image Image1 = recipes.transform.GetChild(i).Find("Slot1").Find("Image").GetComponent<Image>();
-                    Image Image2 = recipes.transform.GetChild(i).Find("Slot2").Find("Image").GetComponent<Image>();
-                    Image ResultImage = recipes.transform.GetChild(i).Find("ResultSlot").Find("Image").GetComponent<Image>();
+                    Image Image1 = recipes.transform.GetChild(i - ((current_page - 1) * recipe_Count)).Find("Slot1").Find("Image").GetComponent<Image>();
+                    Image Image2 = recipes.transform.GetChild(i - ((current_page - 1) * recipe_Count)).Find("Slot2").Find("Image").GetComponent<Image>();
+                    Image ResultImage = recipes.transform.GetChild(i - ((current_page - 1) * recipe_Count)).Find("ResultSlot").Find("Image").GetComponent<Image>();
 
-                    if (recipes.transform.GetChild(i).Find("Slot1").Find("Image").gameObject.activeSelf == false)
+                    if (recipes.transform.GetChild(i - ((current_page - 1) * recipe_Count)).Find("Slot1").Find("Image").gameObject.activeSelf == false)
                     {
-                        recipes.transform.GetChild(i).Find("Slot1").Find("Image").gameObject.SetActive(true);
+                        recipes.transform.GetChild(i - ((current_page - 1) * recipe_Count)).Find("Slot1").Find("Image").gameObject.SetActive(true);
                     }
 
                     if (Image1.enabled == false)
@@ -184,13 +189,28 @@ public class RecipeBook : MonoBehaviour
                 }
             }
 
-            Debug.Log("i : " + i);
-
             //문제점
-            //if (i == current_page * recipe_Count)
-            //{
-            //    break;
-            //}
+            if (i == (current_page * recipe_Count - 1))
+            {
+                break;
+            }
+        }
+    }
+
+    public void Image_Reset()
+    {
+        for (int i = 0; i < recipes.transform.childCount; i ++)
+        {
+            Image Image1 = recipes.transform.GetChild(i).Find("Slot1").Find("Image").GetComponent<Image>();
+            Image Image2 = recipes.transform.GetChild(i).Find("Slot2").Find("Image").GetComponent<Image>();
+            Image ResultImage = recipes.transform.GetChild(i).Find("ResultSlot").Find("Image").GetComponent<Image>();
+
+            Image1.sprite = null;
+            Image1.enabled = false;
+            Image2.sprite = null;
+            Image2.enabled = false;
+            ResultImage.sprite = null;
+            ResultImage.enabled = false;
         }
     }
 
@@ -199,6 +219,7 @@ public class RecipeBook : MonoBehaviour
         if (max_page > current_page)
         {
             current_page++;
+            Image_Reset();
             //pageText.text = current_page.ToString();
             Reload_Information();
         }
@@ -209,7 +230,8 @@ public class RecipeBook : MonoBehaviour
         if (current_page != 1)
         {
             current_page--;
-           // pageText.text = current_page.ToString();
+            Image_Reset();
+            // pageText.text = current_page.ToString();
             Reload_Information();
         }
     }
