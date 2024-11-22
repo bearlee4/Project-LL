@@ -28,13 +28,9 @@ public class EnemyMovement : MonoBehaviour
 
     public bool followTarget = true;
 
-    public int moveCount;
-
     // Start is called before the first frame update
     void Start()
     {
-        moveCount = 0;
-
         enemyStatus = GetComponent<EnemyStatus>();
 
         spawnPosition = transform.position;
@@ -170,18 +166,24 @@ public class EnemyMovement : MonoBehaviour
             if (collision.gameObject.CompareTag("Player") && followTarget)
             {
                 targetTransform = collision.gameObject.transform;
+                CircleCollider2D.radius = 10f;
 
-                if(enemyStatus.EnemyType == 0)      // 슬라임 등 일반적인 움직임
-                {
-                    FollowPlayer();
-                }
-
-                if (enemyStatus.EnemyType == 1)     // 멧돼지 등 돌진하는 유형
-                {
-                    StartCoroutine(Rush());
-
-                }
+                MoveValue();
             }
+        }
+    }
+
+    void MoveValue()
+    {
+        if (enemyStatus.EnemyType == 0)      // 슬라임 등 일반적인 움직임
+        {
+            FollowPlayer();
+        }
+
+        if (enemyStatus.EnemyType == 1)     // 멧돼지 등 돌진하는 유형
+        {
+            StartCoroutine(Rush());
+
         }
     }
 
@@ -215,7 +217,6 @@ public class EnemyMovement : MonoBehaviour
         Vector3 rushDistance = transform.position + directionToPlayer * 1.2f;  // 돌진 거리
 
         currentSpeed = 2f;
-        Debug.Log("돌진 시작");
 
         while (Vector3.Distance(rb2d.position, rushDistance) > 0.1f)
         {
@@ -227,5 +228,33 @@ public class EnemyMovement : MonoBehaviour
         followTarget = true;
         currentSpeed = enemyStatus.speed;
         StartCoroutine(Rush());
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.CompareTag("Player"))
+        {
+            if (moveCoroutine != null)
+            {
+                StopCoroutine(moveCoroutine);
+                moveCoroutine = null;
+            }
+
+            followTarget = false;
+            currentSpeed = 0f;
+
+            StartCoroutine(ResumeMove());
+        }
+
+    }
+
+    private IEnumerator ResumeMove()
+    {
+        yield return new WaitForSeconds(1f);
+
+        followTarget = true;
+        currentSpeed = enemyStatus.speed;
+
+        MoveValue();
     }
 }

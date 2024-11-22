@@ -5,45 +5,51 @@ using UnityEngine;
 
 public class PlayerStatus : MonoBehaviour
 {
-    public int maxHP;
-    public int CurrentHP;
-    public int maxMP;
-    public int CurrentMP;
+    public float maxHP;
+    public float currentHP;
+    public float maxMP;
+    public float currentMP;
     public float atk;
     public float speed;
     public float def;
-    public int crt_R;
-    public int crt_H;
+    public float crt_R;
+    public float crt_H;
+
+    Player player;
 
     void Awake()
     {
         maxHP = 20;
-        CurrentHP = maxHP;
+        currentHP = maxHP;
         maxMP = 100;
-        CurrentMP = maxMP;
+        currentMP = maxMP;
     }
 
     void Start()
     {
-        
+        player = GetComponent<Player>();
     }
 
-    void Die()
+    public void Die()
     {
         // 애니메이션 재생, 집으로 복귀, 체력 풀로 채우기 등등
+        gameObject.SetActive(false);
+        Debug.Log("님 뒤졋으니까 리겜하셈");
+        Debug.Log("대체 이걸 어캐 죽음?");
+
     }
 
     // 포션에 들어갈 단순 회복효과
     public void HealHP(int num)                     // 수치(정수)
     {
-        if ((CurrentHP + num) > maxHP) CurrentHP = maxHP;
-        else CurrentHP = CurrentHP + num;
+        if ((currentHP + num) > maxHP) currentHP = maxHP;
+        else currentHP = currentHP + num;
     }
 
     public void HealMP(int num)
     {
-        if ((CurrentMP + num) > maxMP) CurrentMP = maxMP;
-        else CurrentMP = CurrentMP + num;
+        if ((currentMP + num) > maxMP) currentMP = maxMP;
+        else currentMP = currentMP + num;
     }
 
     public void Buff(int type, float duration, float num)    // 종류, 지속시간, 수치(퍼센트)
