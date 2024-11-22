@@ -12,7 +12,7 @@ public class EnemyMovement : MonoBehaviour
     private EnemyStatus enemyStatus;
 
     
-    public float delay = 4f;
+    public float delay = 2f;
 
     private float currentSpeed;
 
@@ -165,22 +165,26 @@ public class EnemyMovement : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)     // 범위에 플레이어 들어감
     {
-        if (collision.gameObject.CompareTag("Player") && followTarget)
+        if (!targetTransform)
         {
-            targetTransform = collision.gameObject.transform;
-
-            if(enemyStatus.EnemyType == 0)      // 슬라임 등 일반적인 움직임
+            if (collision.gameObject.CompareTag("Player") && followTarget)
             {
-                FollowPlayer();
-            }
+                targetTransform = collision.gameObject.transform;
 
-            if (enemyStatus.EnemyType == 1)     // 멧돼지 등 돌진하는 유형
-            {
-                StartCoroutine(Rush());
+                if(enemyStatus.EnemyType == 0)      // 슬라임 등 일반적인 움직임
+                {
+                    FollowPlayer();
+                }
+
+                if (enemyStatus.EnemyType == 1)     // 멧돼지 등 돌진하는 유형
+                {
+                    StartCoroutine(Rush());
+
+                }
             }
         }
-
     }
+
     void FollowPlayer()
     {
         if (moveCoroutine != null)
@@ -193,42 +197,35 @@ public class EnemyMovement : MonoBehaviour
 
     private IEnumerator Rush()
     {
-        while (followTarget)
+        FollowPlayer();
+
+        yield return new WaitForSeconds(2f);
+
+        if (moveCoroutine != null)
         {
-            FollowPlayer();
-
-            yield return new WaitForSeconds(2f);
-
-            if (moveCoroutine != null)
-            {
-                StopCoroutine(moveCoroutine);
-            }
-
-            currentSpeed = 0f;
-            Vector3 directionToPlayer = (targetTransform.position - transform.position).normalized;
-            Debug.Log("돌진 준비 중");
-            yield return new WaitForSeconds(1f);
-
-            Vector3 rushDistance = transform.position + directionToPlayer * 2f;   // 돌진거리
-            currentSpeed = 1f; // 돌진속도
-
-            Debug.DrawLine(transform.position, rushDistance);
-
-            while (Vector3.Distance(rb2d.position, rushDistance) > 0.1f)
-            {
-                Vector3 RushPosition = Vector3.MoveTowards(rb2d.position, rushDistance, currentSpeed * Time.deltaTime);
-                rb2d.MovePosition(RushPosition);
-                yield return new WaitForFixedUpdate();
-            }
-            Debug.Log("돌진 끝");
-
-            //Vector3 newPosition = Vector3.MoveTowards(rb2d.position, rushDistance, currentSpeed * Time.deltaTime);
-            //rb2d.MovePosition(newPosition);
-
-            currentSpeed = 0f;
-            yield return new WaitForSeconds(1f);
-
-            currentSpeed = enemyStatus.speed;
+            StopCoroutine(moveCoroutine);
         }
+
+        followTarget = false;
+        currentSpeed = 0;
+
+        yield return new WaitForSeconds(1.5f);
+
+        Vector3 directionToPlayer = (targetTransform.position - transform.position).normalized;
+        Vector3 rushDistance = transform.position + directionToPlayer * 1.2f;  // 돌진 거리
+
+        currentSpeed = 2f;
+        Debug.Log("돌진 시작");
+
+        while (Vector3.Distance(rb2d.position, rushDistance) > 0.1f)
+        {
+            Vector3 RushPosition = Vector3.MoveTowards(rb2d.position, rushDistance, currentSpeed * Time.deltaTime);
+            rb2d.MovePosition(RushPosition);
+            yield return new WaitForFixedUpdate();
+        }
+
+        followTarget = true;
+        currentSpeed = enemyStatus.speed;
+        StartCoroutine(Rush());
     }
 }
