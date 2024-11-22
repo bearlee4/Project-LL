@@ -13,10 +13,22 @@ public class EnemyStatus : MonoBehaviour
     public float speed;
     public float returnSpeed;
 
+    public int EnemyType;
+
     public bool invincible = false; // 무적
 
     private void Start()
     {
+        switch (EnemyType)
+        {
+            case 0:
+                speed = 0.5f;
+                break;
+            case 1:
+                speed = 0.25f;
+                break;
+        }
+
         CircleCollider2D = GetComponent<CircleCollider2D>();
         currentHp = maxHp;
     }

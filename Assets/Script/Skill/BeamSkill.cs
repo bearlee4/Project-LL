@@ -50,7 +50,7 @@ public class BeamSkill : MonoBehaviour
 
     private IEnumerator BeamAiming(float delay)
     {
-        player.MovePower = 1.5f;
+        player.CurrentSpeed = 1.5f;
 
         elementManager.skill_E = false;
 
@@ -66,7 +66,7 @@ public class BeamSkill : MonoBehaviour
 
         yield return new WaitForSeconds(delay);
 
-        player.MovePower = 0f;
+        player.CurrentSpeed = 0f;
 
         if (shadowBeam != null)
         {
@@ -108,9 +108,9 @@ public class BeamSkill : MonoBehaviour
 
     private IEnumerator SkillMoveDelay(float delay)
     {
-        player.MovePower = 1.5f;
+        player.CurrentSpeed = 1.5f;
         yield return new WaitForSeconds(delay);
-        player.MovePower = 5f;
+        player.CurrentSpeed = 5f;
     }
 
 }

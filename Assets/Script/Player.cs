@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
     private string currentSceneName;
     public int gold;
     public Text gold_Text;
-    public float MovePower = 5f;
+    public float CurrentSpeed;
+    public float MovePower = 2f;
     public GameObject Manager;
     Rigidbody2D rigid;
 
@@ -28,6 +29,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CurrentSpeed = MovePower;
+
         currentSceneName = SceneManager.GetActiveScene().name;
         rigid = gameObject.GetComponent<Rigidbody2D>();
         InventorySystem = Manager.GetComponent<InventorySystem>();
@@ -76,7 +79,7 @@ public class Player : MonoBehaviour
 
         move.Normalize();
 
-        rigid.MovePosition(transform.position + move * MovePower * Time.deltaTime);
+        rigid.MovePosition(transform.position + move * CurrentSpeed * Time.deltaTime);
 
         //transform.position = transform.position + move * MovePower * Time.deltaTime;
     }

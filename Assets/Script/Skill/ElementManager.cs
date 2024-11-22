@@ -18,7 +18,7 @@ public class ElementManager : MonoBehaviour
     // Pyro, Hydro, Anemo, Geo
     public List<String> Element = new List<String> { "Pyro", "Hydro", "Anemo", "Geo" };
     public List<float> QSkillDelay = new List<float> { 2, 3, 2, 3 };
-    public List<float> ESkillDelay = new List<float> { 7, 8, 8, 7 };
+    public List<float> ESkillDelay = new List<float> { 3, 3, 3, 3 };
 
 
     public int currentElement = 0;

@@ -12,7 +12,7 @@ public class EnemyMovement : MonoBehaviour
     private EnemyStatus enemyStatus;
 
     
-    public float delay = 2f;
+    public float delay = 4f;
 
     private float currentSpeed;
 
@@ -23,16 +23,18 @@ public class EnemyMovement : MonoBehaviour
     Vector3 endPosition;
     Vector3 spawnPosition;
 
-    private float spawnArea = 15f;
+    private float spawnArea = 4f;
     public float currentAngle = 0;
 
     public bool followTarget = true;
 
-    public int EnemyType;
+    public int moveCount;
 
     // Start is called before the first frame update
     void Start()
     {
+        moveCount = 0;
+
         enemyStatus = GetComponent<EnemyStatus>();
 
         spawnPosition = transform.position;
@@ -71,9 +73,10 @@ public class EnemyMovement : MonoBehaviour
     {
         if(!followTarget) return;
 
+        endPosition += Vector3FromAngle(currentAngle) * 0.2f;   // 이동할 위치
         currentAngle += UnityEngine.Random.Range(0, 360);
         currentAngle = Mathf.Repeat(currentAngle, 360);
-        endPosition += Vector3FromAngle(currentAngle);
+
     }
 
     private Vector3 Vector3FromAngle(float angle)   // 각도계산
@@ -150,11 +153,13 @@ public class EnemyMovement : MonoBehaviour
         moveCoroutine = StartCoroutine(NormalMove());
     }
 
-    private void OnDrawGizmos()     // 범위표시
+    private void OnDrawGizmos()     // 인식범위표시
     {
         if (CircleCollider2D != null)
         {
-            Gizmos.DrawWireSphere(transform.position, CircleCollider2D.radius);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, CircleCollider2D.radius*0.1f);
+            Gizmos.DrawWireSphere(spawnPosition, spawnArea);
         }
     }
 
@@ -164,18 +169,17 @@ public class EnemyMovement : MonoBehaviour
         {
             targetTransform = collision.gameObject.transform;
 
-            if(EnemyType == 0)      // 슬라임 등 일반적인 움직임
+            if(enemyStatus.EnemyType == 0)      // 슬라임 등 일반적인 움직임
             {
                 FollowPlayer();
             }
 
-            if (EnemyType == 1)     // 멧돼지 등 돌진하는 유형
+            if (enemyStatus.EnemyType == 1)     // 멧돼지 등 돌진하는 유형
             {
                 StartCoroutine(Rush());
             }
-
-
         }
+
     }
     void FollowPlayer()
     {
@@ -192,24 +196,39 @@ public class EnemyMovement : MonoBehaviour
         while (followTarget)
         {
             FollowPlayer();
+
             yield return new WaitForSeconds(2f);
+
+            if (moveCoroutine != null)
+            {
+                StopCoroutine(moveCoroutine);
+            }
+
             currentSpeed = 0f;
             Vector3 directionToPlayer = (targetTransform.position - transform.position).normalized;
+            Debug.Log("돌진 준비 중");
+            yield return new WaitForSeconds(1f);
 
-            yield return new WaitForSeconds(0.5f);
+            Vector3 rushDistance = transform.position + directionToPlayer * 2f;   // 돌진거리
+            currentSpeed = 1f; // 돌진속도
 
-            Vector3 rushDistance = transform.position + directionToPlayer * 20f;   // 돌진거리
-            currentSpeed = 10f; // 돌진속도
+            Debug.DrawLine(transform.position, rushDistance);
 
-            Vector3 newPosition = Vector3.MoveTowards(rb2d.position, rushDistance, currentSpeed * Time.deltaTime);
-            rb2d.MovePosition(newPosition);
+            while (Vector3.Distance(rb2d.position, rushDistance) > 0.1f)
+            {
+                Vector3 RushPosition = Vector3.MoveTowards(rb2d.position, rushDistance, currentSpeed * Time.deltaTime);
+                rb2d.MovePosition(RushPosition);
+                yield return new WaitForFixedUpdate();
+            }
+            Debug.Log("돌진 끝");
 
-            yield return new WaitForSeconds(0.5f);
+            //Vector3 newPosition = Vector3.MoveTowards(rb2d.position, rushDistance, currentSpeed * Time.deltaTime);
+            //rb2d.MovePosition(newPosition);
+
             currentSpeed = 0f;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
 
             currentSpeed = enemyStatus.speed;
-            moveCoroutine = StartCoroutine(Move(rb2d, currentSpeed));
         }
     }
 }

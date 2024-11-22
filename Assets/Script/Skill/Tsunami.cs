@@ -11,9 +11,11 @@ public class Tsunami : MonoBehaviour
     public bool isActive = false;
     public float damage;
 
+
+
     private void Start()
     {
-
+        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), player.gameObject.GetComponent<Collider2D>());
     }
 
     private void Update()
@@ -34,11 +36,11 @@ public class Tsunami : MonoBehaviour
     IEnumerator Expand()
     {
         transform.position = player.position;
-        transform.localScale = new Vector3(2, 2, 2);
-        float increaseSpeed = (increase * Time.deltaTime * 100);
+        transform.localScale = new Vector3((float)0.5, (float)0.5, 1);
+        float increaseSpeed = (increase * Time.deltaTime * 25);
 
 
-        while (transform.localScale.x < 2.2f)
+        while (transform.localScale.x < 1.5f)
         {
             transform.localScale += new Vector3(increaseSpeed, increaseSpeed, 0);
             yield return null;

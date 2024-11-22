@@ -29,7 +29,7 @@ public class HydroESkill : MonoBehaviour
 
     private IEnumerator WaveAct()
     {
-        player.MovePower = 0f;
+        player.CurrentSpeed = 0f;
         elementManager.skill_E = false;
 
         wavePrefab.SetActive(true);
@@ -39,9 +39,9 @@ public class HydroESkill : MonoBehaviour
         {
             tsunami.isActive = true;
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
-        player.MovePower = 2.2f;
+        player.CurrentSpeed = player.MovePower;
         elementManager.StartCoroutine(elementManager.SkillEDelayCoroutine(coolTime));
     }
 }

@@ -29,7 +29,7 @@ public class PyroESkill : MonoBehaviour
 
     private IEnumerator BeamAiming(float delay)
     {
-        player.MovePower = 0f;
+        player.CurrentSpeed = 0f;
 
         elementManager.skill_E = false;
 
@@ -47,7 +47,7 @@ public class PyroESkill : MonoBehaviour
         arcPrefab.SetActive(false);
 
         
-        player.MovePower = 2.2f;
+        player.CurrentSpeed = player.MovePower;
         elementManager.StartCoroutine(elementManager.SkillEDelayCoroutine(coolTime));
     }
 }
