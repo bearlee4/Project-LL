@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,6 +22,9 @@ public class InteractionSystem : MonoBehaviour
 
     public GameObject SaveData_Manager;
     SaveData SaveData;
+
+    public GameObject BackGround_Audio;
+    BackGroundController BackGroundController;
 
     private GameObject canvas;
     UISystem UISystem;
@@ -72,6 +76,7 @@ public class InteractionSystem : MonoBehaviour
         RequestSystem = Manager.GetComponent<RequestSystem>();
         ShopSystem = Manager.GetComponent<ShopSystem>();
         RecipeBook = Manager.GetComponent<RecipeBook>();
+        BackGroundController = BackGround_Audio.GetComponent<BackGroundController>();
 
         SaveData_Manager = GameObject.Find("SaveData_Manager");
         SaveData = SaveData_Manager.GetComponent<SaveData>();
@@ -166,6 +171,11 @@ public class InteractionSystem : MonoBehaviour
             if (col.gameObject.name == "To Forest")
             {
                 potal_Value = "Forest";
+            }
+
+            else if (col.gameObject.name == "To Vilige")
+            {
+                potal_Value = "Vilige";
             }
         }
     }
@@ -366,7 +376,12 @@ public class InteractionSystem : MonoBehaviour
             {
                 if (potal_Value == "Forest")
                 {
-                    Change_Scene("Forest");
+                    Change_Map("Forest");
+                }
+
+                else if (potal_Value == "Vilige")
+                {
+                    Change_Map("Vilige");
                 }
             }
         }
@@ -573,10 +588,24 @@ public class InteractionSystem : MonoBehaviour
         
     }
 
-    public void Change_Scene(string name)
+    public void Change_Map(string name)
     {
-        Save_Data();
-        SceneManager.LoadScene(name);
+        //Save_Data();
+        if (name == "Forest")
+        {
+            this.transform.position = new Vector3(-70, 132);
+            this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2((float)-82.7, (float)132.3);
+            this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2(-58, 155);
+            BackGroundController.To_Forest();
+        }
+
+        if (name == "Vilige")
+        {
+            this.transform.position = new Vector3((float)-51.4, (float)175.5);
+            this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)164.7);
+            this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-44.4, (float)175.4);
+            BackGroundController.To_Vilige();
+        }
     }
 
     ////아이템 추가
