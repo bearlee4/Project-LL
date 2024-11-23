@@ -48,11 +48,20 @@ public class ArcManager : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy") && collision is CapsuleCollider2D)
         {
             EnemyStatus enemy = collision.GetComponent<EnemyStatus>();
+            BossStatus boss = collision.GetComponent<BossStatus>();
 
             if (enemy != null)
             {
                 enemy.Damaged(damage);
             }
+        }
+
+        if (collision.gameObject.CompareTag("Boss") && collision is CapsuleCollider2D)
+        {
+
+            BossStatus boss = collision.gameObject.GetComponent<BossStatus>();
+            if (boss != null)
+                boss.Damaged(damage);
         }
     }
 }

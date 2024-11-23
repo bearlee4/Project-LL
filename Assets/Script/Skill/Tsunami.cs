@@ -11,11 +11,12 @@ public class Tsunami : MonoBehaviour
     public bool isActive = false;
     public float damage;
 
-
+    public GameObject Boss;
 
     private void Start()
     {
         Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), player.gameObject.GetComponent<Collider2D>());
+        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), Boss.GetComponent<Collider2D>());
     }
 
     private void Update()
@@ -29,6 +30,7 @@ public class Tsunami : MonoBehaviour
         if (isActive)
         {
             Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), player.gameObject.GetComponent<Collider2D>());
+            Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), Boss.GetComponent<Collider2D>());
             StartCoroutine("Expand");
         }
     }
@@ -38,7 +40,6 @@ public class Tsunami : MonoBehaviour
         transform.position = player.position;
         transform.localScale = new Vector3((float)0.5, (float)0.5, 1);
         float increaseSpeed = (increase * Time.deltaTime * 25);
-
 
         while (transform.localScale.x < 1.5f)
         {
@@ -53,6 +54,7 @@ public class Tsunami : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy") && collision.collider is CapsuleCollider2D)
+             
         {
             EnemyStatus enemy = collision.gameObject.GetComponent<EnemyStatus>();
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3048482420133488383}
   - component: {fileID: 8326699771036675770}
   - component: {fileID: 1806324271}
+  - component: {fileID: 163962491044507}
   m_Layer: 0
   m_Name: Boss_Stone
   m_TagString: Enemy
@@ -101,8 +102,6 @@ MonoBehaviour:
   objectPool: {fileID: 0}
   speed: 2
   time: 2
-  damage: 10
-  Boss: {fileID: 0}
 --- !u!70 &1806324271
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -119,3 +118,23 @@ CapsuleCollider2D:
   m_Offset: {x: -0.008823808, y: 0.038235124}
   m_Size: {x: 0.1415621, y: 0.080770075}
   m_Direction: 1
+--- !u!114 &163962491044507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3048482420133488369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 561d8c6158b46d14a8cfa038c30c9100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 0
+  currentHp: 0
+  atk: 10
+  def: 0
+  speed: 0
+  returnSpeed: 0
+  EnemyType: 4
+  invincible: 0

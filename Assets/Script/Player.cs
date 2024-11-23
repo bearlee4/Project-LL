@@ -97,6 +97,11 @@ public class Player : MonoBehaviour
 
             rigid.MovePosition(transform.position + move * currentSpeed * Time.deltaTime);
 
+            if (dirx > 0)
+                spriteRenderer.flipX = true;
+            if (dirx < 0)
+                spriteRenderer.flipX = false;
+
             //transform.position = transform.position + move * MovePower * Time.deltaTime;
         }
     }
@@ -115,14 +120,23 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.CompareTag("Enemy") && col.collider is CapsuleCollider2D)
+        if ((col.gameObject.CompareTag("Enemy") ||
+            col.gameObject.CompareTag("Boss")) && 
+            col.collider is CapsuleCollider2D)
         {
             EnemyStatus enemy = col.gameObject.GetComponent<EnemyStatus>();
+            BossStatus boss = col.gameObject.GetComponent<BossStatus>();
+
             if (enemy != null)
             {
                 Damaged(enemy.atk);
             }
-            StartCoroutine(KnockBack(col));
+
+            if (boss != null)
+                Damaged(boss.atk);
+
+            if (!invincible)
+                StartCoroutine(KnockBack(col));
         }
     }
 

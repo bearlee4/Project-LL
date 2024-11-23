@@ -13,7 +13,7 @@ public class BossPattern : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //StartCoroutine(Ativity1());
+        StartCoroutine(Ativity1());
     }
 
     // Update is called once per frame

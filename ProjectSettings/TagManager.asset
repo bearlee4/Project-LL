@@ -15,6 +15,7 @@ TagManager:
   - Potal
   - Collider
   - WaterWave
+  - Boss
   layers:
   - Default
   - TransparentFX

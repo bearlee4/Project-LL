@@ -5,20 +5,18 @@ using UnityEngine.Pool;
 
 public class BossStone : MonoBehaviour
 {
-    private EnemyStatus enemyStatus;
+    private BossStatus bossStatus;
 
     public ObjectPool objectPool;
     private Vector2 dir;
     public float speed;
     public float time;
-    public float damage;
-
-    public GameObject Boss;
+    private float damage;
 
     // Start is called before the first frame update
     void Start()
     {
-        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), Boss.GetComponent<Collider2D>());
+        damage = bossStatus.atk;
     }
 
     // Update is called once per frame
@@ -31,6 +29,13 @@ public class BossStone : MonoBehaviour
     {
         objectPool = Pool;
         dir = direction.normalized;
+
+        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+        if (boss != null)
+        {
+            Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), boss.GetComponent<Collider2D>());
+        }
+
         Invoke("ReturnToPool", time);
     }
 
@@ -45,20 +50,4 @@ public class BossStone : MonoBehaviour
         Debug.Log("부딪힘");
         ReturnToPool();
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Player player = collision.GetComponent<Player>();
-
-            if (player != null)
-            {
-                player.Damaged(damage);
-            }
-            ReturnToPool();
-        }
-    }
-
-
 }
