@@ -27,6 +27,9 @@ public class EnemyStatus : MonoBehaviour
             case 1:
                 speed = 0.25f;
                 break;
+            case 2:
+                speed = 0f;
+                break;
         }
 
         CircleCollider2D = GetComponent<CircleCollider2D>();

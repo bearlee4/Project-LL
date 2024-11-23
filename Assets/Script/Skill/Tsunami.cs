@@ -28,7 +28,7 @@ public class Tsunami : MonoBehaviour
     {
         if (isActive)
         {
-            
+            Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), player.gameObject.GetComponent<Collider2D>());
             StartCoroutine("Expand");
         }
     }
@@ -62,18 +62,4 @@ public class Tsunami : MonoBehaviour
             }
         }
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Enemy") && collision is CapsuleCollider2D)
-    //    {
-    //        EnemyStatus enemy = collision.GetComponent<EnemyStatus>();
-
-    //        if (enemy != null)
-    //        {
-    //            enemy.Damaged(damage);
-    //        }
-    //    }
-    //}
-
 }

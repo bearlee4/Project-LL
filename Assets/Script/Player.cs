@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     public int gold;
     public Text gold_Text;
     public float currentSpeed;
-    public float movePower = 2f;
+    public float movePower = 1.5f;
     public GameObject Manager;
     Rigidbody2D rigid;
 

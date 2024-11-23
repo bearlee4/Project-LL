@@ -234,23 +234,34 @@ public class EnemyMovement : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player"))
         {
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = Vector2.zero;
+            }
+
             if (moveCoroutine != null)
             {
                 StopCoroutine(moveCoroutine);
                 moveCoroutine = null;
             }
 
-            followTarget = false;
-            currentSpeed = 0f;
+            StartCoroutine(ResumeMove(1f));
+        }
 
-            StartCoroutine(ResumeMove());
+        if (col.gameObject.CompareTag("WaterWave"))
+        {
+            StartCoroutine(ResumeMove(0.2f));
         }
 
     }
 
-    private IEnumerator ResumeMove()
+    private IEnumerator ResumeMove(float delay)
     {
-        yield return new WaitForSeconds(1f);
+        followTarget = false;
+        currentSpeed = 0f;
+
+        yield return new WaitForSeconds(delay);
 
         followTarget = true;
         currentSpeed = enemyStatus.speed;
