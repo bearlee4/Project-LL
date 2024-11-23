@@ -31,6 +31,8 @@ public class InventorySystem : MonoBehaviour
     private int maxcount;
     private int nextcount;
     public bool fullActive_toggle;
+    public int weight;
+    public int max_weight;
     
     //아이템DB 가져오기
     public List<Dictionary<string, object>> ItemDB;
@@ -63,6 +65,8 @@ public class InventorySystem : MonoBehaviour
 
         FullInventory = false;
         fullActive_toggle = false;
+        weight = 0;
+        max_weight = 20;
         maxcount = 99;
         Positioncount = 0;
         QuickSlotList = new List<string>() { "null", "null", "null" };
@@ -145,6 +149,24 @@ public class InventorySystem : MonoBehaviour
         bool continue_toggle = false;
         fullActive_toggle = false;
 
+        for (int i = 0; i < ItemDB.Count; i ++)
+        {
+            if (Strname == ItemDB[i]["ImgName"].ToString())
+            {
+                //무게를 추가했는데도 최대치에 도달하지 않았을 경우
+                if (weight + (int)ItemDB[i]["Weight"] < max_weight)
+                {
+                    FullInventory = false;
+                }
+
+                //최대치에 도달 할 경우
+                else
+                {
+                    FullInventory = true;
+                }
+            }
+        }
+
         //인벤토리 공간이 부족할때
         if (CountList.Count == SetSize)
         {
@@ -152,7 +174,7 @@ public class InventorySystem : MonoBehaviour
         }
 
         //인벤토리에 같은 종류의 아이템이 없을때
-        if (!InventoryList.Contains(Strname) && InventoryList.Count < SetSize)
+        if (!InventoryList.Contains(Strname) && InventoryList.Count < SetSize && weight < max_weight)
         {
             AddItem(Strname, number);
         }
@@ -167,8 +189,8 @@ public class InventorySystem : MonoBehaviour
                 {
                     Debug.Log("이거 작동중임?");
 
-                    //인벤토리 슬롯은 없는데 같은 종류가 더 들어갈 수 있을 경우
-                    if (FullInventory == true && CountList[i] + number <= maxcount)
+                    //인벤토리 슬롯은 없는데 같은 종류가 있어 더 들어갈 수 있을 경우
+                    if (FullInventory == true && CountList[i] + number <= maxcount && weight < max_weight)
                     {
                         CountList[i] += number;
                         Debug.Log(CountList[i]);
@@ -195,7 +217,7 @@ public class InventorySystem : MonoBehaviour
                     //// 아이템 습득 후 갯수가 99초과일 때
                     else if ((CountList[i] + number) > maxcount && CountList[i] != maxcount && CountList.Count < SetSize)
                     {
-                        //넘어갈 슬롯에 없을 경우 브레이크
+                        //넘어갈 슬롯이 없을 경우 브레이크
                         if ((InventoryList.Count + 1) > SetSize)
                         {
                             FullInventory = true;
@@ -225,8 +247,8 @@ public class InventorySystem : MonoBehaviour
                         continue;
                     }
                     
-                    //더 슬롯이 없을때
-                    else if (CountList.Count == SetSize)
+                    //더 슬롯이 없을때, 또는 무게 최대치에 도달했을 때
+                    else if (CountList.Count == SetSize || weight >= max_weight)
                     {
                         FullInventory = true;
                         Debug.Log("인벤토리 공간이 부족합니다.");
