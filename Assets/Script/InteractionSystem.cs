@@ -154,9 +154,9 @@ public class InteractionSystem : MonoBehaviour
         }
 
         //스포너리스폰과 접촉시 발동
-        if (col.gameObject.name == "Spawner_Respawn")
+        if (col.gameObject.name == "Test_Spawner_Respawn")
         {
-            FieldSystem.Respawn_spawner();
+            FieldSystem.Respawn_Test_spawner();
         }
 
         if (col.gameObject.name == "Reset_Request")
@@ -596,6 +596,7 @@ public class InteractionSystem : MonoBehaviour
             this.transform.position = new Vector3(-70, 132);
             this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2((float)-82.7, (float)132.3);
             this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2(-58, 155);
+            FieldSystem.Respawn_spawner();
             BackGroundController.To_Forest();
         }
 

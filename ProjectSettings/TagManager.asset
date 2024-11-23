@@ -13,6 +13,7 @@ TagManager:
   - Bullet
   - RecipeImage
   - Potal
+  - Collider
   layers:
   - Default
   - TransparentFX

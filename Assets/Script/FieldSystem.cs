@@ -7,6 +7,7 @@ public class FieldSystem : MonoBehaviour
 {
     public GameObject Player;
     public GameObject spawner;
+    public GameObject Test_spawner;
     InteractionSystem InteractionSystem;
 
     public List<string> common_ForageList = new List<string>();
@@ -54,6 +55,17 @@ public class FieldSystem : MonoBehaviour
             if(spawner.transform.GetChild(i).gameObject.activeSelf == false)
             {
                 spawner.transform.GetChild(i).gameObject.SetActive(true);
+            }
+        }
+    }
+
+    public void Respawn_Test_spawner()
+    {
+        for (int i = 0; i < Test_spawner.transform.childCount; i++)
+        {
+            if (Test_spawner.transform.GetChild(i).gameObject.activeSelf == false)
+            {
+                Test_spawner.transform.GetChild(i).gameObject.SetActive(true);
             }
         }
     }
