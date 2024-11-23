@@ -54,6 +54,9 @@ public class InventorySystem : MonoBehaviour
     public List<Text> NumberList = new List<Text>();
     private List<Vector3> Slot_Position = new List<Vector3>();
 
+    public Text weight_text_kor;
+    public Text weight_text;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,8 +68,11 @@ public class InventorySystem : MonoBehaviour
 
         FullInventory = false;
         fullActive_toggle = false;
+       
         weight = 0;
         max_weight = 20;
+        weight_text.text = weight.ToString() + " / " + max_weight.ToString();
+
         maxcount = 99;
         Positioncount = 0;
         QuickSlotList = new List<string>() { "null", "null", "null" };
@@ -147,22 +153,26 @@ public class InventorySystem : MonoBehaviour
     {
         string Strname = name.ToString();
         bool continue_toggle = false;
+        int item_weight = 0;
         fullActive_toggle = false;
 
         for (int i = 0; i < ItemDB.Count; i ++)
         {
             if (Strname == ItemDB[i]["ImgName"].ToString())
             {
+                item_weight = (int)ItemDB[i]["Weight"] * number;
                 //무게를 추가했는데도 최대치에 도달하지 않았을 경우
-                if (weight + (int)ItemDB[i]["Weight"] < max_weight)
+                if (weight + item_weight < max_weight)
                 {
                     FullInventory = false;
+                    break;
                 }
 
                 //최대치에 도달 할 경우
                 else
                 {
                     FullInventory = true;
+                    break;
                 }
             }
         }
@@ -177,6 +187,7 @@ public class InventorySystem : MonoBehaviour
         if (!InventoryList.Contains(Strname) && InventoryList.Count < SetSize && weight < max_weight)
         {
             AddItem(Strname, number);
+            weight += item_weight;
         }
 
         //인벤토리에 같은 종류의 아이템이 있을때
@@ -195,6 +206,7 @@ public class InventorySystem : MonoBehaviour
                         CountList[i] += number;
                         Debug.Log(CountList[i]);
                         Debug.Log("같은 아이템을 가지고 있습니다.");
+                        weight += item_weight;
                         NumberList[i].text = CountList[i].ToString();
 
                         continue_toggle = false;
@@ -208,6 +220,7 @@ public class InventorySystem : MonoBehaviour
                         CountList[i] += number;
                         Debug.Log(CountList[i]);
                         Debug.Log("같은 아이템을 가지고 있습니다.");
+                        weight += item_weight;
                         NumberList[i].text = CountList[i].ToString();
 
                         continue_toggle = false;
@@ -230,6 +243,7 @@ public class InventorySystem : MonoBehaviour
                         CountList[i] += number;
                         nextcount = CountList[i] - maxcount;
                         CountList[i] = maxcount;
+                        weight += item_weight;
                         NumberList[i].text = CountList[i].ToString();
                         continue_toggle = true;
 
@@ -297,6 +311,8 @@ public class InventorySystem : MonoBehaviour
         {
             ItemInformation.Create_Fullinventory_Notice();
         }
+
+        weight_text.text = weight.ToString() + " / " + max_weight.ToString();
     }
 
     public void Load_Information(GameObject selectObject)
@@ -346,6 +362,8 @@ public class InventorySystem : MonoBehaviour
                 if (ItemDB[i]["UseItem"].ToString() == "O")
                 {
                     CountList[number] -= 1;
+                    weight -= (int)ItemDB[i]["Weight"];
+                    weight_text.text = weight.ToString() + " / " + max_weight.ToString();
                     NumberList[number].text = CountList[number].ToString();
                     Debug.Log("아이템을 사용하였습니다.");
 

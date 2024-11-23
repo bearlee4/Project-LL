@@ -28,6 +28,7 @@ public class StorageSystem : MonoBehaviour
     public List<GameObject> InventorySlot = new List<GameObject>();
     public List<GameObject> InventoryImageSlot = new List<GameObject>();
     public List<Text> InventoryNumberList = new List<Text>();
+    public Text InventoryWeight_text;
 
     //창고측 슬롯
     public List<GameObject> StorageSlot = new List<GameObject>();
@@ -199,6 +200,7 @@ public class StorageSystem : MonoBehaviour
 
             }
         }
+        InventoryWeight_text.text = InventorySystem.weight_text.text;
     }
 
     public void Back_Home()
@@ -420,6 +422,16 @@ public class StorageSystem : MonoBehaviour
             {
                 //퀵슬롯 리셋 작동 토글
                 quick_toggle = true;
+            }
+        }
+
+        for (int i = 0; i < InventorySystem.ItemDB.Count; i++)
+        {
+            if (InventorySystem.InventoryList[number] == InventorySystem.ItemDB[i]["ImgName"].ToString())
+            {
+                InventorySystem.weight -= (int)InventorySystem.ItemDB[i]["Weight"] * transnumber;
+                InventorySystem.weight_text.text = InventorySystem.weight.ToString() + " / " + InventorySystem.max_weight.ToString();
+                break;
             }
         }
 
