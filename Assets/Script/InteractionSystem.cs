@@ -101,6 +101,12 @@ public class InteractionSystem : MonoBehaviour
     {
         enter_object = col.gameObject;
 
+        if (col.gameObject.name == "Slot_Plus")
+        {
+            AlchemySystem.AlchemySlot_Plus();
+            Debug.Log("슬롯 추가");
+        }
+
         //채집물 접촉
         if (col.gameObject.tag == "Forage")
         {

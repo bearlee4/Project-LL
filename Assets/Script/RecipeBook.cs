@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class RecipeBook : MonoBehaviour
 {
     public GameObject recipe_UI;
+    //이게 진짜
     public GameObject recipeBook_UI;
+    public GameObject triple_recipieBook_UI;
     public GameObject recipe_content;
     public GameObject recipe_Slot;
     public GameObject recipes;
@@ -45,7 +47,7 @@ public class RecipeBook : MonoBehaviour
     {
         recipe_UI.SetActive(true);
         open_recipe_ui = true;
-        Set_Recipe();
+        Set_Recipe(2);
     }
 
     public void Close_Recipebook()
@@ -73,7 +75,7 @@ public class RecipeBook : MonoBehaviour
         Debug.Log("레시피 추가");
     }
 
-    public void Set_Recipe()
+    public void Set_Recipe(int count)
     {
         for (int i = 0; i < recipeList.Count; i++)
         {
@@ -82,34 +84,38 @@ public class RecipeBook : MonoBehaviour
                 if (recipeList[i] == InventorySystem.ItemDB[n]["ImgName"].ToString())
                 {
                     string[] cut_Recipe = InventorySystem.ItemDB[n]["Recipe"].ToString().Split("+");
-                    Image Image1 = recipe_content.transform.GetChild(i).Find("Slot1").Find("Image").GetComponent<Image>();
-                    Image Image2 = recipe_content.transform.GetChild(i).Find("Slot2").Find("Image").GetComponent<Image>();
-                    Image ResultImage = recipe_content.transform.GetChild(i).Find("ResultSlot").Find("Image").GetComponent<Image>();
-
-                    if (recipe_content.transform.GetChild(i).Find("Slot1").Find("Image").gameObject.activeSelf == false)
+                    if(cut_Recipe.Length == 2)
                     {
-                        recipe_content.transform.GetChild(i).Find("Slot1").Find("Image").gameObject.SetActive(true);
-                    }
+                        Image Image1 = recipe_content.transform.GetChild(i).Find("Slot1").Find("Image").GetComponent<Image>();
+                        Image Image2 = recipe_content.transform.GetChild(i).Find("Slot2").Find("Image").GetComponent<Image>();
+                        Image ResultImage = recipe_content.transform.GetChild(i).Find("ResultSlot").Find("Image").GetComponent<Image>();
 
-                    if (Image1.enabled == false)
-                    {
-                        Image1.enabled = true;
-                    }
+                        if (recipe_content.transform.GetChild(i).Find("Slot1").Find("Image").gameObject.activeSelf == false)
+                        {
+                            recipe_content.transform.GetChild(i).Find("Slot1").Find("Image").gameObject.SetActive(true);
+                        }
 
-                    if (Image2.enabled == false)
-                    {
-                        Image2.enabled = true;
-                    }
+                        if (Image1.enabled == false)
+                        {
+                            Image1.enabled = true;
+                        }
 
-                    if (ResultImage.enabled == false)
-                    {
-                        ResultImage.enabled = true;
-                    }
+                        if (Image2.enabled == false)
+                        {
+                            Image2.enabled = true;
+                        }
 
-                    Image1.sprite = Resources.Load<Sprite>("Image/" + cut_Recipe[0]);
-                    Image2.sprite = Resources.Load<Sprite>("Image/" + cut_Recipe[1]);
-                    ResultImage.sprite = Resources.Load<Sprite>("Image/" + recipeList[i]);
-                    break;
+                        if (ResultImage.enabled == false)
+                        {
+                            ResultImage.enabled = true;
+                        }
+
+                        Image1.sprite = Resources.Load<Sprite>("Image/" + cut_Recipe[0]);
+                        Image2.sprite = Resources.Load<Sprite>("Image/" + cut_Recipe[1]);
+                        ResultImage.sprite = Resources.Load<Sprite>("Image/" + recipeList[i]);
+                        break;
+                    }
+                    
                 }
             }
 

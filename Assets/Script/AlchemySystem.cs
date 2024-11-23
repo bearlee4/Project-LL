@@ -346,7 +346,7 @@ public class AlchemySystem : MonoBehaviour
             }
 
             //버튼 숨긴거 꺼내기
-            if (alchemyUI.activeSelf == true && AlchemyList.Count >= alchemySize)
+            if (alchemyUI.activeSelf == true && AlchemyList.Count >= 2)
             {
                 mix_UI.SetActive(true);
                 mix_Text.text = transnumber.ToString();
@@ -586,6 +586,17 @@ public class AlchemySystem : MonoBehaviour
             Debug.Log("아이템 리스트 목록2" + Mix_ItemList[1]);
         }
 
+        else if (AlchemyList.Count == 3)
+        {
+            Elemental_Check();
+            Mix_ItemList.Add(AlchemyList[0] + "+" + AlchemyList[1] + "+" + AlchemyList[2]);
+            Mix_ItemList.Add(AlchemyList[0] + "+" + AlchemyList[2] + "+" + AlchemyList[1]);
+            Mix_ItemList.Add(AlchemyList[1] + "+" + AlchemyList[0] + "+" + AlchemyList[2]);
+            Mix_ItemList.Add(AlchemyList[1] + "+" + AlchemyList[2] + "+" + AlchemyList[0]);
+            Mix_ItemList.Add(AlchemyList[2] + "+" + AlchemyList[0] + "+" + AlchemyList[1]);
+            Mix_ItemList.Add(AlchemyList[2] + "+" + AlchemyList[1] + "+" + AlchemyList[0]);
+        }
+
         Delete_All();
 
 
@@ -703,6 +714,26 @@ public class AlchemySystem : MonoBehaviour
                 open_result_ui = false;
                 //get_Button.SetActive(false);
 
+                while (true)
+                {
+                    if (StorageSystem.StorageCountList.Contains(0))
+                    {
+                        for (int n = 0; n < StorageSystem.StorageCountList.Count; n++)
+                        {
+                            if (StorageSystem.StorageCountList[n] == 0)
+                            {
+                                StorageSystem.Delete_Storage_Item(StorageSystem.StorageList[n], n);
+                                break;
+                            }
+                        }
+                    }
+
+                    else
+                    {
+                        break;
+                    }    
+                }
+
                 LinkStorage();
 
                 transnumber = 1;
@@ -789,7 +820,7 @@ public class AlchemySystem : MonoBehaviour
             {
                 for (int j = 0; j < StorageSystem.StorageList.Count; j++)
                 {
-                    if (AlchemyList[i] == StorageSystem.StorageList[j] && StorageSystem.StorageCountList[j] >= (transnumber - AlchemyNumber[i]))
+                    if (AlchemyList[i] == StorageSystem.StorageList[j] && StorageSystem.StorageCountList[j] >= (transnumber - AlchemyNumber[i]) && StorageSystem.StorageCountList[j] != 0)
                     {
                         //AddAlchemy(StorageSystem.StorageList[i], transnumber);
                         //StorageSystem.StorageUse(i, transnumber);
@@ -810,7 +841,7 @@ public class AlchemySystem : MonoBehaviour
             for (int i = 0; i < AlchemyList.Count;i++)
             {
                 AddAlchemy(AlchemyList[i], change_Count);
-                StorageSystem.StorageUse(test[i], change_Count);
+                StorageSystem.StorageCountList[test[i]] -= change_Count;
             }
 
             LinkStorage();
@@ -868,4 +899,26 @@ public class AlchemySystem : MonoBehaviour
         }
     }
 
+    public void AlchemySlot_Plus()
+    {
+        alchemySize++;
+    }
+
+    public void Elemental_Check()
+    {
+        for (int i = 0; i < AlchemyList.Count; i++)
+        {
+            for (int n = 0; n < InventorySystem.ItemDB.Count; n++)
+            {
+                if (AlchemyList[i] == InventorySystem.ItemDB[n]["ImgName"].ToString())
+                {
+                    if (InventorySystem.ItemDB[n]["Type"].ToString() != "X")
+                    {
+                        AlchemyList[i] = InventorySystem.ItemDB[n]["Type"].ToString();
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
