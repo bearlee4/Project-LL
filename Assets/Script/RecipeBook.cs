@@ -14,6 +14,7 @@ public class RecipeBook : MonoBehaviour
     public GameObject recipes;
     //public Text pageText;
     public List<string> recipeList = new List<string>();
+    public List<string> triple_recipeList = new List<string>();
 
     InventorySystem InventorySystem;
 
@@ -68,24 +69,54 @@ public class RecipeBook : MonoBehaviour
         open_recipe_ui = false;
     }
 
+    public void Open_Triple_Recipebook()
+    {
+        triple_recipieBook_UI.SetActive(true);
+        open_recipe_ui = true;
+        Set_Recipe(3);
+    }
+
+    public void Close_Triple_Recipebook()
+    {
+        triple_recipieBook_UI.SetActive(false);
+        open_recipe_ui = false;
+    }
+
     public void Add_Recipe(string name)
     {
-        recipeList.Add(name);
-        Instantiate(recipe_Slot, recipe_content.transform);
+        for (int i = 0; i < InventorySystem.ItemDB.Count; i++)
+        {
+            if (name == InventorySystem.ItemDB[i]["ImgName"].ToString())
+            {
+                string[] cut_Recipe = InventorySystem.ItemDB[i]["Recipe"].ToString().Split("+");
+                if (cut_Recipe.Length == 2)
+                {
+                    recipeList.Add(name);
+                    Instantiate(recipe_Slot, recipe_content.transform);
+                    break;
+                }
+
+                else if (cut_Recipe.Length == 3)
+                {
+                    triple_recipeList.Add(name);
+                    break;
+                }
+            }
+        }
         Debug.Log("레시피 추가");
     }
 
     public void Set_Recipe(int count)
     {
-        for (int i = 0; i < recipeList.Count; i++)
+        if (count == 2)
         {
-            for (int n = 0; n < InventorySystem.ItemDB.Count; n++)
+            for (int i = 0; i < recipeList.Count; i++)
             {
-                if (recipeList[i] == InventorySystem.ItemDB[n]["ImgName"].ToString())
+                for (int n = 0; n < InventorySystem.ItemDB.Count; n++)
                 {
-                    string[] cut_Recipe = InventorySystem.ItemDB[n]["Recipe"].ToString().Split("+");
-                    if(cut_Recipe.Length == 2)
+                    if (recipeList[i] == InventorySystem.ItemDB[n]["ImgName"].ToString())
                     {
+                        string[] cut_Recipe = InventorySystem.ItemDB[n]["Recipe"].ToString().Split("+");
                         Image Image1 = recipe_content.transform.GetChild(i).Find("Slot1").Find("Image").GetComponent<Image>();
                         Image Image2 = recipe_content.transform.GetChild(i).Find("Slot2").Find("Image").GetComponent<Image>();
                         Image ResultImage = recipe_content.transform.GetChild(i).Find("ResultSlot").Find("Image").GetComponent<Image>();
@@ -114,12 +145,67 @@ public class RecipeBook : MonoBehaviour
                         Image2.sprite = Resources.Load<Sprite>("Image/" + cut_Recipe[1]);
                         ResultImage.sprite = Resources.Load<Sprite>("Image/" + recipeList[i]);
                         break;
+
+
+
                     }
-                    
                 }
+
+
             }
+        }
+
+        else if (count == 3)
+        {
+            for (int i = 0; i < triple_recipeList.Count; i++)
+            {
+                for (int n = 0; n < InventorySystem.ItemDB.Count; n++)
+                {
+                    if (triple_recipeList[i] == InventorySystem.ItemDB[n]["ImgName"].ToString())
+                    {
+                        string[] cut_Recipe = InventorySystem.ItemDB[n]["Recipe"].ToString().Split("+");
+                        Image Image1 = triple_recipieBook_UI.transform.Find("Recipe List").GetChild(i).Find("Slot1").Find("Image").GetComponent<Image>();
+                        Image Image2 = triple_recipieBook_UI.transform.Find("Recipe List").GetChild(i).Find("Slot2").Find("Image").GetComponent<Image>();
+                        Image Image3 = triple_recipieBook_UI.transform.Find("Recipe List").GetChild(i).Find("Slot3").Find("Image").GetComponent<Image>();
+                        Image ResultImage = triple_recipieBook_UI.transform.Find("Recipe List").GetChild(i).Find("ResultSlot").Find("Image").GetComponent<Image>();
+
+                        if (triple_recipieBook_UI.transform.Find("Recipe List").GetChild(i).Find("Slot1").Find("Image").gameObject.activeSelf == false)
+                        {
+                            triple_recipieBook_UI.transform.Find("Recipe List").GetChild(i).Find("Slot1").Find("Image").gameObject.SetActive(true);
+                        }
+
+                        if (Image1.enabled == false)
+                        {
+                            Image1.enabled = true;
+                        }
+
+                        if (Image2.enabled == false)
+                        {
+                            Image2.enabled = true;
+                        }
+
+                        if (Image3.enabled == false)
+                        {
+                            Image3.enabled = true;
+                        }
+
+                        if (ResultImage.enabled == false)
+                        {
+                            ResultImage.enabled = true;
+                        }
+
+                        Image1.sprite = Resources.Load<Sprite>("Image/" + cut_Recipe[0]);
+                        Image2.sprite = Resources.Load<Sprite>("Image/" + cut_Recipe[1]);
+                        Image3.sprite = Resources.Load<Sprite>("Image/" + cut_Recipe[2]);
+                        ResultImage.sprite = Resources.Load<Sprite>("Image/" + triple_recipeList[i]);
+                        break;
+
+                    }
+                }
 
 
+            }
+            
         }
     }
 
@@ -240,5 +326,17 @@ public class RecipeBook : MonoBehaviour
             // pageText.text = current_page.ToString();
             Reload_Information();
         }
+    }
+
+    public void Change_Double()
+    {
+        Close_Triple_Recipebook();
+        Test_Open_Recipebook();
+    }
+
+    public void Change_Triple()
+    {
+        Test_Close_Recipebook();
+        Open_Triple_Recipebook();
     }
 }
