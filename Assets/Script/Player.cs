@@ -120,20 +120,15 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if ((col.gameObject.CompareTag("Enemy") ||
-            col.gameObject.CompareTag("Boss")) && 
-            col.collider is CapsuleCollider2D)
+        if (col.gameObject.CompareTag("Enemy") && col.collider is CapsuleCollider2D)
         {
             EnemyStatus enemy = col.gameObject.GetComponent<EnemyStatus>();
-            BossStatus boss = col.gameObject.GetComponent<BossStatus>();
 
             if (enemy != null)
             {
                 Damaged(enemy.atk);
+                StartCoroutine(DamagedEffect());
             }
-
-            if (boss != null)
-                Damaged(boss.atk);
 
             if (!invincible)
                 StartCoroutine(KnockBack(col));
@@ -142,6 +137,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator KnockBack(Collision2D col)
     {
+
         moveable = false;
         invincible = true;
 
@@ -157,8 +153,9 @@ public class Player : MonoBehaviour
 
     private IEnumerator DamagedEffect()
     {
+        invincible = true;
         int time = 0;
-        while (time < 5)
+        while (time < 3)
         {
             if (time % 2 == 0)
                 spriteRenderer.color = new Color32(255, 255, 255, 90);

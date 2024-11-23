@@ -175,6 +175,7 @@ public class EnemyMovement : MonoBehaviour
 
     void MoveValue()
     {
+
         if (enemyStatus.EnemyType == 0)      // 슬라임 등 일반적인 움직임
         {
             FollowPlayer();
@@ -239,6 +240,8 @@ public class EnemyMovement : MonoBehaviour
             {
                 rb.velocity = Vector2.zero;
             }
+
+            Physics2D.IgnoreCollision(col.collider, GetComponent<Collider2D>(), true);
 
             if (moveCoroutine != null)
             {

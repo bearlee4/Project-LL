@@ -11,12 +11,12 @@ public class Tsunami : MonoBehaviour
     public bool isActive = false;
     public float damage;
 
-    public GameObject Boss;
+    public int playerLayer = 8;
+    public int tsunamiLayer = 9;
 
     private void Start()
     {
-        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), player.gameObject.GetComponent<Collider2D>());
-        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), Boss.GetComponent<Collider2D>());
+            
     }
 
     private void Update()
@@ -29,14 +29,14 @@ public class Tsunami : MonoBehaviour
     {
         if (isActive)
         {
-            Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), player.gameObject.GetComponent<Collider2D>());
-            Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), Boss.GetComponent<Collider2D>());
+            Physics2D.IgnoreLayerCollision(playerLayer, tsunamiLayer, true);
             StartCoroutine("Expand");
         }
     }
 
     IEnumerator Expand()
     {
+        
         transform.position = player.position;
         transform.localScale = new Vector3((float)0.5, (float)0.5, 1);
         float increaseSpeed = (increase * Time.deltaTime * 25);
@@ -46,6 +46,8 @@ public class Tsunami : MonoBehaviour
             transform.localScale += new Vector3(increaseSpeed, increaseSpeed, 0);
             yield return null;
         }
+
+        Physics2D.IgnoreLayerCollision(playerLayer, tsunamiLayer, false);
 
         isActive = false;
         gameObject.SetActive(false);
