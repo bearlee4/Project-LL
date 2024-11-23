@@ -1,26 +1,26 @@
 ﻿Code,Name,Content,Buy,ImgName,UseItem,Recipe,Tag,Tier,Weight,Type
-1,반짝이풀,은은하게 빛이 나는 풀. 밤에 보면 아름답게 빛난다.,X,Twincleglass,X,X,Forage,Common,,X
-2,벚꽃,벚꽃나무의 잎. 회복 효과를 가진 연금술의 재료다.,X,Sakura,X,X,Forage,Common,,X
-3,벚꽃(불),원소로 인해 원소식물로 성질이 변한 벚꽃. 불 원소를 머금고 있다.,X,Fire_Sakura,X,X,Forage,Rare,,Fire
-4,벚꽃(물),원소로 인해 원소식물로 성질이 변한 벚꽃. 물 원소를 머금고 있다.,X,Water_sakura,X,X,Forage,Rare,,Water
-5,나뭇잎,흔한 나뭇잎이다.,X,Leap,X,X,Forage,Common,,X
-6,나뭇잎(불),원소로 인해 원소식물로 성질이 변한 나뭇잎. 불 원소를 머금고 있다.,X,Fire_leap,X,X,Forage,Rare,,Fire
-7,나뭇잎(물),원소로 인해 원소식물로 성질이 변한 나뭇잎. 물 원소를 머금고 있다.,X,Water_leap,X,X,Forage,Rare,,Water
-8,정령수잎,정령의 축복을 받은 나무의 잎. 순수한 원소의 힘을 가지고 있다. 원소의 힘을 머금게 하는 효과를 가지고 있다.,X,Bay_Tree,X,X,Forage,Rare,,X
-9,정령수잎(불),정령의 축복을 받은 나무의 잎. 불 원소의 힘을 더 많이 머금고 있다.,X,Fire_Bay_Tree,X,X,Forage,Rare,,Fire
-10,정령수잎(물),정령의 축복을 받은 나무의 잎. 물 원소의 힘을 더 많이 머금고 있다.,X,Water_bay_tree,X,X,Forage,Rare,,Water
-11,달맞이꽃,흔히 볼 수 있는 풀이지만 연금술의 기초 재료로 사용된다.,X,Moon_Flower,X,X,Forage,Common,,X
-12,민들레풀,흔한 들풀이다.,X,Dandelion,X,X,Forage,Common,,X
-13,허브,치유력을 높여주는 풀이다.,X,Herb,X,X,Forage,Common,,X
-14,정제수,기존 물에서 불순물을 제거한 물이다. 마실 수는 있으나 효과는 없다.,10,Purified_water,O,X,UseItem,Common,,X
-15,연금 액체,연금술의 기초가 되는 액체다.,20,Base_liquid,X,Purified_water+Moon_Flower,Product,Common,,X
-16,체력회복 포션,체력을 회복시켜주는 포션. 사용시 HP를 회복한다.,X,Health_potion,O,Base_liquid+Herb,Potion,Common,,X
-17,마나회복 포션,마나를 회복시켜주는 포션. 사용시 MP를 회복한다.,X,Mana_potion,O,Base_liquid+Sakura,Potion,Common,,X
-18,빛나는 액체,빛이 나는 액체. 밤에도 빛나 막대기 같은 것에 바르면 야광봉으로 사용할 수 있다.,X,Spakling_liquid,X,Base_liquid+Twincleglass,Product,Common,,X
-19,감기약,연금술로 만들어진 감기약이다. 시판되는 감기약보다 효능이 좋다.,X,Cold_medicine,X,Base_liquid+Dandelion,Product,Common,,X
-20,발열제,몸의 체온을 높여주는 약. 지속시간은 짧으나 유용하여 추운 지역을 여행할 때 자주 사용된다.,X,Warming_potion,X,Base_liquid+Fire_Sakura,Product,Rare,,X
-21,화상연고,화상을 입었을 때 사용하는 약. 며칠 잘 바르면 흉터 없이 완치된다.,X,Ointment,X,Base_liquid+Water_sakura,Product,Rare,,X
-22,원소연금액체,연금액체에 정령수잎을 넣어 만든 상위단계의 연금 재료. 원소를 머금을 수 있어 버프 포션을 만드는데 사용된다.,X,Elemental_base_liquid,X,Base_liquid+Bay_Tree,Product,Rare,,X
-23,정제된 불원소,불의 힘을 머금은 정령수잎을 한번 더 정제시켜 순수한 불원소만을 추출해낸 물질. 버프 포션을 만드는데 사용된다.,X,Purified_fire,X,Elemental_base_liquid+Fire_Bay_Tree,Product,Rare,,X
-24,힘의 포션,마시면 힘이 증가하는 포션. 사용시 공격력이 일정시간 증가한다,X,Power_potion,O,Elemental_base_liquid+Purified_fire+Fire,Potion,Rare,,X
-99,정체모를 포션,무슨 효력이 있는지 짐작조차 되지 않는 포션. 실패작인듯 하다. 마셔보고 싶지 않다.,X,Fail_potion,X,X,Product,Common,,X
+1,반짝이풀,은은하게 빛이 나는 풀. 밤에 보면 아름답게 빛난다.,X,Twincleglass,X,X,Forage,Common,1,X
+2,벚꽃,벚꽃나무의 잎. 회복 효과를 가진 연금술의 재료다.,X,Sakura,X,X,Forage,Common,1,X
+3,벚꽃(불),원소로 인해 원소식물로 성질이 변한 벚꽃. 불 원소를 머금고 있다.,X,Fire_Sakura,X,X,Forage,Rare,1,Fire
+4,벚꽃(물),원소로 인해 원소식물로 성질이 변한 벚꽃. 물 원소를 머금고 있다.,X,Water_sakura,X,X,Forage,Rare,1,Water
+5,나뭇잎,흔한 나뭇잎이다.,X,Leap,X,X,Forage,Common,1,X
+6,나뭇잎(불),원소로 인해 원소식물로 성질이 변한 나뭇잎. 불 원소를 머금고 있다.,X,Fire_leap,X,X,Forage,Rare,1,Fire
+7,나뭇잎(물),원소로 인해 원소식물로 성질이 변한 나뭇잎. 물 원소를 머금고 있다.,X,Water_leap,X,X,Forage,Rare,1,Water
+8,정령수잎,정령의 축복을 받은 나무의 잎. 순수한 원소의 힘을 가지고 있다. 원소의 힘을 머금게 하는 효과를 가지고 있다.,X,Bay_Tree,X,X,Forage,Rare,1,X
+9,정령수잎(불),정령의 축복을 받은 나무의 잎. 불 원소의 힘을 더 많이 머금고 있다.,X,Fire_Bay_Tree,X,X,Forage,Rare,1,Fire
+10,정령수잎(물),정령의 축복을 받은 나무의 잎. 물 원소의 힘을 더 많이 머금고 있다.,X,Water_bay_tree,X,X,Forage,Rare,1,Water
+11,달맞이꽃,흔히 볼 수 있는 풀이지만 연금술의 기초 재료로 사용된다.,X,Moon_Flower,X,X,Forage,Common,1,X
+12,민들레풀,흔한 들풀이다.,X,Dandelion,X,X,Forage,Common,1,X
+13,허브,치유력을 높여주는 풀이다.,X,Herb,X,X,Forage,Common,1,X
+14,정제수,기존 물에서 불순물을 제거한 물이다. 마실 수는 있으나 효과는 없다.,10,Purified_water,O,X,UseItem,Common,2,X
+15,연금 액체,연금술의 기초가 되는 액체다.,20,Base_liquid,X,Purified_water+Moon_Flower,Product,Common,2,X
+16,체력회복 포션,체력을 회복시켜주는 포션. 사용시 HP를 회복한다.,X,Health_potion,O,Base_liquid+Herb,Potion,Common,3,X
+17,마나회복 포션,마나를 회복시켜주는 포션. 사용시 MP를 회복한다.,X,Mana_potion,O,Base_liquid+Sakura,Potion,Common,3,X
+18,빛나는 액체,빛이 나는 액체. 밤에도 빛나 막대기 같은 것에 바르면 야광봉으로 사용할 수 있다.,X,Spakling_liquid,X,Base_liquid+Twincleglass,Product,Common,2,X
+19,감기약,연금술로 만들어진 감기약이다. 시판되는 감기약보다 효능이 좋다.,X,Cold_medicine,X,Base_liquid+Dandelion,Product,Common,2,X
+20,발열제,몸의 체온을 높여주는 약. 지속시간은 짧으나 유용하여 추운 지역을 여행할 때 자주 사용된다.,X,Warming_potion,X,Base_liquid+Fire_Sakura,Product,Rare,2,X
+21,화상연고,화상을 입었을 때 사용하는 약. 며칠 잘 바르면 흉터 없이 완치된다.,X,Ointment,X,Base_liquid+Water_sakura,Product,Rare,2,X
+22,원소연금액체,연금액체에 정령수잎을 넣어 만든 상위단계의 연금 재료. 원소를 머금을 수 있어 버프 포션을 만드는데 사용된다.,X,Elemental_base_liquid,X,Base_liquid+Bay_Tree,Product,Rare,2,X
+23,정제된 불원소,불의 힘을 머금은 정령수잎을 한번 더 정제시켜 순수한 불원소만을 추출해낸 물질. 버프 포션을 만드는데 사용된다.,X,Purified_fire,X,Elemental_base_liquid+Fire_Bay_Tree,Product,Rare,2,X
+24,힘의 포션,마시면 힘이 증가하는 포션. 사용시 공격력이 일정시간 증가한다,X,Power_potion,O,Elemental_base_liquid+Purified_fire+Fire,Potion,Rare,4,X
+99,정체모를 포션,무슨 효력이 있는지 짐작조차 되지 않는 포션. 실패작인듯 하다. 마셔보고 싶지 않다.,X,Fail_potion,X,X,Product,Common,2,X
