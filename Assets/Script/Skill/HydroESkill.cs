@@ -39,7 +39,7 @@ public class HydroESkill : MonoBehaviour
         {
             tsunami.isActive = true;
         }
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         player.moveable = true;
         elementManager.StartCoroutine(elementManager.SkillEDelayCoroutine(coolTime));
