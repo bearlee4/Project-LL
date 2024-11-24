@@ -211,6 +211,8 @@ public class StorageSystem : MonoBehaviour
         {
             AddStorage(InventorySystem.InventoryList[0], InventorySystem.CountList[0]);
             InventorySystem.DeleteItem(InventorySystem.InventoryList[0], 0);
+            InventorySystem.weight = 0;
+            InventorySystem.weight_text.text = InventorySystem.weight.ToString() + " / " + InventorySystem.max_weight.ToString();
         }
 
         Debug.Log("모든 아이템이 창고로 옮겨졌습니다.");

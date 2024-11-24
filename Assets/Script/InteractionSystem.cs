@@ -611,6 +611,8 @@ public class InteractionSystem : MonoBehaviour
             this.transform.position = new Vector3((float)-51.4, (float)175.5);
             this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)164.7);
             this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-44.4, (float)175.4);
+            StorageSystem.Back_Home();
+            RequestSystem.Set_Request();
             BackGroundController.To_Vilige();
         }
     }
