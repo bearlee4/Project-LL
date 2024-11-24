@@ -681,8 +681,8 @@ public class InteractionSystem : MonoBehaviour
         if (name == "Forest2")
         {
             this.transform.position = new Vector3((float)-56.6, (float)154.5);
-            this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2((float)-82.7, (float)132.3);
-            this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2(-58, 155);
+            this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2((float)-81.8, (float)132.8);
+            this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-58.8, (float)154.5);
         }
 
         if (name == "Vilige")
