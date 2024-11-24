@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     private Slider HP_slider;
     private Slider MP_slider;
 
-    private Animator animator;
+    public Animator animator;
 
     private string currentSceneName;
     public int gold;

@@ -747,6 +747,8 @@ public class InteractionSystem : MonoBehaviour
         this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)165.2);
         this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-45.3, (float)174.8);
 
+        this.GetComponent<Player>().animator.SetBool("Dead", false);
+
 
     }
 
