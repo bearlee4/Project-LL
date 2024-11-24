@@ -86,15 +86,6 @@ public class PlayerStatus : MonoBehaviour
                 def /= num;
                 Debug.Log("버프 끝, 현재 방어력 : " + def);
                 break;
-            case 2:
-                speed *= num;
-                Debug.Log("속도 증가, 현재 속도 : " + speed);
-
-                yield return new WaitForSeconds(duration);
-
-                speed /= num;
-                Debug.Log("버프 끝, 현재 속도 : " + speed);
-                break;
         }
     }
 
