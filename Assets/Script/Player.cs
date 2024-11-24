@@ -97,10 +97,10 @@ public class Player : MonoBehaviour
 
             rigid.MovePosition(transform.position + move * currentSpeed * Time.deltaTime);
 
-            if (dirx > 0)
-                spriteRenderer.flipX = true;
-            if (dirx < 0)
-                spriteRenderer.flipX = false;
+            //if (dirx > 0)
+            //    spriteRenderer.flipX = true;
+            //if (dirx < 0)
+            //    spriteRenderer.flipX = false;
 
             //transform.position = transform.position + move * MovePower * Time.deltaTime;
         }
@@ -128,9 +128,7 @@ public class Player : MonoBehaviour
             {
                 Damaged(enemy.atk);
                 StartCoroutine(DamagedEffect());
-
-                if (!invincible)
-                    StartCoroutine(KnockBack(col));
+                StartCoroutine(KnockBack(col));
             }
 
         }
@@ -139,14 +137,15 @@ public class Player : MonoBehaviour
     private IEnumerator KnockBack(Collision2D col)
     {
         moveable = false;
-        invincible = true;
 
+        Debug.Log("넉백중");
         Vector2 KnockBack = col.contacts[0].normal;
         float knockStr = 0.5f;
         rigid.velocity = KnockBack * knockStr;
         StartCoroutine(DamagedEffect());
         yield return new WaitForSeconds(0.5f);
 
+        rigid.velocity = Vector2.zero;
         moveable = true;
         yield break;
     }

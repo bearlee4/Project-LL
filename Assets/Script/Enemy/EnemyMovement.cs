@@ -248,7 +248,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (col.gameObject.CompareTag("WaterWave"))
         {
-            StartCoroutine(ResumeMove(0.2f));
+            StartCoroutine(ResumeMove(0.5f));
         }
 
     }
