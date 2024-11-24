@@ -12,7 +12,11 @@ public class ArcManager : MonoBehaviour
 
     private void Start()
     {
-
+        PlayerStatus playerStatus = player.gameObject.GetComponent<PlayerStatus>();
+        if (playerStatus != null)
+        {
+            damage = playerStatus.atk * 2.5f;
+        }
     }
 
     void Update()
