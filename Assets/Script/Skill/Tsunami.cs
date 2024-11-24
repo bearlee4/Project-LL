@@ -9,14 +9,18 @@ public class Tsunami : MonoBehaviour
 
     public float increase = 0.1f;
     public bool isActive = false;
-    public float damage;
+    private float damage;
 
     public int playerLayer = 8;
     public int tsunamiLayer = 9;
 
     private void Start()
     {
-            
+        PlayerStatus playerStatus = player.gameObject.GetComponent<PlayerStatus>();
+        if (playerStatus != null)
+        {
+            damage = playerStatus.atk * 1.7f;
+        }
     }
 
     private void Update()
