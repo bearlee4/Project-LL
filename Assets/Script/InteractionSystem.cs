@@ -184,6 +184,11 @@ public class InteractionSystem : MonoBehaviour
                 potal_Value = "Forest";
             }
 
+            else if (col.gameObject.name == "To Forest2")
+            {
+                potal_Value = "Forest2";
+            }
+
             else if (col.gameObject.name == "To Vilige")
             {
                 potal_Value = "Vilige";
@@ -398,6 +403,11 @@ public class InteractionSystem : MonoBehaviour
                 if (potal_Value == "Forest")
                 {
                     Change_Map("Forest");
+                }
+
+                else if (potal_Value == "Forest2")
+                {
+                    Change_Map("Forest2");
                 }
 
                 else if (potal_Value == "Vilige")
@@ -632,17 +642,24 @@ public class InteractionSystem : MonoBehaviour
         if (name == "Forest")
         {
             this.transform.position = new Vector3(-70, 132);
-            this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2((float)-82.7, (float)132.3);
-            this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2(-58, 155);
+            this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2((float)-81.8, (float)132.8);
+            this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-58.8, (float)154.5);
             FieldSystem.Respawn_spawner();
             BackGroundController.To_Forest();
+        }
+
+        if (name == "Forest2")
+        {
+            this.transform.position = new Vector3((float)-56.6, (float)154.5);
+            this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2((float)-82.7, (float)132.3);
+            this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2(-58, 155);
         }
 
         if (name == "Vilige")
         {
             this.transform.position = new Vector3((float)-51.4, (float)175.5);
-            this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)164.7);
-            this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-44.4, (float)175.4);
+            this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)165.2);
+            this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-45.3, (float)174.8);
             StorageSystem.Back_Home();
             RequestSystem.Set_Request();
             BackGroundController.To_Vilige();
@@ -712,8 +729,8 @@ public class InteractionSystem : MonoBehaviour
         }
 
         this.gameObject.transform.position = new Vector3 ((float)-48.5, 167, 0);
-        this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)164.7);
-        this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-44.4, (float)175.4);
+        this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)165.2);
+        this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-45.3, (float)174.8);
 
 
     }

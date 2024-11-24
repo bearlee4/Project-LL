@@ -7,7 +7,7 @@ public class ArcManager : MonoBehaviour
 {
     public Transform player;
     //public float speed = 5f;
-    public float distanceFromPlayer = 1.1f;
+    public float distanceFromPlayer;
     public bool isActive = false;
     public float damage;
 
