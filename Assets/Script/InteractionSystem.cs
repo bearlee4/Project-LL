@@ -712,8 +712,16 @@ public class InteractionSystem : MonoBehaviour
         }
 
         this.gameObject.transform.position = new Vector3 ((float)-48.5, 167, 0);
+        this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)164.7);
+        this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-44.4, (float)175.4);
 
 
+    }
+
+    public void Main_Scene()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadSceneAsync("MainScene");
     }
 
     ////아이템 추가
