@@ -2,12 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ElementManager : MonoBehaviour
 {
     private SkillManager skillManager;
     public GameObject ElementSlot;
     private ElementChange change;
+    public Image QCoolTime;
+    public Image ECoolTime;
+
 
 
     public Boolean skill_Q = true;      //스킬사용가능
@@ -16,10 +20,12 @@ public class ElementManager : MonoBehaviour
     public string skillText_1;
     public string skillText_2;
 
+
+
     // Pyro, Hydro, Anemo, Geo
     public List<String> Element = new List<String> { "Pyro", "Hydro"};
-    public List<float> QSkillDelay = new List<float> { 2, 3, 2, 3 };
-    public List<float> ESkillDelay = new List<float> { 3, 3, 3, 3 };
+    public List<float> QSkillDelay = new List<float> { 2, 3};
+    public List<float> ESkillDelay = new List<float> { 7, 5};
 
 
     public int currentElement = 0;
@@ -28,6 +34,9 @@ public class ElementManager : MonoBehaviour
     {
         skillManager = GetComponent<SkillManager>();
         change = ElementSlot.GetComponent<ElementChange>();
+
+        QCoolTime.fillAmount = 0f;
+        ECoolTime.fillAmount = 0f;
 
     }
 
@@ -69,6 +78,7 @@ public class ElementManager : MonoBehaviour
             Debug.Log("Q스킬 사용 중, currentElement: " + currentElement);
             skillManager.QSkill(currentElement);
             StartCoroutine(QSkillDelayCoroutine(delay));
+
         }
         else
         {
@@ -79,7 +89,16 @@ public class ElementManager : MonoBehaviour
     {
         skill_Q = false;
         Debug.Log("Q스킬 쿨타임 중");
-        yield return new WaitForSeconds(delay);
+
+        float elapsedTime = 0f;
+        QCoolTime.fillAmount = 1f;
+
+        while (elapsedTime < delay)     // 원 줄이기
+        {
+            elapsedTime += Time.deltaTime;
+            QCoolTime.fillAmount = 1f - (elapsedTime / delay);
+            yield return null;
+        }
         Debug.Log("Q스킬 사용가능");
         skill_Q = true;
     }
@@ -99,7 +118,17 @@ public class ElementManager : MonoBehaviour
     internal IEnumerator SkillEDelayCoroutine(float delay)
     {
         Debug.Log("E스킬 쿨타임 중!!");
-        yield return new WaitForSeconds(delay);
+
+        float elapsedTime = 0f;
+        ECoolTime.fillAmount = 1f;
+
+        while (elapsedTime < delay)     // 원 줄이기
+        {
+            elapsedTime += Time.deltaTime;
+            ECoolTime.fillAmount = 1f - (elapsedTime / delay);
+            yield return null;
+        }
+
         Debug.Log("E스킬 사용가능");
         skill_E = true;
     }
