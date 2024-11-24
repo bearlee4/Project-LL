@@ -749,6 +749,9 @@ public class InteractionSystem : MonoBehaviour
 
         this.GetComponent<Player>().animator.Play("Charactor_Idle");
         this.GetComponent<Collider2D>().isTrigger = false;
+        this.GetComponent<Player>().moveable = true;
+        this.GetComponent<Player>().isDead = false;
+
 
 
     }

@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
 
     public bool moveable = true;
     private bool invincible = false;
+    public bool isDead = false;
 
     public List<Dictionary<string, object>> ItemDB;
 
@@ -161,7 +162,8 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         rigid.velocity = Vector2.zero;
-        moveable = true;
+        if(!isDead)
+            moveable = true;
         animator.SetBool("Damaged", false);
         yield break;
     }
@@ -194,7 +196,7 @@ public class Player : MonoBehaviour
             {
                 
                 PlayerStatus.Die();
-                moveable = false;
+                isDead = true;
                 Debug.Log("moveable" + moveable);
                 gameObject.GetComponent<Collider2D>().isTrigger = true;
             }
