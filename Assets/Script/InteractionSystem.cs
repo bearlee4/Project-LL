@@ -362,6 +362,7 @@ public class InteractionSystem : MonoBehaviour
                 if (ShopSystem.shop_UI.activeSelf == false && UItoken == false)
                 {
                     ShopSystem.shop_UI.SetActive(true);
+                    ShopSystem.Link_Gold();
                     UItoken = true;
                 }
 

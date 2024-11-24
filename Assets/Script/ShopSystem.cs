@@ -13,6 +13,7 @@ public class ShopSystem : MonoBehaviour
     public GameObject shop_UI;
     public GameObject shop_Slot;
     public GameObject content;
+    public Text Gold_Text;
 
     //아이템DB 가져오기
     public List<Dictionary<string, object>> ItemDB;
@@ -119,6 +120,7 @@ public class ShopSystem : MonoBehaviour
             if (InventorySystem.FullInventory == false)
             {
                 Player.Use_Gold(shop_Cost[num]);
+                Link_Gold();
                 InventorySystem.AddInventory(shop_List[num], transnumber);
             }
 
@@ -135,6 +137,7 @@ public class ShopSystem : MonoBehaviour
                             if (InventorySystem.CountList[i] + transnumber <= 99)
                             {
                                 Player.Use_Gold(shop_Cost[num]);
+                                Link_Gold();
                                 InventorySystem.AddInventory(shop_List[num], transnumber);
                                 break;
                             }
@@ -159,5 +162,10 @@ public class ShopSystem : MonoBehaviour
         {
             Debug.Log("돈이 부족함");
         }
+    }
+
+    public void Link_Gold()
+    {
+        Gold_Text.text = Player.gold_Text.text;
     }
 }
