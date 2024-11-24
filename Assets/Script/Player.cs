@@ -65,44 +65,32 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (currentSceneName != "Forest")
-        {
-            if (InteractionSystem.UItoken == false)
-            {
-                Move();
-            }
-        }
-
-        else if(currentSceneName == "Forest")
+        if (moveable == true)
         {
             Move();
-        }
+        }  
     }
 
     //캐릭터 움직임
     void Move()
-    { 
-        if (moveable)
-        {
-            float dirx = Input.GetAxisRaw("Horizontal");
-            float diry = Input.GetAxisRaw("Vertical");
+    {
+        float dirx = Input.GetAxisRaw("Horizontal");
+        float diry = Input.GetAxisRaw("Vertical");
 
-            Vector3 move = (Vector3.right * dirx) + (Vector3.up * diry);
+        Vector3 move = (Vector3.right * dirx) + (Vector3.up * diry);
 
 
-            move.Normalize();
+        move.Normalize();
 
-            rigid.MovePosition(transform.position + move * currentSpeed * Time.deltaTime);
+        rigid.MovePosition(transform.position + move * currentSpeed * Time.deltaTime);
 
-            if (dirx > 0)
-                spriteRenderer.flipX = true;
-            if (dirx < 0)
-                spriteRenderer.flipX = false;
+        if (dirx > 0)
+            spriteRenderer.flipX = true;
+        if (dirx < 0)
+            spriteRenderer.flipX = false;
 
-            if (move == Vector3.zero) {animator.SetBool("Walk", false); return; }
-            animator.SetBool("Walk", true);
-            
-        }
+        if (move == Vector3.zero) { animator.SetBool("Walk", false); return; }
+        animator.SetBool("Walk", true);
     }
 
     public void Get_Gold(int number)
@@ -206,7 +194,8 @@ public class Player : MonoBehaviour
             {
                 
                 PlayerStatus.Die();
-                //gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+                moveable = false;
+                Debug.Log("moveable" + moveable);
                 gameObject.GetComponent<Collider2D>().isTrigger = true;
             }
         }
