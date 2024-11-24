@@ -132,13 +132,40 @@ public class Player : MonoBehaviour
             }
 
         }
+
+        if (col.gameObject.CompareTag("Boss") && col.collider is CapsuleCollider2D)
+        {
+            BossStatus boss = col.gameObject.GetComponent<BossStatus>();
+
+            if (boss != null)
+            {
+                Damaged(boss.atk);
+                StartCoroutine(DamagedEffect());
+                StartCoroutine(KnockBack(col));
+            }
+
+        }
+
+        if (col.gameObject.CompareTag("Stone") && col.collider is CapsuleCollider2D)
+        {
+            BossStone stone = col.gameObject.GetComponent<BossStone>();
+
+            if (stone != null)
+            {
+                Damaged(stone.damage);
+                StartCoroutine(DamagedEffect());
+                StartCoroutine(KnockBack(col));
+            }
+
+        }
+
+
     }
 
     private IEnumerator KnockBack(Collision2D col)
     {
         moveable = false;
 
-        Debug.Log("넉백중");
         Vector2 KnockBack = col.contacts[0].normal;
         float knockStr = 0.5f;
         rigid.velocity = KnockBack * knockStr;

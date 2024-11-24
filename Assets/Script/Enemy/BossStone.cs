@@ -11,12 +11,17 @@ public class BossStone : MonoBehaviour
     private Vector2 dir;
     public float speed;
     public float time;
-    private float damage;
+    public float damage;
 
     // Start is called before the first frame update
     void Start()
     {
-        damage = bossStatus.atk;
+        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+        if (boss != null)
+        {
+            bossStatus = boss.GetComponent<BossStatus>();
+            damage = bossStatus.atk;
+        }
     }
 
     // Update is called once per frame
@@ -45,7 +50,7 @@ public class BossStone : MonoBehaviour
         objectPool.ReturnStone(gameObject);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D col)
     {
         Debug.Log("부딪힘");
         ReturnToPool();

@@ -16,6 +16,7 @@ TagManager:
   - Collider
   - WaterWave
   - Boss
+  - Stone
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - 
   - Player
   - Tsunami
-  - 
+  - Boss
   - 
   - 
   - 

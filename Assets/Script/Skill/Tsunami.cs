@@ -65,5 +65,16 @@ public class Tsunami : MonoBehaviour
                 enemy.Damaged(damage);
             }
         }
+
+        if (collision.gameObject.CompareTag("Boss") && collision.collider is CapsuleCollider2D)
+
+        {
+            BossStatus boss = collision.gameObject.GetComponent<BossStatus>();
+
+            if (boss != null)
+            {
+                boss.Damaged(damage);
+            }
+        }
     }
 }

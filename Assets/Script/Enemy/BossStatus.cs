@@ -8,7 +8,7 @@ public class BossStatus : MonoBehaviour
 
     public float maxHp;
     public float currentHp;
-    public float atk;
+    public float atk = 9f;
     public float def;
     public float speed;
     public float returnSpeed;
@@ -31,8 +31,6 @@ public class BossStatus : MonoBehaviour
                 speed = 0f;
                 break;
         }
-
-        CircleCollider2D = GetComponent<CircleCollider2D>();
         currentHp = maxHp;
     }
 
@@ -45,17 +43,11 @@ public class BossStatus : MonoBehaviour
             {
                 Die();
             }
-            Hit();
         }
     }
 
     void Die()
     {
         gameObject.SetActive(false);
-    }
-
-    void Hit()
-    {
-        CircleCollider2D.radius = 10f;
     }
 }

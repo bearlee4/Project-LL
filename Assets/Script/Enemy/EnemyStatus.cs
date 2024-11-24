@@ -45,7 +45,8 @@ public class EnemyStatus : MonoBehaviour
             {
                 Die();
             }
-            Hit();
+            if (EnemyType != 4)
+                Hit();
         }
     }
 

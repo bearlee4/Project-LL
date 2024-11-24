@@ -7,12 +7,16 @@ using UnityEngine.Pool;
 
 public class BossPattern : MonoBehaviour
 {
+
     public ObjectPool objectPool;
     Transform targetTransform = null;
+
+    CircleCollider2D CircleCollider2D;
 
     // Start is called before the first frame update
     void Start()
     {
+        CircleCollider2D = GetComponent<CircleCollider2D>();
         StartCoroutine(Ativity1());
     }
 
@@ -62,6 +66,14 @@ public class BossPattern : MonoBehaviour
         {
             ShootStone();
             yield return new WaitForSeconds(5f);
+        }
+    }
+    private void OnDrawGizmos()     // 인식범위표시
+    {
+        if (CircleCollider2D != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, CircleCollider2D.radius * 2f);
         }
     }
 }
