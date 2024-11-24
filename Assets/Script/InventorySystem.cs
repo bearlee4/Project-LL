@@ -168,7 +168,7 @@ public class InventorySystem : MonoBehaviour
             {
                 item_weight = (int)ItemDB[i]["Weight"] * number;
                 //무게를 추가했는데도 최대치에 도달하지 않았을 경우
-                if (weight + item_weight < max_weight)
+                if (weight + item_weight <= max_weight)
                 {
                     FullInventory = false;
                     break;
@@ -202,12 +202,12 @@ public class InventorySystem : MonoBehaviour
             for (int i = 0; i < InventoryList.Count; i++)
             {
                 //같은거 찾았을 때
-                if (InventoryList[i] == Strname)
+                if (InventoryList[i] == Strname && weight + item_weight <= max_weight)
                 {
                     Debug.Log("이거 작동중임?");
 
                     //인벤토리 슬롯은 없는데 같은 종류가 있어 더 들어갈 수 있을 경우
-                    if (FullInventory == true && CountList[i] + number <= maxcount && weight < max_weight)
+                    if (FullInventory == true && CountList[i] + number <= maxcount)
                     {
                         CountList[i] += number;
                         Debug.Log(CountList[i]);
@@ -268,7 +268,7 @@ public class InventorySystem : MonoBehaviour
                     }
                     
                     //더 슬롯이 없을때, 또는 무게 최대치에 도달했을 때
-                    else if (CountList.Count == SetSize || weight >= max_weight)
+                    else if (CountList.Count == SetSize || weight + item_weight > max_weight)
                     {
                         FullInventory = true;
                         Debug.Log("인벤토리 공간이 부족합니다.");

@@ -349,6 +349,11 @@ public class StorageSystem : MonoBehaviour
                             if (InteractionSystem.max_Trans_toggle == true)
                             {
                                 transnumber = StorageCountList[i + pagecalcul];
+                                if(transnumber * (int)InventorySystem.ItemDB[j]["Weight"] > InventorySystem.max_weight - InventorySystem.weight)
+                                {
+                                    Debug.Log("무게로 인한 자동조절 시스템 작동중");
+                                    transnumber = (InventorySystem.max_weight - InventorySystem.weight) / (int)InventorySystem.ItemDB[j]["Weight"];
+                                }
 
                                 Debug.Log("StorageList[i + pagecalcul]" + StorageList[i + pagecalcul]);
                                 Debug.Log("StorageCountList[i + pagecalcul] : " + StorageCountList[i + pagecalcul]);
