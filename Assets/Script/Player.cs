@@ -90,13 +90,6 @@ public class Player : MonoBehaviour
             float dirx = Input.GetAxisRaw("Horizontal");
             float diry = Input.GetAxisRaw("Vertical");
 
-            
-            //float xSpeed = dirx * currentSpeed;
-            //float ySpeed = diry * currentSpeed;
-
-            //Vector2 newVelocity = new Vector2(xSpeed, ySpeed);
-            //rigid.velocity = newVelocity;
-
             Vector3 move = (Vector3.right * dirx) + (Vector3.up * diry);
 
 
@@ -112,7 +105,6 @@ public class Player : MonoBehaviour
             if (move == Vector3.zero) {animator.SetBool("Walk", false); return; }
             animator.SetBool("Walk", true);
             
-            //transform.position = transform.position + move * MovePower * Time.deltaTime;
         }
     }
 
@@ -216,6 +208,7 @@ public class Player : MonoBehaviour
             if (PlayerStatus.currentHP <= 0)
             {
                 PlayerStatus.Die();
+                animator.SetBool("Dead", true);
             }
         }
     }
