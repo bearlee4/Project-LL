@@ -10,8 +10,7 @@ public class PlayerStatus : MonoBehaviour
     public float currentHP;
     public float maxMP;
     public float currentMP;
-    public float atk;
-    public float speed;
+    public float atk = 3f;
     public float def;
     public float crt_R;
     public float crt_H;
