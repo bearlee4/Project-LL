@@ -4,30 +4,21 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-    public GameObject pyroBulletPrefab;
-    public GameObject HydroBulletPrefab;
+    public GameObject bulletPrefab;
     public GameObject stonePrefab;
-    public int bulletPoolSize = 20;
-    public int stonePoolSize = 30;
+    public int bulletPoolSize = 2;
+    public int stonePoolSize = 3;
 
-    private Queue<GameObject> pyroBulletPool = new Queue<GameObject>();
-    private Queue<GameObject> hydroBulletPool = new Queue<GameObject>();
+    private Queue<GameObject> bulletPool = new Queue<GameObject>();
     private Queue<GameObject> stonePool = new Queue<GameObject>();
 
     void Start()
     {
-        for (int i = 0; i < bulletPoolSize / 2; i++)
+        for (int i = 0; i < bulletPoolSize; i++)
         {
-            GameObject bullet = Instantiate(pyroBulletPrefab);
+            GameObject bullet = Instantiate(bulletPrefab);
             bullet.SetActive(false);
-            pyroBulletPool.Enqueue(bullet);
-        }
-
-        for (int i = 0; i < bulletPoolSize / 2; i++)
-        {
-            GameObject bullet = Instantiate(pyroBulletPrefab);
-            bullet.SetActive(false);
-            hydroBulletPool.Enqueue(bullet);
+            bulletPool.Enqueue(bullet);
         }
 
         for (int i = 0; i < stonePoolSize; i++)
@@ -36,39 +27,20 @@ public class ObjectPool : MonoBehaviour
             stone.SetActive(false);
             stonePool.Enqueue(stone);
         }
-
-
-
     }
 
-    public GameObject GetPyroBullet()
+    public GameObject GetBullet()
     {
         if (bulletPool.Count > 0)
         {
-            GameObject pyroBullet = bulletPool.Dequeue();
-            pyroBullet.SetActive(true);
-            return pyroBullet;
+            GameObject bullet = bulletPool.Dequeue();
+            bullet.SetActive(true);
+            return bullet;
         }
         else
         {
-            GameObject pyroBullet = Instantiate(pyroBulletPrefab);
-            return pyroBullet;
-        }
-    }
-
-    public GameObject GetHydroBullet()
-    {
-        if (bulletPool.Count > 0)
-        {
-            GameObject hydroBullet = bulletPool.Dequeue();
-            hydroBullet.SetActive(true);
-            return hydroBullet;
-        }
-
-        else
-        {
-            GameObject hydroBullet = Instantiate(pyroBulletPrefab);
-            return hydroBullet;
+            GameObject bullet = Instantiate(bulletPrefab);
+            return bullet;
         }
     }
 
