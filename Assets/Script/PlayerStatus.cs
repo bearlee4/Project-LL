@@ -101,7 +101,6 @@ public class PlayerStatus : MonoBehaviour
 
     IEnumerator Pause()
     {
-        player.moveable = false;
         yield return new WaitForSeconds(2.5f);
         InteractionSystem.Open_Death_UI();
     }

@@ -7,6 +7,7 @@ public class FieldSystem : MonoBehaviour
 {
     public GameObject Player;
     public GameObject spawner;
+    public GameObject Monster;
     public GameObject Test_spawner;
     InteractionSystem InteractionSystem;
 
@@ -55,6 +56,14 @@ public class FieldSystem : MonoBehaviour
             if(spawner.transform.GetChild(i).gameObject.activeSelf == false)
             {
                 spawner.transform.GetChild(i).gameObject.SetActive(true);
+            }
+        }
+
+        for (int i = 0; i < Monster.transform.childCount; i++)
+        {
+            if (Monster.transform.GetChild(i).gameObject.activeSelf == false)
+            {
+                Monster.transform.GetChild(i).gameObject.SetActive(true);
             }
         }
     }

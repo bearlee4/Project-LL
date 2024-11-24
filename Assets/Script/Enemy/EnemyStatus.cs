@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyStatus : MonoBehaviour
 {
+    public GameObject Drop_Item;
     CircleCollider2D CircleCollider2D;
 
     public float maxHp;
@@ -52,6 +53,8 @@ public class EnemyStatus : MonoBehaviour
 
     void Die()
     {
+        Instantiate(Drop_Item, gameObject.transform.position, Quaternion.identity);
+        currentHp = maxHp;
         gameObject.SetActive(false);
     }
 

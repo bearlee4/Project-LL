@@ -298,11 +298,10 @@ public class InteractionSystem : MonoBehaviour
             //채집물 획득
             if (InventorySystem.Inventory.activeSelf == false && forageincounter == true)
             {
-                if(enter_object.tag == "Spawner")
+                if (enter_object.tag == "Spawner" && enter_object.name == "spawner")
                 {
                     AddDropItem(enter_object);
                 }
-                
             }
 
             //창고 여닫기
@@ -354,9 +353,15 @@ public class InteractionSystem : MonoBehaviour
             }
 
             //스포너 상호작용
-            if (spawnerincounter == true)
+            if (spawnerincounter == true && enter_object.name == "spawner")
             {
                 RandomItem(enter_object);
+            }
+
+            else if (spawnerincounter == true && enter_object.name == "Monsterspawner(Clone)")
+            {
+                Debug.Log("몬스터 스포너!");
+                Add_Monster_Item(enter_object);
             }
 
             //의뢰UI 상호작용
@@ -534,7 +539,7 @@ public class InteractionSystem : MonoBehaviour
             }
 
             //퍼즈
-            if (UItoken == false && IsPause == false)
+            else if (UItoken == false && IsPause == false)
             {
                 Debug.Log("퍼즈 작동중");
                 Open_PauseUI();
@@ -645,6 +650,20 @@ public class InteractionSystem : MonoBehaviour
             SaveData.image_Number.Add(RequestSystem.image_Number[i]);
         }
         
+    }
+    
+    public void Add_Monster_Item(GameObject col)
+    {
+        int number = Random.Range(0, 1);
+        IsdropItem = true;
+
+        InventorySystem.GetCount = Random.Range(1, 3);
+        InventorySystem.AddInventory("Slime", InventorySystem.GetCount);
+
+        if(InventorySystem.FullInventory == false)
+        {
+            col.SetActive(false);
+        }
     }
 
     public void Change_Map(string name)

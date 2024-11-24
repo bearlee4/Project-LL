@@ -139,6 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 561d8c6158b46d14a8cfa038c30c9100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Drop_Item: {fileID: 5983374911222723107, guid: 0a1e0bb2732501142827b689be6021cd, type: 3}
   maxHp: 10
   currentHp: 0
   atk: 5
