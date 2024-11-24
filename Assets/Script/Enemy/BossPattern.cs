@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
+using Random = UnityEngine.Random;
 
 public class BossPattern : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class BossPattern : MonoBehaviour
     Transform targetTransform = null;
 
     CircleCollider2D CircleCollider2D;
+
+    public float shootCount = 3f;
 
     // Start is called before the first frame update
     void Start()
@@ -64,8 +67,14 @@ public class BossPattern : MonoBehaviour
     {
         while (true)
         {
+            yield return new WaitForSeconds(3f);
             ShootStone();
-            yield return new WaitForSeconds(5f);
+            for (int i = 0; i < shootCount - 1; i++)
+            {
+                int delay = Random.Range(1, 3);
+                yield return new WaitForSeconds(delay);
+                ShootStone();
+            }
         }
     }
     private void OnDrawGizmos()     // 인식범위표시
