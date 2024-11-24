@@ -122,6 +122,11 @@ public class ShopSystem : MonoBehaviour
                 Player.Use_Gold(shop_Cost[num]);
                 Link_Gold();
                 InventorySystem.AddInventory(shop_List[num], transnumber);
+                if (shop_List[num] == "Alchemy_Recipe_Book")
+                {
+                    Destroy(content.transform.GetChild(num).gameObject);
+                    shop_List.RemoveAt(num);
+                }
             }
 
             //인벤토리가 꽉차있을 경우
@@ -139,6 +144,11 @@ public class ShopSystem : MonoBehaviour
                                 Player.Use_Gold(shop_Cost[num]);
                                 Link_Gold();
                                 InventorySystem.AddInventory(shop_List[num], transnumber);
+                                if (shop_List[num] == "Alchemy_Recipe_Book")
+                                {
+                                    Destroy(content.transform.GetChild(num).gameObject);
+                                    shop_List.RemoveAt(num);
+                                }
                                 break;
                             }
 

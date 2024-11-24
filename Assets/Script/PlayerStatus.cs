@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
@@ -44,12 +45,16 @@ public class PlayerStatus : MonoBehaviour
     {
         if ((currentHP + num) > maxHP) currentHP = maxHP;
         else currentHP = currentHP + num;
+
+        player.HP_bar.GetComponent<Slider>().value = currentHP;
     }
 
     public void HealMP(int num)
     {
         if ((currentMP + num) > maxMP) currentMP = maxMP;
         else currentMP = currentMP + num;
+
+        player.MP_bar.GetComponent<Slider>().value = currentMP;
     }
 
     public void Buff(int type, float duration, float num)    // 종류, 지속시간, 수치(퍼센트)

@@ -23,4 +23,5 @@
 22,원소연금액체,연금액체에 정령수잎을 넣어 만든 상위단계의 연금 재료. 원소를 머금을 수 있어 버프 포션을 만드는데 사용된다.,X,Elemental_base_liquid,X,Base_liquid+Bay_Tree,Product,Rare,2,X
 23,정제된 불원소,불의 힘을 머금은 정령수잎을 한번 더 정제시켜 순수한 불원소만을 추출해낸 물질. 버프 포션을 만드는데 사용된다.,X,Purified_fire,X,Elemental_base_liquid+Fire_Bay_Tree,Product,Rare,2,X
 24,힘의 포션,마시면 힘이 증가하는 포션. 사용시 공격력이 일정시간 증가한다,X,Power_potion,O,Elemental_base_liquid+Purified_fire+Fire,Potion,Rare,4,X
+25,연금술 레시피북,연금술과 관련된 내용이 담겨 있는 책. 사용시 연금 슬롯을 영구히 1개 늘려준다.,1000,Alchemy_Recipe_Book,O,X,UseItem,Rare,2,X
 99,정체모를 포션,무슨 효력이 있는지 짐작조차 되지 않는 포션. 실패작인듯 하다. 마셔보고 싶지 않다.,X,Fail_potion,X,X,Product,Common,2,X

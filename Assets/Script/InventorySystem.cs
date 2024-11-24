@@ -16,12 +16,14 @@ public class InventorySystem : MonoBehaviour
     UISystem UISystem;
 
     ItemInformation ItemInformation;
+    AlchemySystem AlchemySystem;
 
     private GameObject Player;
     InteractionSystem InteractionSystem;
+    PlayerStatus PlayerStatus;
 
 
-    
+
 
     //스크립트 내 사용되는 변수들
     public int Positioncount;
@@ -62,9 +64,13 @@ public class InventorySystem : MonoBehaviour
     {
         canvas = GameObject.Find("Canvas");
         UISystem = canvas.GetComponent<UISystem>();
+
         ItemInformation = this.GetComponent<ItemInformation>();
+        AlchemySystem = this.GetComponent<AlchemySystem>();
+
         Player = GameObject.Find("Player");
         InteractionSystem = Player.GetComponent<InteractionSystem>();
+        PlayerStatus = Player.GetComponent<PlayerStatus>();
 
         FullInventory = false;
         fullActive_toggle = false;
@@ -365,6 +371,21 @@ public class InventorySystem : MonoBehaviour
                     weight -= (int)ItemDB[i]["Weight"];
                     weight_text.text = weight.ToString() + " / " + max_weight.ToString();
                     NumberList[number].text = CountList[number].ToString();
+                    if (InventoryList[number] == "Alchemy_Recipe_Book")
+                    {
+                        AlchemySystem.AlchemySlot_Plus();
+                    }
+
+                    else if (InventoryList[number] == "Health_potion")
+                    {
+                        PlayerStatus.HealHP(5);
+                    }
+
+                    else if (InventoryList[number] == "Mana_potion")
+                    {
+                        PlayerStatus.HealMP(20);
+                    }
+
                     Debug.Log("아이템을 사용하였습니다.");
 
                     //아이템을 다 사용했을 떄
@@ -493,7 +514,7 @@ public class InventorySystem : MonoBehaviour
             {
 
                 //소모품이 맞을 경우
-                if (ItemDB[i]["UseItem"].ToString() == "O")
+                if (ItemDB[i]["UseItem"].ToString() == "O" && ItemDB[i]["Tag"].ToString() == "Potion")
                 {
 
                     //포지션 카운트로 퀵슬롯에 지정되어 있는지 확인 + 같은 종류가 있는지 체크
