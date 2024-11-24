@@ -84,6 +84,7 @@ public class Player : MonoBehaviour
             float dirx = Input.GetAxisRaw("Horizontal");
             float diry = Input.GetAxisRaw("Vertical");
 
+            
             //float xSpeed = dirx * currentSpeed;
             //float ySpeed = diry * currentSpeed;
 
@@ -96,10 +97,10 @@ public class Player : MonoBehaviour
 
             rigid.MovePosition(transform.position + move * currentSpeed * Time.deltaTime);
 
-            //if (dirx > 0)
-            //    spriteRenderer.flipX = true;
-            //if (dirx < 0)
-            //    spriteRenderer.flipX = false;
+            if (dirx > 0)
+                spriteRenderer.flipX = true;
+            if (dirx < 0)
+                spriteRenderer.flipX = false;
 
             //transform.position = transform.position + move * MovePower * Time.deltaTime;
         }
