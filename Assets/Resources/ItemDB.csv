@@ -25,4 +25,5 @@
 24,힘의 포션,마시면 힘이 증가하는 포션. 사용시 공격력이 일정시간 증가한다,X,Power_potion,O,Elemental_base_liquid+Purified_fire+Fire,Potion,Rare,4,X
 25,연금술 레시피북,연금술과 관련된 내용이 담겨 있는 책. 사용시 연금 슬롯을 영구히 1개 늘려준다.,1000,Alchemy_Recipe_Book,O,X,UseItem,Rare,2,X
 26,점액,슬라임을 잡아서 얻은 점액. 엄청 끈적끈적하다,X,Slime,X,X,Product,Common,1,X
+27,감기알약,감기약에 점액을 합쳐 고체 형태로 굳힌 약품. 쓴맛을 느낄 필요도 없이 삼킬 수 있다.,X,Capsule_medicine,X,Cold_medicine+Slime,Product,Common,2,X
 99,정체모를 포션,무슨 효력이 있는지 짐작조차 되지 않는 포션. 실패작인듯 하다. 마셔보고 싶지 않다.,X,Fail_potion,X,X,Product,Common,2,X
