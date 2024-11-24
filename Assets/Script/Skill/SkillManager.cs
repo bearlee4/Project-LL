@@ -6,6 +6,7 @@ using UnityEngine;
 public class SkillManager : MonoBehaviour
 {
     PlayerStatus playerStatus;
+    Player player;
 
     private ElementManager elementManager;
     private BeamSkill beamSkill;
@@ -21,6 +22,7 @@ public class SkillManager : MonoBehaviour
 
     void Start() 
     { 
+        player = GetComponent<Player>();
         playerStatus = GetComponent<PlayerStatus>();
         elementManager = GetComponent<ElementManager>();
         beamSkill = GetComponent<BeamSkill>();
@@ -57,6 +59,10 @@ public class SkillManager : MonoBehaviour
 
     void ShootBullet(int Element)
     {
+        player.SpendMP(10);
+
+        StartCoroutine(Casting());
+
         if (Element == 0)
         {
             Debug.Log("Firing Pyro Bullet");
@@ -86,19 +92,28 @@ public class SkillManager : MonoBehaviour
 
     void PyroE()
     {
-        playerStatus.currentMP =- 20;
+        player.SpendMP(20);
         pyroESkill.Arc();
     }
 
     void HydroE()
     {
-        playerStatus.currentMP = -15;
+        player.SpendMP(15);
         hydroESkill.Wave();
     }
 
     void SpecialSkill()
     {
         beamSkill.Beam();
+    }
+
+    IEnumerator Casting()
+    {
+        player.moveable = false;
+        player.animator.SetBool("MoveAble", player.moveable);
+        yield return new WaitForSeconds(0.5f);
+        player.moveable = true;
+        player.animator.SetBool("MoveAble", player.moveable);
     }
 
 }

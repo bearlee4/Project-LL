@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class ElementManager : MonoBehaviour
 {
     private SkillManager skillManager;
+    private PlayerStatus playerStatus;
+
     public GameObject ElementSlot;
     private ElementChange change;
     public Image QCoolTime;
@@ -32,6 +34,7 @@ public class ElementManager : MonoBehaviour
 
     void Start()
     {
+        playerStatus = GetComponent<PlayerStatus>();
         skillManager = GetComponent<SkillManager>();
         change = ElementSlot.GetComponent<ElementChange>();
 
@@ -73,7 +76,7 @@ public class ElementManager : MonoBehaviour
     {
         float delay = QSkillDelay[currentElement];
 
-        if (skill_Q)
+        if (playerStatus.currentMP >= 10 && skill_Q)
         {
             Debug.Log("Q스킬 사용 중, currentElement: " + currentElement);
             skillManager.QSkill(currentElement);
@@ -82,7 +85,7 @@ public class ElementManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Q스킬 사용 불가, 쿨타임 중");
+            Debug.Log("Q스킬 사용 불가, 쿨타임 중, 혹은 마나부족");
         }
     }
     private IEnumerator QSkillDelayCoroutine(float delay)
@@ -106,10 +109,16 @@ public class ElementManager : MonoBehaviour
     private void UseESkill()
     {
         float coolTime = ESkillDelay[currentElement];
-        if (skill_E)
+        if (currentElement == 0 && playerStatus.currentMP >= 25 && skill_E)
         {
             skillManager.ESkill(currentElement);
         }
+
+        else if (currentElement == 1 && playerStatus.currentMP >= 15 && skill_E)
+        {
+            skillManager.ESkill(currentElement);
+        }
+
         else
         {
             Debug.Log("E스킬 사용 불가, 쿨타임 중");

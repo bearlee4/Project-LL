@@ -8,7 +8,7 @@ public class ArcManager : MonoBehaviour
     //public float speed = 5f;
     public float distanceFromPlayer;
     public bool isActive = false;
-    public float damage;
+    private float damage;
 
     private void Start()
     {

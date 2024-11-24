@@ -226,4 +226,10 @@ public class Player : MonoBehaviour
         MP_slider.maxValue = 100;
         MP_slider.value = 100;
     }
+
+    public void SpendMP(int mp)
+    {
+        PlayerStatus.currentMP -= mp;
+        MP_slider.value = PlayerStatus.currentMP;
+    }
 }

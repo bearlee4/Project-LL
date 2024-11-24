@@ -29,7 +29,8 @@ public class PyroESkill : MonoBehaviour
 
     private IEnumerator BeamAiming(float delay)
     {
-        player.currentSpeed = 0f;
+        player.moveable = false;
+        player.animator.SetBool("MoveAble", player.moveable);
 
         elementManager.skill_E = false;
 
@@ -46,8 +47,9 @@ public class PyroESkill : MonoBehaviour
         yield return new WaitForSeconds(delay);
         arcPrefab.SetActive(false);
 
-        
-        player.currentSpeed = player.movePower;
+
+        player.moveable = true;
+        player.animator.SetBool("MoveAble", player.moveable);
         elementManager.StartCoroutine(elementManager.SkillEDelayCoroutine(coolTime));
     }
 }
