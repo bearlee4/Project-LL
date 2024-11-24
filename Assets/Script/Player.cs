@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (moveable == true)
+        if (moveable == true && InteractionSystem.UItoken == false)
         {
             Move();
         }  
