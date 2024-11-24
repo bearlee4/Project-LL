@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class InteractionSystem : MonoBehaviour
 {
@@ -717,6 +718,10 @@ public class InteractionSystem : MonoBehaviour
         UItoken = false;
         Death_UI.SetActive(false);
         Time.timeScale = 1;
+        this.GetComponent<PlayerStatus>().currentHP = this.GetComponent<PlayerStatus>().maxHP;
+        this.GetComponent<PlayerStatus>().currentMP = this.GetComponent<PlayerStatus>().maxMP;
+        this.GetComponent<Player>().HP_bar.GetComponent<Slider>().value = this.GetComponent<PlayerStatus>().currentHP;
+        this.GetComponent<Player>().MP_bar.GetComponent<Slider>().value = this.GetComponent<PlayerStatus>().currentMP;
 
         //인벤토리 리셋
         int InventoryCount = InventorySystem.InventoryList.Count;

@@ -207,4 +207,28 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    public void Super_Mod()
+    {
+        this.GetComponent<PlayerStatus>().maxHP = 9999;
+        this.GetComponent<PlayerStatus>().currentHP = 9999;
+        HP_slider.maxValue = 9999;
+        HP_slider.value = 9999;
+        this.GetComponent<PlayerStatus>().maxMP = 9999;
+        this.GetComponent<PlayerStatus>().currentMP = 9999;
+        MP_slider.maxValue = 9999;
+        MP_slider.value = 9999;
+    }
+
+    public void Normal_Mod()
+    {
+        this.GetComponent<PlayerStatus>().maxHP = 20;
+        this.GetComponent<PlayerStatus>().currentHP = 20;
+        HP_slider.maxValue = 20;
+        HP_slider.value = 20;
+        this.GetComponent<PlayerStatus>().maxMP = 100;
+        this.GetComponent<PlayerStatus>().currentMP = 100;
+        MP_slider.maxValue = 100;
+        MP_slider.value = 100;
+    }
 }
