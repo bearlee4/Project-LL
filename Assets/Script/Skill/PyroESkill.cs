@@ -30,7 +30,7 @@ public class PyroESkill : MonoBehaviour
     private IEnumerator BeamAiming(float delay)
     {
         player.moveable = false;
-        player.animator.SetBool("MoveAble", player.moveable);
+        player.animator.SetBool("Walk", player.moveable);
 
         elementManager.skill_E = false;
 
@@ -49,7 +49,7 @@ public class PyroESkill : MonoBehaviour
 
 
         player.moveable = true;
-        player.animator.SetBool("MoveAble", player.moveable);
+        player.animator.SetBool("Walk", player.moveable);
         elementManager.StartCoroutine(elementManager.SkillEDelayCoroutine(coolTime));
     }
 }

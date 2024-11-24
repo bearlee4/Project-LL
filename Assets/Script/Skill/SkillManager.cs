@@ -110,10 +110,10 @@ public class SkillManager : MonoBehaviour
     IEnumerator Casting()
     {
         player.moveable = false;
-        player.animator.SetBool("MoveAble", player.moveable);
+        player.animator.SetBool("Walk", player.moveable);
         yield return new WaitForSeconds(0.5f);
         player.moveable = true;
-        player.animator.SetBool("MoveAble", player.moveable);
+        player.animator.SetBool("Walk", player.moveable);
     }
 
 }
