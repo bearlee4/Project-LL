@@ -610,7 +610,6 @@ public class InteractionSystem : MonoBehaviour
         //Save_Data();
         if (name == "Forest")
         {
-            this.transform.GetChild(0).GetComponent<Camera>().orthographicSize = 1f;
             this.transform.position = new Vector3(-70, 132);
             this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2((float)-82.7, (float)132.3);
             this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2(-58, 155);
@@ -620,7 +619,6 @@ public class InteractionSystem : MonoBehaviour
 
         if (name == "Vilige")
         {
-            this.transform.GetChild(0).GetComponent<Camera>().orthographicSize = 1f;
             this.transform.position = new Vector3((float)-51.4, (float)175.5);
             this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)164.7);
             this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-44.4, (float)175.4);
@@ -631,7 +629,6 @@ public class InteractionSystem : MonoBehaviour
 
         if (name == "Boss")
         {
-            this.transform.GetChild(0).GetComponent<Camera>().orthographicSize = 1.5f;
             this.transform.position = new Vector3((float)-73.5, (float)164);
             this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-75, (float)164.9);
             this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-72.2, (float)169.3);
