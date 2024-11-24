@@ -50,7 +50,6 @@ public class Player : MonoBehaviour
         gold_Text.text = gold.ToString();
         gold_Text.color = Color.yellow;
 
-
         HP_slider = HP_bar.GetComponent<Slider>();
         MP_slider = MP_bar.GetComponent<Slider>();
         HP_slider.maxValue = PlayerStatus.maxHP;
@@ -78,8 +77,6 @@ public class Player : MonoBehaviour
         {
             Move();
         }
-
-        Debug.Log(animator.GetBool("Walk"));
     }
 
     //캐릭터 움직임
@@ -207,8 +204,10 @@ public class Player : MonoBehaviour
 
             if (PlayerStatus.currentHP <= 0)
             {
+                
                 PlayerStatus.Die();
-                animator.SetBool("Dead", true);
+                //gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+                gameObject.GetComponent<Collider2D>().isTrigger = true;
             }
         }
     }

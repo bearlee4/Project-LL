@@ -36,6 +36,7 @@ public class PlayerStatus : MonoBehaviour
     public void Die()
     {
         // 애니메이션 재생, 집으로 복귀, 체력 풀로 채우기 등등
+        player.animator.SetTrigger("Dead");
         StartCoroutine(Pause());
         Debug.Log("님 뒤졋으니까 리겜하셈");
         Debug.Log("대체 이걸 어캐 죽음?");
@@ -100,7 +101,7 @@ public class PlayerStatus : MonoBehaviour
 
     IEnumerator Pause()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2.5f);
         InteractionSystem.Open_Death_UI();
     }
 }
