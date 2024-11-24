@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1806324271}
   - component: {fileID: 8326699771036675770}
   - component: {fileID: 8143705038860368907}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boss_Stone
   m_TagString: Stone
   m_Icon: {fileID: 0}
@@ -119,6 +119,7 @@ MonoBehaviour:
   speed: 2
   time: 2
   damage: 0
+  reflect: 0
 --- !u!58 &8143705038860368907
 CircleCollider2D:
   m_ObjectHideFlags: 0

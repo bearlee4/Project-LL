@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class BossStone : MonoBehaviour
 {
     private BossStatus bossStatus;
+    GameObject boss;
 
     public ObjectPool objectPool;
     private Vector2 dir;
@@ -13,10 +16,13 @@ public class BossStone : MonoBehaviour
     public float time;
     public float damage;
 
+    public int BossLayer = 10;
+    public int StoneLayer = 7;
+
     // Start is called before the first frame update
     void Start()
     {
-        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+        boss = GameObject.FindGameObjectWithTag("Boss");
         if (boss != null)
         {
             bossStatus = boss.GetComponent<BossStatus>();
@@ -38,7 +44,7 @@ public class BossStone : MonoBehaviour
         GameObject boss = GameObject.FindGameObjectWithTag("Boss");
         if (boss != null)
         {
-            Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), boss.GetComponent<Collider2D>());
+            Physics2D.IgnoreLayerCollision(BossLayer, StoneLayer, true);
         }
 
         Invoke("ReturnToPool", time);
@@ -52,7 +58,30 @@ public class BossStone : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log("부딪힘");
-        ReturnToPool();
+        if (col.gameObject.CompareTag("WaterWave"))
+        {
+            Debug.Log("asdasdsad");
+            CancelInvoke("ReturnToPool");
+            Physics2D.IgnoreLayerCollision(BossLayer, StoneLayer, false);
+            Reflection();
+        }
+
+        if (col.gameObject.CompareTag("Boss"))
+        {
+            bossStatus.Damaged(damage);
+            ReturnToPool();
+        }
+
+        //else
+        //{
+        //    Debug.Log("부딪힘");
+        //    ReturnToPool();
+        //}
+    }
+
+    private void Reflection()
+    {
+        Vector2 bossPos = boss.transform.position;
+        dir = (bossPos - (Vector2)transform.position).normalized;
     }
 }
