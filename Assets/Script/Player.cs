@@ -128,16 +128,16 @@ public class Player : MonoBehaviour
             {
                 Damaged(enemy.atk);
                 StartCoroutine(DamagedEffect());
+
+                if (!invincible)
+                    StartCoroutine(KnockBack(col));
             }
 
-            if (!invincible)
-                StartCoroutine(KnockBack(col));
         }
     }
 
     private IEnumerator KnockBack(Collision2D col)
     {
-
         moveable = false;
         invincible = true;
 

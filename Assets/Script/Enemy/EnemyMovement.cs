@@ -235,13 +235,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.velocity = Vector2.zero;
-            }
-
-            Physics2D.IgnoreCollision(col.collider, GetComponent<Collider2D>(), true);
+            rb2d.velocity = Vector2.zero;
 
             if (moveCoroutine != null)
             {
