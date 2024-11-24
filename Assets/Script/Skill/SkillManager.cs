@@ -59,9 +59,9 @@ public class SkillManager : MonoBehaviour
     {
         if (Element == 0)
         {
+            Debug.Log("Firing Pyro Bullet");
             GameObject Pyrobullet = objectPool.GetBullet();
             Pyrobullet.transform.position = transform.position;
-            //bullet.transform.rotation = transform.rotation;
 
             Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
@@ -69,19 +69,18 @@ public class SkillManager : MonoBehaviour
 
             Pyrobullet.GetComponent<Bullet>().Initialize(objectPool, dir);
         }
-        GameObject Hydrobullet = objectPool.GetBullet();
 
-        if (Element == 1)
+        else if (Element == 1)
         {
-            GameObject HydroBullet = objectPool.GetBullet();
+            Debug.Log("Firing Hydro Bullet");
+            GameObject HydroBullet = objectPool.GetBullet2();
             HydroBullet.transform.position = transform.position;
-            //bullet.transform.rotation = transform.rotation;
 
             Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
             Vector2 dir = (mousePos - transform.position).normalized;
 
-            HydroBullet.GetComponent<Bullet>().Initialize(objectPool, dir);
+            HydroBullet.GetComponent<Bullet1>().Initialize(objectPool, dir);
         }
     }
 

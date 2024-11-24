@@ -5,11 +5,14 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     public GameObject bulletPrefab;
+    public GameObject bulletPrefab2;
     public GameObject stonePrefab;
-    public int bulletPoolSize = 2;
-    public int stonePoolSize = 3;
+    public int bulletPoolSize = 5;
+    public int bullet2PoolSize = 5;
+    public int stonePoolSize = 5;
 
     private Queue<GameObject> bulletPool = new Queue<GameObject>();
+    private Queue<GameObject> bullet2Pool = new Queue<GameObject>();
     private Queue<GameObject> stonePool = new Queue<GameObject>();
 
     void Start()
@@ -27,6 +30,13 @@ public class ObjectPool : MonoBehaviour
             stone.SetActive(false);
             stonePool.Enqueue(stone);
         }
+
+        for (int i = 0; i < bullet2PoolSize; i++)
+        {
+            GameObject bullet2 = Instantiate(bulletPrefab2);
+            bullet2.SetActive(false);
+            bullet2Pool.Enqueue(bullet2);
+        }
     }
 
     public GameObject GetBullet()
@@ -41,6 +51,20 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject bullet = Instantiate(bulletPrefab);
             return bullet;
+        }
+    }
+    public GameObject GetBullet2()
+    {
+        if (bullet2Pool.Count > 0)
+        {
+            GameObject bullet2 = bullet2Pool.Dequeue();
+            bullet2.SetActive(true);
+            return bullet2;
+        }
+        else
+        {
+            GameObject bullet2 = Instantiate(bulletPrefab2);
+            return bullet2;
         }
     }
 
@@ -64,6 +88,13 @@ public class ObjectPool : MonoBehaviour
         bullet.SetActive(false);
         bulletPool.Enqueue(bullet);
     }
+
+    public void ReturnBullet2(GameObject bullet2)
+    {
+        bullet2.SetActive(false);
+        bullet2Pool.Enqueue(bullet2);
+    }
+
     public void ReturnStone(GameObject stone)
     {
         stone.SetActive(false);
