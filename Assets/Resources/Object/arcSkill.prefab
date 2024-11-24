@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 627873363}
   - component: {fileID: 5619544441234865260}
   - component: {fileID: 7773635578660152053}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: arcSkill
   m_TagString: Bullet
   m_Icon: {fileID: 0}

@@ -27,10 +27,10 @@ TagManager:
   - 
   - 
   - Player
-  - Tsunami
+  - Skill
   - Boss
-  - 
-  - 
+  - Enemy
+  - Object_Collider
   - 
   - 
   - 

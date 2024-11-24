@@ -62,8 +62,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        
-        if(currentSceneName != "Forest")
+        if (currentSceneName != "Forest")
         {
             if (InteractionSystem.UItoken == false)
             {

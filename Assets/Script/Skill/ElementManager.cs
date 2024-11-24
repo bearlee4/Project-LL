@@ -6,7 +6,8 @@ using UnityEngine;
 public class ElementManager : MonoBehaviour
 {
     private SkillManager skillManager;
-    private PyroESkill pyroESkill;
+    public GameObject ElementSlot;
+    private ElementChange change;
 
 
     public Boolean skill_Q = true;      //스킬사용가능
@@ -16,14 +17,19 @@ public class ElementManager : MonoBehaviour
     public string skillText_2;
 
     // Pyro, Hydro, Anemo, Geo
-    public List<String> Element = new List<String> { "Pyro", "Hydro", "Anemo", "Geo" };
+    public List<String> Element = new List<String> { "Pyro", "Hydro"};
     public List<float> QSkillDelay = new List<float> { 2, 3, 2, 3 };
     public List<float> ESkillDelay = new List<float> { 3, 3, 3, 3 };
 
 
     public int currentElement = 0;
 
-    void Start() { skillManager = GetComponent<SkillManager>(); }
+    void Start()
+    {
+        skillManager = GetComponent<SkillManager>();
+        change = ElementSlot.GetComponent<ElementChange>();
+
+    }
 
     private void Update()
     {
@@ -51,6 +57,7 @@ public class ElementManager : MonoBehaviour
     {
         currentElement = (currentElement + 1) % Element.Count;
         Debug.Log("현재 원소: " + Element[currentElement]);
+        change.ChangeEImage(currentElement);
     }
 
     private void UseQSkill()
