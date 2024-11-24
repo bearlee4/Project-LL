@@ -25,7 +25,7 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject stone = Instantiate(stonePrefab);
             stone.SetActive(false);
-            bulletPool.Enqueue(stone);
+            stonePool.Enqueue(stone);
         }
     }
 
