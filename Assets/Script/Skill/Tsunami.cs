@@ -13,9 +13,11 @@ public class Tsunami : MonoBehaviour
 
     public int playerLayer = 8;
     public int tsunamiLayer = 9;
+    public int colliderLayer = 12;
 
     private void Start()
     {
+        Physics2D.IgnoreLayerCollision(tsunamiLayer, colliderLayer, true);
         PlayerStatus playerStatus = player.gameObject.GetComponent<PlayerStatus>();
         if (playerStatus != null)
         {
