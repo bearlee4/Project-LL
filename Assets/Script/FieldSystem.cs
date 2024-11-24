@@ -63,6 +63,7 @@ public class FieldSystem : MonoBehaviour
             if (Monster.transform.GetChild(i).gameObject.activeSelf == false)
             {
                 Monster.transform.GetChild(i).gameObject.SetActive(true);
+                Monster.transform.GetChild(i).gameObject.GetComponent<EnemyMovement>().StartCoroutine(Monster.transform.GetChild(i).gameObject.GetComponent<EnemyMovement>().NormalMove());
             }
         }
     }
