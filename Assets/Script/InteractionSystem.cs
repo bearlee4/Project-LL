@@ -26,10 +26,13 @@ public class InteractionSystem : MonoBehaviour
     public GameObject BackGround_Audio;
     BackGroundController BackGroundController;
 
+    public GameObject Pause_UI;
+
     private GameObject canvas;
     UISystem UISystem;
 
     public bool UItoken;
+    private bool IsPause;
     private bool forageincounter;
     private bool storageincounter;
     private bool alchemyincounter;
@@ -59,6 +62,7 @@ public class InteractionSystem : MonoBehaviour
         canvas = GameObject.Find("Canvas");
         UISystem = canvas.GetComponent<UISystem>();
 
+        IsPause = false;
         UItoken = false;
         forageincounter = false;
         storageincounter = false;
@@ -512,6 +516,18 @@ public class InteractionSystem : MonoBehaviour
                 ShopSystem.shop_UI.SetActive(false);
                 UItoken = false;
             }
+
+            //퍼즈
+            if (UItoken == false && IsPause == false)
+            {
+                Debug.Log("퍼즈 작동중");
+                Open_PauseUI();
+            }
+
+            else if (UItoken == true && IsPause == true)
+            {
+                Close_PauseUI();
+            }
         }
 
         //Ctrl 버튼
@@ -635,6 +651,37 @@ public class InteractionSystem : MonoBehaviour
         }
     }
 
+
+    public void Open_PauseUI()
+    {
+        Pause_UI.SetActive(true);
+        IsPause = true;
+        UItoken = true;
+        Time.timeScale = 0;
+    }
+
+    public void Close_PauseUI()
+    {
+        Pause_UI.SetActive(false);
+        IsPause = false;
+        UItoken = false;
+        Time.timeScale = 1;
+    }
+
+    public void Reset_Scene()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadSceneAsync("SampleScene");
+    }
+
+    public void Exit_Game()
+    {
+    #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+    #else
+            Application.Quit();
+    #endif
+    }
     ////아이템 추가
     //public void AddDropItem()
     //{
