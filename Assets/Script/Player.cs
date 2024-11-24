@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Player : MonoBehaviour
 
     private Slider HP_slider;
     private Slider MP_slider;
+
+    private Animator animator;
 
     private string currentSceneName;
     public int gold;
@@ -57,6 +60,7 @@ public class Player : MonoBehaviour
 
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -74,6 +78,8 @@ public class Player : MonoBehaviour
         {
             Move();
         }
+
+        Debug.Log(animator.GetBool("Walk"));
     }
 
     //캐릭터 움직임
@@ -93,6 +99,7 @@ public class Player : MonoBehaviour
 
             Vector3 move = (Vector3.right * dirx) + (Vector3.up * diry);
 
+
             move.Normalize();
 
             rigid.MovePosition(transform.position + move * currentSpeed * Time.deltaTime);
@@ -102,6 +109,9 @@ public class Player : MonoBehaviour
             if (dirx < 0)
                 spriteRenderer.flipX = false;
 
+            if (move == Vector3.zero) {animator.SetBool("Walk", false); return; }
+            animator.SetBool("Walk", true);
+            
             //transform.position = transform.position + move * MovePower * Time.deltaTime;
         }
     }
@@ -165,6 +175,7 @@ public class Player : MonoBehaviour
     private IEnumerator KnockBack(Collision2D col)
     {
         moveable = false;
+        animator.SetBool("Damaged", true);
 
         Vector2 KnockBack = col.contacts[0].normal;
         float knockStr = 0.5f;
@@ -174,6 +185,7 @@ public class Player : MonoBehaviour
 
         rigid.velocity = Vector2.zero;
         moveable = true;
+        animator.SetBool("Damaged", false);
         yield break;
     }
 
