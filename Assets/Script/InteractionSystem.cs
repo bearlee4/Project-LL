@@ -26,10 +26,14 @@ public class InteractionSystem : MonoBehaviour
     public GameObject BackGround_Audio;
     BackGroundController BackGroundController;
 
+    public GameObject Pause_UI;
+    public GameObject Death_UI;
+
     private GameObject canvas;
     UISystem UISystem;
 
     public bool UItoken;
+    private bool IsPause;
     private bool forageincounter;
     private bool storageincounter;
     private bool alchemyincounter;
@@ -59,6 +63,7 @@ public class InteractionSystem : MonoBehaviour
         canvas = GameObject.Find("Canvas");
         UISystem = canvas.GetComponent<UISystem>();
 
+        IsPause = false;
         UItoken = false;
         forageincounter = false;
         storageincounter = false;
@@ -287,7 +292,11 @@ public class InteractionSystem : MonoBehaviour
             //채집물 획득
             if (InventorySystem.Inventory.activeSelf == false && forageincounter == true)
             {
-                AddDropItem(enter_object);
+                if(enter_object.tag == "Spawner")
+                {
+                    AddDropItem(enter_object);
+                }
+                
             }
 
             //창고 여닫기
@@ -512,6 +521,18 @@ public class InteractionSystem : MonoBehaviour
                 ShopSystem.shop_UI.SetActive(false);
                 UItoken = false;
             }
+
+            //퍼즈
+            if (UItoken == false && IsPause == false)
+            {
+                Debug.Log("퍼즈 작동중");
+                Open_PauseUI();
+            }
+
+            else if (UItoken == true && IsPause == true)
+            {
+                Close_PauseUI();
+            }
         }
 
         //Ctrl 버튼
@@ -633,6 +654,74 @@ public class InteractionSystem : MonoBehaviour
             this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-75, (float)164.9);
             this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-72.2, (float)169.3);
         }
+    }
+
+
+    public void Open_PauseUI()
+    {
+        Pause_UI.SetActive(true);
+        IsPause = true;
+        UItoken = true;
+        Time.timeScale = 0;
+    }
+
+    public void Close_PauseUI()
+    {
+        Pause_UI.SetActive(false);
+        IsPause = false;
+        UItoken = false;
+        Time.timeScale = 1;
+    }
+
+    public void Reset_Scene()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadSceneAsync("SampleScene");
+    }
+
+    public void Exit_Game()
+    {
+    #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+    #else
+            Application.Quit();
+    #endif
+    }
+
+    public void Open_Death_UI()
+    {
+        UItoken = true;
+        Death_UI.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void Revive()
+    {
+        UItoken = false;
+        Death_UI.SetActive(false);
+        Time.timeScale = 1;
+
+        //인벤토리 리셋
+        int InventoryCount = InventorySystem.InventoryList.Count;
+
+        for (int i = 0; i < InventoryCount; i++)
+        {
+            InventorySystem.DeleteItem(InventorySystem.InventoryList[0], 0);
+            InventorySystem.weight = 0;
+            InventorySystem.weight_text.text = InventorySystem.weight.ToString() + " / " + InventorySystem.max_weight.ToString();
+        }
+
+        this.gameObject.transform.position = new Vector3 ((float)-48.5, 167, 0);
+        this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)164.7);
+        this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-44.4, (float)175.4);
+
+
+    }
+
+    public void Main_Scene()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadSceneAsync("MainScene");
     }
 
     ////아이템 추가
