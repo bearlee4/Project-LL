@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
+    PlayerStatus playerStatus;
+
     private ElementManager elementManager;
     private BeamSkill beamSkill;
     private PyroESkill pyroESkill;
@@ -19,6 +21,7 @@ public class SkillManager : MonoBehaviour
 
     void Start() 
     { 
+        playerStatus = GetComponent<PlayerStatus>();
         elementManager = GetComponent<ElementManager>();
         beamSkill = GetComponent<BeamSkill>();
         pyroESkill = GetComponent<PyroESkill>();
@@ -28,7 +31,7 @@ public class SkillManager : MonoBehaviour
 
     public void QSkill(int Element)
     {
-        ShootBullet();
+        ShootBullet(Element);
         Debug.Log(elementManager.Element[Element] + " Q Skill Atcivity");
     }
 
@@ -52,26 +55,45 @@ public class SkillManager : MonoBehaviour
         Debug.Log(elementManager.Element[Element] + " E Skill Atcivity");
     }
 
-    void ShootBullet()
+    void ShootBullet(int Element)
     {
-        GameObject bullet = objectPool.GetBullet();
-        bullet.transform.position = transform.position;
-        //bullet.transform.rotation = transform.rotation;
+        if (Element == 0)
+        {
+            GameObject Pyrobullet = objectPool.GetBullet();
+            Pyrobullet.transform.position = transform.position;
+            //bullet.transform.rotation = transform.rotation;
 
-        Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-        Vector2 dir = (mousePos - transform.position).normalized;
+            Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            mousePos.z = 0;
+            Vector2 dir = (mousePos - transform.position).normalized;
 
-        bullet.GetComponent<Bullet>().Initialize(objectPool, dir);
+            Pyrobullet.GetComponent<Bullet>().Initialize(objectPool, dir);
+        }
+        GameObject Hydrobullet = objectPool.GetBullet();
+
+        if (Element == 1)
+        {
+            GameObject HydroBullet = objectPool.GetBullet();
+            HydroBullet.transform.position = transform.position;
+            //bullet.transform.rotation = transform.rotation;
+
+            Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            mousePos.z = 0;
+            Vector2 dir = (mousePos - transform.position).normalized;
+
+            HydroBullet.GetComponent<Bullet>().Initialize(objectPool, dir);
+        }
     }
 
     void PyroE()
     {
+        playerStatus.currentMP =- 20;
         pyroESkill.Arc();
     }
 
     void HydroE()
     {
+        playerStatus.currentMP = -15;
         hydroESkill.Wave();
     }
 

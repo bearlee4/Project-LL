@@ -10,15 +10,28 @@ public class Bullet : MonoBehaviour
     public float speed;
     public float time;
     public ObjectPool objectPool;
-    public float damage;
+    private float damage;
     public float length;
 
     private Vector2 dir;
 
+    GameObject player;
+
     void Start() 
-    { 
+    {
+        player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            PlayerStatus playerStatus = player.GetComponent<PlayerStatus>();
+            if (playerStatus != null)
+            {
+                damage = playerStatus.atk;
+            }
+        }
+
         elementManager = GetComponent<ElementManager>();
-        skillManager = GetComponent<SkillManager>(); 
+        skillManager = GetComponent<SkillManager>();
+        
     }
 
     public void Initialize(ObjectPool Pool, Vector2 direction)
