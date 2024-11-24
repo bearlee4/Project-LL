@@ -17,6 +17,7 @@ public class PlayerStatus : MonoBehaviour
     public float crt_H;
 
     Player player;
+    InteractionSystem InteractionSystem;
 
     void Awake()
     {
@@ -29,12 +30,13 @@ public class PlayerStatus : MonoBehaviour
     void Start()
     {
         player = GetComponent<Player>();
+        InteractionSystem = this.GetComponent<InteractionSystem>();
     }
 
     public void Die()
     {
         // 애니메이션 재생, 집으로 복귀, 체력 풀로 채우기 등등
-        gameObject.SetActive(false);
+        StartCoroutine(Pause());
         Debug.Log("님 뒤졋으니까 리겜하셈");
         Debug.Log("대체 이걸 어캐 죽음?");
 
@@ -94,5 +96,11 @@ public class PlayerStatus : MonoBehaviour
                 Debug.Log("버프 끝, 현재 속도 : " + speed);
                 break;
         }
+    }
+
+    IEnumerator Pause()
+    {
+        yield return new WaitForSeconds(5f);
+        InteractionSystem.Open_Death_UI();
     }
 }

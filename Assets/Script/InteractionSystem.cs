@@ -27,6 +27,7 @@ public class InteractionSystem : MonoBehaviour
     BackGroundController BackGroundController;
 
     public GameObject Pause_UI;
+    public GameObject Death_UI;
 
     private GameObject canvas;
     UISystem UISystem;
@@ -291,7 +292,11 @@ public class InteractionSystem : MonoBehaviour
             //채집물 획득
             if (InventorySystem.Inventory.activeSelf == false && forageincounter == true)
             {
-                AddDropItem(enter_object);
+                if(enter_object.tag == "Spawner")
+                {
+                    AddDropItem(enter_object);
+                }
+                
             }
 
             //창고 여닫기
@@ -682,6 +687,35 @@ public class InteractionSystem : MonoBehaviour
             Application.Quit();
     #endif
     }
+
+    public void Open_Death_UI()
+    {
+        UItoken = true;
+        Death_UI.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void Revive()
+    {
+        UItoken = false;
+        Death_UI.SetActive(false);
+        Time.timeScale = 1;
+
+        //인벤토리 리셋
+        int InventoryCount = InventorySystem.InventoryList.Count;
+
+        for (int i = 0; i < InventoryCount; i++)
+        {
+            InventorySystem.DeleteItem(InventorySystem.InventoryList[0], 0);
+            InventorySystem.weight = 0;
+            InventorySystem.weight_text.text = InventorySystem.weight.ToString() + " / " + InventorySystem.max_weight.ToString();
+        }
+
+        this.gameObject.transform.position = new Vector3 ((float)-48.5, 167, 0);
+
+
+    }
+
     ////아이템 추가
     //public void AddDropItem()
     //{
