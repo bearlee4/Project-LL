@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
         InteractionSystem = this.GetComponent<InteractionSystem>();
         PlayerStatus = this.GetComponent<PlayerStatus>();
         ItemDB = CSVReader.Read("ItemDB");
-        gold = 1000;
+        gold = 50;
         gold_Text.text = gold.ToString();
         gold_Text.color = Color.yellow;
 
