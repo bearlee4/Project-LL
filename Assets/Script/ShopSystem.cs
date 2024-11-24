@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ShopSystem : MonoBehaviour
 {
     InventorySystem InventorySystem;
+    ItemInformation ItemInformation;
     Player Player;
 
     private GameObject player;
@@ -28,6 +29,7 @@ public class ShopSystem : MonoBehaviour
         player = GameObject.Find("Player");
 
         InventorySystem = this.GetComponent<InventorySystem>();
+        ItemInformation = this.GetComponent<ItemInformation>();
         Player = player.GetComponent<Player>();
         
 
@@ -113,19 +115,26 @@ public class ShopSystem : MonoBehaviour
     public void Buy_Item(int num)
     {
         int transnumber = 1;
+        int add_weight = 0;
         //골드가 충분할경우
         if (Player.gold >= shop_Cost[num])
         {
+            for (int i = 0; i < InventorySystem.ItemDB.Count; i ++)
+            {
+                if (shop_List[num] == InventorySystem.ItemDB[i]["ImgName"].ToString())
+                {
+                    add_weight = (int)InventorySystem.ItemDB[i]["Weight"];
+                }
+            }
             //인벤토리가 꽉차있지 않을 경우
-            if (InventorySystem.FullInventory == false)
+            if (InventorySystem.FullInventory == false && InventorySystem.weight + add_weight <= InventorySystem.max_weight)
             {
                 Player.Use_Gold(shop_Cost[num]);
                 Link_Gold();
                 InventorySystem.AddInventory(shop_List[num], transnumber);
                 if (shop_List[num] == "Alchemy_Recipe_Book")
                 {
-                    Destroy(content.transform.GetChild(num).gameObject);
-                    shop_List.RemoveAt(num);
+                    content.transform.GetChild(num).Find("SoldOut").GetComponent<Image>().enabled = true;
                 }
             }
 
@@ -133,7 +142,7 @@ public class ShopSystem : MonoBehaviour
             else
             {
                 //인벤이 꽉차 있어도 같은 종류의 아이템이 있고 합친 갯수가 99개를 넘지 않을경우
-                if (InventorySystem.InventoryList.Contains(shop_List[num]))
+                if (InventorySystem.InventoryList.Contains(shop_List[num]) && InventorySystem.weight + add_weight <= InventorySystem.max_weight)
                 {
                    for (int i = 0; i < InventorySystem.InventoryList.Count; i++)
                    {
@@ -146,8 +155,7 @@ public class ShopSystem : MonoBehaviour
                                 InventorySystem.AddInventory(shop_List[num], transnumber);
                                 if (shop_List[num] == "Alchemy_Recipe_Book")
                                 {
-                                    Destroy(content.transform.GetChild(num).gameObject);
-                                    shop_List.RemoveAt(num);
+                                    content.transform.GetChild(num).Find("SoldOut").GetComponent<Image>().enabled = true;
                                 }
                                 break;
                             }
@@ -155,6 +163,7 @@ public class ShopSystem : MonoBehaviour
                             else
                             {
                                 Debug.Log("공간 부족");
+                                ItemInformation.Create_Fullinventory_Notice();
                                 break;
                             }
                         }
@@ -163,6 +172,7 @@ public class ShopSystem : MonoBehaviour
 
                 else
                 {
+                    ItemInformation.Create_Fullinventory_Notice();
                     Debug.Log("공간 부족");
                 }
             }

@@ -223,7 +223,6 @@ public class UISystem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     public void OnPointerExit(PointerEventData eventData)
     {
 
-        Debug.Log(overObject.tag + "나감");
         if (overObject.tag == "ItemImage")
         {
 
