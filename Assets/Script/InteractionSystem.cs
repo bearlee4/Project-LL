@@ -556,6 +556,16 @@ public class InteractionSystem : MonoBehaviour
         {
             max_Trans_toggle = false;
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            this.GetComponent<Player>().Super_Mod();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            this.GetComponent<Player>().Normal_Mod();
+        }
     }
 
 
