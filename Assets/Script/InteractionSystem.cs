@@ -590,6 +590,11 @@ public class InteractionSystem : MonoBehaviour
         {
             this.GetComponent<Player>().Normal_Mod();
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            GetComponent<Player>().Money_Power();
+        }
     }
 
 

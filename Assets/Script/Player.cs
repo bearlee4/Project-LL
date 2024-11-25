@@ -259,6 +259,11 @@ public class Player : MonoBehaviour
         MP_slider.value = 100;
     }
 
+    public void Money_Power()
+    {
+        Get_Gold(1000);
+    }
+
     public void SpendMP(int mp)
     {
         PlayerStatus.currentMP -= mp;
