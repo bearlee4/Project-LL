@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
         InteractionSystem = this.GetComponent<InteractionSystem>();
         PlayerStatus = this.GetComponent<PlayerStatus>();
         ItemDB = CSVReader.Read("ItemDB");
-        gold = 50;
+        gold = 200;
         gold_Text.text = gold.ToString();
         gold_Text.color = Color.yellow;
 
@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
 
     IEnumerator MpRegen()
     {
-        PlayerStatus.currentMP += 0.005f;
+        PlayerStatus.currentMP += 0.03f;
         if (PlayerStatus.currentMP > PlayerStatus.maxMP)
         {
             PlayerStatus.currentMP = PlayerStatus.maxMP;
