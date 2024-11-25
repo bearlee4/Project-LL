@@ -211,6 +211,14 @@ public class StorageSystem : MonoBehaviour
         {
             AddStorage(InventorySystem.InventoryList[0], InventorySystem.CountList[0]);
             InventorySystem.DeleteItem(InventorySystem.InventoryList[0], 0);
+            for (int n = 0; n < InventorySystem.QuickSlotList.Count; n++)
+            {
+                //정보 리셋
+                InventorySystem.QuickSlotList[n] = "null";
+                InventorySystem.QuickSlotPosition[n] = -1;
+                InventorySystem.QuickSlotImage[n].SetActive(false);
+                InventorySystem.QuickSlotNumberList[n].text = null;
+            }
             InventorySystem.weight = 0;
             InventorySystem.weight_text.text = InventorySystem.weight.ToString() + " / " + InventorySystem.max_weight.ToString();
         }
@@ -668,6 +676,14 @@ public class StorageSystem : MonoBehaviour
             pagecalcul = (StorageSlot.Count * (pageNumber - 1));
             pageText.text = pageNumber.ToString();
             Reload_Info();
+        }
+    }
+
+    public void Add_All_Item()
+    {
+        for (int i = 0; i < InventorySystem.ItemDB.Count; i++)
+        {
+            AddStorage(InventorySystem.ItemDB[i]["ImgName"].ToString(), 99);
         }
     }
 

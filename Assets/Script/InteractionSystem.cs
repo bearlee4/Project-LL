@@ -581,6 +581,11 @@ public class InteractionSystem : MonoBehaviour
             max_Trans_toggle = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            StorageSystem.Add_All_Item();
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             this.GetComponent<Player>().Super_Mod();
