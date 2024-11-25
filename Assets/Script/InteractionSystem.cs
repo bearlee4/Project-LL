@@ -637,10 +637,20 @@ public class InteractionSystem : MonoBehaviour
 
         if (random_number < 8)
         {
+            int third_random_number = Random.Range(0, 3);
             Debug.Log("일반 등급 당첨!");
-            second_random_number = Random.Range(0, FieldSystem.common_ForageList.Count);
-            InventorySystem.AddInventory(FieldSystem.common_ForageList[second_random_number], InventorySystem.GetCount);
 
+            if (third_random_number == 0)
+            {
+                InventorySystem.AddInventory("Herb", InventorySystem.GetCount);
+            }
+
+            else
+            {
+                second_random_number = Random.Range(0, FieldSystem.common_ForageList.Count);
+                InventorySystem.AddInventory(FieldSystem.common_ForageList[second_random_number], InventorySystem.GetCount);
+            }
+            
         }
 
         else if(random_number >= 8)
