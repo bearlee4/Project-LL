@@ -723,7 +723,7 @@ public class InteractionSystem : MonoBehaviour
     public void Reset_Scene()
     {
         Time.timeScale = 1;
-        SceneManager.LoadSceneAsync("SampleScene");
+        SceneManager.LoadSceneAsync("MainScene");
     }
 
     public void Exit_Game()
@@ -770,6 +770,7 @@ public class InteractionSystem : MonoBehaviour
         this.GetComponent<Collider2D>().isTrigger = false;
         this.GetComponent<Player>().moveable = true;
         this.GetComponent<Player>().isDead = false;
+        BackGroundController.To_Vilige();
 
 
 

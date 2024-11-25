@@ -55,7 +55,7 @@ public class ElementManager : MonoBehaviour
             UseESkill();
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab))    // 원소바꾸기
+        if (Input.GetKeyDown(KeyCode.LeftShift))    // 원소바꾸기
         {
             if (skill_Q && skill_E)       // 스킬 쿨타임 중 못 바꿈
                 ChangeElement();
