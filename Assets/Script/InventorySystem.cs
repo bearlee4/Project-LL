@@ -35,6 +35,7 @@ public class InventorySystem : MonoBehaviour
     public bool fullActive_toggle;
     public int weight;
     public int max_weight;
+    private bool isMoveQuick;
     
     //아이템DB 가져오기
     public List<Dictionary<string, object>> ItemDB;
@@ -62,6 +63,7 @@ public class InventorySystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isMoveQuick = false;
         canvas = GameObject.Find("Canvas");
         UISystem = canvas.GetComponent<UISystem>();
 
@@ -396,12 +398,18 @@ public class InventorySystem : MonoBehaviour
                             //이름도 같고 위치도 같은 소모품이 다 사용됐을 떄
                             if (QuickSlotList[n] == InventoryList[number] && number == QuickSlotPosition[n])
                             {
+                                isMoveQuick = true;
                                 Quick_Reset(InventoryList[number], number);
                             }
 
                         }
 
                         DeleteItem(InventoryList[number], number);
+                        if (isMoveQuick == true)
+                        {
+                            isMoveQuick = false;
+                            Quick_Move();
+                        }
                     }
                     break;
                 }
@@ -688,6 +696,42 @@ public class InventorySystem : MonoBehaviour
 
             }
         }
+    }
+
+    public void Quick_Move()
+    {
+        for (int i = 0; i < QuickSlotList.Count; i++)
+        {
+            if (QuickSlotPosition[i] == -1)
+            {
+                continue;
+            }
+
+            Image InventoryImage = ImageSlot[QuickSlotPosition[i]].GetComponent<Image>();
+            for (int j = 0; j < InventoryList.Count; j++)
+            {
+                //이름과 갯수가 저장된 정보와 맞는걸 서치
+                if (QuickSlotList[i] == InventoryList[j] && QuickSlotNumberList[i].text == NumberList[j].text)
+                {
+                    InventoryImage = ImageSlot[j].GetComponent<Image>();
+                    QuickSlotPosition[i] = j;
+
+                    //텍스트 연동
+                    QuickSlotNumberList[i].text = NumberList[j].text;
+                }
+
+                //종류와 갯수가 맞는게 없을 경우(ex.창고에 들어갔을 경우)
+                else
+                {
+                    //사라졌다 판단 퀵슬롯 정보 삭제
+                    Debug.Log("같은걸 찾을 수 없음. 삭제 처리");
+                    Quick_Reset(QuickSlotList[i], QuickSlotPosition[i]);
+
+                }
+            }
+        }
+
+            
     }
 
     public void Quick_Reset(string name, int position)
