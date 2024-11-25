@@ -43,11 +43,14 @@ public class RequestSystem : MonoBehaviour
     public Text reward;
     public bool information_toggle;
 
+    public Text Reset_notice;
+
     private string contenttext;
     private int get_Itemcount;
     private int need_Itemcount;
     private string code_Number;
     private int select_position_Nubmer;
+    public int reset_count;
    
     
 
@@ -63,6 +66,7 @@ public class RequestSystem : MonoBehaviour
         information_toggle = false;
         player = GameObject.Find("Player");
         Player = player.GetComponent<Player>();
+        reset_count = 3;
         Debug.Log(request_Scroll.transform.childCount);
 
         if (request_UI.activeSelf == true)
@@ -83,6 +87,7 @@ public class RequestSystem : MonoBehaviour
     public void Open_RequestBoard()
     {
         request_UI.SetActive (true);
+        Reset_notice.text = "퀘스트 리셋까지 앞으로 " + reset_count + "번 남았습니다.";
 
         if (request_information.activeSelf == true)
         {

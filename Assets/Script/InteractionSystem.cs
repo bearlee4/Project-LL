@@ -336,13 +336,27 @@ public class InteractionSystem : MonoBehaviour
 
                 else if (AlchemySystem.alchemyUI.activeSelf == true && UItoken == true && AlchemySystem.ban_trans == false)
                 {
-                    AlchemySystem.CloseAlchemy();
-                    UISystem.clicktoggle = false;
-                    if (ItemInformation.slot_Select.activeSelf == true)
+                    if (RecipeBook.recipeBook_UI.activeSelf == true)
                     {
-                        ItemInformation.slot_Select.SetActive(false);
+                        RecipeBook.recipeBook_UI.SetActive(false);
                     }
-                    UItoken = false;
+
+                    else if (RecipeBook.triple_recipieBook_UI.activeSelf == true)
+                    {
+                        RecipeBook.triple_recipieBook_UI.SetActive(false);
+                    }
+
+                    else
+                    {
+                        AlchemySystem.CloseAlchemy();
+                        UISystem.clicktoggle = false;
+                        if (ItemInformation.slot_Select.activeSelf == true)
+                        {
+                            ItemInformation.slot_Select.SetActive(false);
+                        }
+                        UItoken = false;
+                    }
+                    
                 }
             }
 
@@ -506,14 +520,19 @@ public class InteractionSystem : MonoBehaviour
                     AlchemySystem.Get_ResultItem();
                 }
 
-                else if (AlchemySystem.open_recipe_ui == true)
+                else if (RecipeBook.recipeBook_UI.activeSelf == true)
                 {
-                    RecipeBook.Close_Recipebook();
+                    RecipeBook.Test_Close_Recipebook();
+                }
+
+                else if (RecipeBook.triple_recipieBook_UI.activeSelf == true)
+                {
+                    RecipeBook.Close_Triple_Recipebook();
                 }
 
                 else
                 {
-                    AlchemySystem.alchemyUI.SetActive(false);
+                    AlchemySystem.CloseAlchemy();
                     UISystem.clicktoggle = false;
                     if (ItemInformation.slot_Select.activeSelf == true)
                     {
@@ -691,7 +710,12 @@ public class InteractionSystem : MonoBehaviour
             this.transform.GetChild(0).GetComponent<CameraController>().minBounds = new Vector2(-58, (float)165.2);
             this.transform.GetChild(0).GetComponent<CameraController>().maxBounds = new Vector2((float)-45.3, (float)174.8);
             StorageSystem.Back_Home();
-            RequestSystem.Set_Request();
+            RequestSystem.reset_count --;
+            if(RequestSystem.reset_count < 0)
+            {
+                RequestSystem.reset_count = 3;
+                RequestSystem.Set_Request();
+            }
             BackGroundController.To_Vilige();
         }
 
