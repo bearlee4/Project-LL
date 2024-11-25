@@ -140,45 +140,58 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.CompareTag("Enemy") && col.collider is CapsuleCollider2D)
+        if (!invincible)
         {
-            EnemyStatus enemy = col.gameObject.GetComponent<EnemyStatus>();
-
-            if (enemy != null)
+            if (col.gameObject.CompareTag("Enemy") && col.collider is CapsuleCollider2D)
             {
-                Damaged(enemy.atk);
-                StartCoroutine(DamagedEffect());
-                StartCoroutine(KnockBack(col));
+                EnemyStatus enemy = col.gameObject.GetComponent<EnemyStatus>();
+
+                if (enemy != null)
+                {
+                    Damaged(enemy.atk);
+                    StartCoroutine(DamagedEffect());
+                    StartCoroutine(KnockBack(col));
+                }
+
             }
 
-        }
-
-        if (col.gameObject.CompareTag("Boss") && col.collider is CapsuleCollider2D)
-        {
-            BossStatus boss = col.gameObject.GetComponent<BossStatus>();
-
-            if (boss != null)
+            if (col.gameObject.CompareTag("Boss") && col.collider is CapsuleCollider2D)
             {
-                Damaged(boss.atk);
-                StartCoroutine(DamagedEffect());
-                StartCoroutine(KnockBack(col));
+                BossStatus boss = col.gameObject.GetComponent<BossStatus>();
+
+                if (boss != null)
+                {
+                    Damaged(boss.atk);
+                    StartCoroutine(DamagedEffect());
+                    StartCoroutine(KnockBack(col));
+                }
+
             }
 
-        }
-
-        if (col.gameObject.CompareTag("Stone") && col.collider is CapsuleCollider2D)
-        {
-            BossStone stone = col.gameObject.GetComponent<BossStone>();
-
-            if (stone != null)
+            if (col.gameObject.CompareTag("Stone") && col.collider is CapsuleCollider2D)
             {
-                Damaged(stone.damage);
-                StartCoroutine(DamagedEffect());
-                StartCoroutine(KnockBack(col));
-            }
+                BossStone stone = col.gameObject.GetComponent<BossStone>();
 
+                if (stone != null)
+                {
+                    Damaged(stone.damage);
+                    StartCoroutine(DamagedEffect());
+                    StartCoroutine(KnockBack(col));
+                }
+            }
         }
 
+        else
+        {
+            StartCoroutine(Ignore(col));
+        }
+    }
+
+    private IEnumerator Ignore(Collision2D col)
+    {
+        col.gameObject.GetComponent<CapsuleCollider2D>().isTrigger = true;
+        yield return new WaitForSeconds(0.3f);
+        col.gameObject.GetComponent<CapsuleCollider2D>().isTrigger = false;
 
     }
 
