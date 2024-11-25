@@ -69,7 +69,39 @@ public class Player : MonoBehaviour
         if (moveable == true && InteractionSystem.UItoken == false)
         {
             Move();
-        }  
+        }
+
+        if (PlayerStatus.currentHP < PlayerStatus.maxHP)
+        {
+            StartCoroutine(HpRegen());
+        }
+
+        if (PlayerStatus.currentMP < PlayerStatus.maxMP)
+        {
+            StartCoroutine(MpRegen());
+        }
+    }
+
+    IEnumerator HpRegen()
+    {
+        PlayerStatus.currentHP += 0.002f;
+        if(PlayerStatus.currentHP > PlayerStatus.maxHP)
+        {
+            PlayerStatus.currentHP = PlayerStatus.maxHP;
+        }
+        HP_slider.value = PlayerStatus.currentHP;
+        yield return new WaitForSeconds(5f);
+    }   
+
+    IEnumerator MpRegen()
+    {
+        PlayerStatus.currentMP += 0.005f;
+        if (PlayerStatus.currentMP > PlayerStatus.maxMP)
+        {
+            PlayerStatus.currentMP = PlayerStatus.maxMP;
+        }
+        MP_slider.value = PlayerStatus.currentMP;
+        yield return new WaitForSeconds(5f);
     }
 
     //캐릭터 움직임
