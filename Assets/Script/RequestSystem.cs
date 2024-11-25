@@ -126,6 +126,9 @@ public class RequestSystem : MonoBehaviour
         Debug.Log("request_Count : " + request_Count);
         Debug.Log("request_List.Count : " + request_List.Count);
 
+        request_List.Add(4.ToString());
+        image_Number.Add(4);
+
         //중복 없이 받을 수 있는 퀘스트 종류가 하루 의뢰 갯수가 될때까지 무한 루프
         for (int i = 0; true; i ++)
         {
